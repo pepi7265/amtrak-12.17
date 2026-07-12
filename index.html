@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>암트랙 횡단 플래너 PRO - 상남자 먹방&완벽동선</title>
+    <title>암트랙 횡단 플래너 PRO - 생존식량 & 완벽동선</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -43,32 +43,37 @@
                 setDDay(diffDays > 0 ? diffDays : 0);
             }, []);
 
-            // [팁/세금 포함가 반영] 유명맛집 + 가성비 무한리필 믹스
+            // 마트 생존식량 추가 및 식비(팁/세금 포함) 전체 예산 조정
             const routes = [
                 {
                 id: 1,
                 type: 'hell',
                 title: '샌프란시스코 ➔ 시애틀',
-                vibe: '월클 소고기로 시작해서 시애틀 무한리필 훠궈로 이어지는 갓성비 콤보!',
+                vibe: '금문교 자전거 횡단으로 체력 방전 후 무한리필 고기로 단백질 보충!',
                 train: { name: 'Coast Starlight', date: '12/18(금) 21:40 출 ➔ 12/19 19:50 착', duration: '약 22시간', saveNight: '기차 내 1박 (숙박비 $0)' },
                 costSummary: { 
                     nights: 2, stayDates: 'SF(12/17), SEA(12/19) 각 1박', 
                     hotel: 340, hotelPerPax: 170, 
-                    food: 320, foodPerPax: 160, // 팁/세금 포함으로 상향
+                    food: 360, foodPerPax: 180, // 마트 비용 40 추가됨
                     transit: 51, transitPerPax: 25.5, 
                     get total() { return this.hotel + this.food + this.transit; },
                     get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
                     desc: '총 2박 (SF 1박, 시애틀 1박)' 
                 },
+                mart: {
+                    name: 'Trader Joe\'s (Market St 매장)',
+                    items: '대용량 생수, 샌드위치 2개, 빵, 육포, 에너지바 (22시간 버틸 식량)',
+                    transit: '파월역 숙소에서 도보 5분 (교통비 $0)',
+                    cost: 40, perPax: 20
+                },
                 feasts: [
-                    { type: 'primary', day: '12/17(목) 저녁', name: 'House of Prime Rib', dish: 'SF 최고 존엄! 입에서 녹는 거대한 프라임 립 스테이크 (샐러드/사이드 사실상 무한)', cost: 180, perPax: 90, rsv: '한달 전 예약 필수 (오픈런)', routeInfo: '숙소(파월역)에서 1번 버스 탑승 (약 20분)' },
-                    { type: 'alt', day: 'SF 대안', name: 'Fogo de Chão (SF)', dish: '소/돼지/양고기 꼬치를 무한으로 썰어주는 브라질리언 뷔페 (고기폭행)', cost: 170, perPax: 85, rsv: 'OpenTable 사전 예약', routeInfo: '숙소에서 SOMA 지역으로 도보 10분' },
-                    { type: 'primary', day: '12/19(토) 저녁', name: 'Happy Lamb Hot Pot', dish: '가성비 최강! 소/양고기, 채소 몽땅 무한리필 훠궈(샤브샤브).', cost: 90, perPax: 45, rsv: '워크인 대기', routeInfo: '시애틀 암트랙 역에서 차이나타운 방향 도보 10분' },
-                    { type: 'alt', day: 'SEA 대안', name: 'The Crab Pot (Seattle)', dish: '테이블에 와르르 쏟아놓고 나무망치로 박살내 먹는 해산물 무더기 파티', cost: 130, perPax: 65, rsv: '워크인 (웨이팅 김)', routeInfo: '시애틀 숙소에서 해안가 방향으로 도보 15분' }
+                    { type: 'primary', day: '12/17(목) 저녁', name: 'House of Prime Rib', dish: 'SF 최고 존엄! 입에서 녹는 거대한 프라임 립 스테이크', cost: 180, perPax: 90, rsv: '한달 전 예약 필수 (오픈런)', routeInfo: '숙소(파월역)에서 1번 버스 탑승 (약 20분)' },
+                    { type: 'alt', day: 'SF 대안', name: 'Fogo de Chão (SF)', dish: '브라질리언 슈하스코 무한리필. 고기 썰어주는 상남자 뷔페', cost: 170, perPax: 85, rsv: 'OpenTable 사전 예약', routeInfo: '숙소에서 SOMA 지역으로 도보 10분' },
+                    { type: 'primary', day: '12/19(토) 저녁', name: 'Happy Lamb Hot Pot', dish: '가성비 최강! 소/양고기, 채소 몽땅 무한리필 훠궈(샤브샤브).', cost: 90, perPax: 45, rsv: '워크인 대기', routeInfo: '시애틀 암트랙 역에서 도보 10분' }
                 ],
                 itinerary: [
-                    { date: '12/17(목) SF', title: 'SF 도착 및 고기 폭행', spots: ['11:40 SFO 도착 ➔ BART 탑승 ➔ 파월역 숙소 체크인', '오후: 피어39 바다사자 구경 (숙소 앞 MUNI F-line 탑승)', '저녁: House of Prime Rib 조지고 유니언 스퀘어 야경 감상'], transit: 'SFO ➔ 파월역(BART), 시내(MUNI 1-Day)' },
-                    { date: '12/18(금) SF', title: '금문교 횡단 ➔ 야간열차', spots: ['오전: 무료조식 후 금문교 자전거 렌탈 (버스 28번 이용)', '오후: 자전거 반납 후 롬바드 스트리트 ➔ 숙소 짐 픽업', '21:40 에머리빌에서 암트랙 탑승'], transit: '숙소 ➔ Salesforce 터미널 (도보 15분) ➔ 무료 셔틀' },
+                    { date: '12/17(목) SF', title: 'SF 도착 및 고기 폭행', spots: ['11:40 SFO 도착 ➔ 파월역 숙소 체크인', '오후: 피어39 ➔ 저녁: House of Prime Rib 조지기'], transit: 'SFO ➔ 파월역(BART), 시내(MUNI 1-Day)' },
+                    { date: '12/18(금) SF', title: '야간열차 탑승 준비', spots: ['오전: 금문교 자전거 렌탈', '오후: 트레이더조 마트에서 식량 비축 ➔ 숙소 짐 픽업 ➔ 21:40 에머리빌 암트랙 탑승'], transit: '숙소 ➔ Salesforce 터미널 (도보 15분) ➔ 무료 셔틀' },
                     { date: '12/19(토) SEA', title: '시애틀 킹스트리트 입성', spots: ['19:50 시애틀 킹스트리트 역 도착', '역에서 도보 5분 숙소에 짐 던지고 차이나타운 무한리필 훠궈 직행'], transit: '역 ➔ 숙소 (도보 5분 컷)' }
                 ],
                 hotels: [
@@ -90,22 +95,27 @@
                 costSummary: { 
                     nights: 3, stayDates: '12/22(화) ~ 12/25(금)', 
                     hotel: 480, hotelPerPax: 240,
-                    food: 370, foodPerPax: 185,
+                    food: 450, foodPerPax: 225, // 마트 비용 80 추가됨
                     transit: 50, transitPerPax: 25, 
                     get total() { return this.hotel + this.food + this.transit; },
                     get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
                     desc: '시카고 3박' 
                 },
+                mart: {
+                    name: 'Uwajimaya Seattle (아시안 마트)',
+                    items: '컵라면 4개, 간편식 도시락, 대용량 생수, 과자 듬뿍 (★45시간 노숙의 생명줄, 필수 방문!)',
+                    transit: '킹스트리트 암트랙 역 바로 앞 (도보 3분, 교통비 $0)',
+                    cost: 80, perPax: 40
+                },
                 feasts: [
-                    { type: 'primary', day: '12/22(화) 저녁', name: 'Giordano\'s (Loop)', dish: '치즈 폭포 쏟아지는 오리지널 시카고 딥디쉬 피자 (극강의 탄수화물)', cost: 65, perPax: 32.5, rsv: '워크인 (굽는데 45분)', routeInfo: '숙소(Loop)에서 도보 10분' },
-                    { type: 'primary', day: '12/23(수) 저녁', name: 'Texas de Brazil (Chicago)', dish: '샐러드바 포함 상남자식 통스테이크/양갈비 무한리필! 단백질 한도 초과.', cost: 165, perPax: 82.5, rsv: '공홈 사전 예약', routeInfo: '숙소에서 도보 5분 거리 내 위치' },
-                    { type: 'primary', day: '12/24(목) 점심', name: 'Portillo\'s Hot Dogs', dish: '고기 육즙에 푹 적신 이탈리안 비프 샌드위치 & 칠리 치즈 프라이', cost: 40, perPax: 20, rsv: '패스트푸드', routeInfo: '시내 중심가(River North) 도보' },
-                    { type: 'alt', day: 'CHI 대안', name: 'Au Cheval', dish: '미국 최고로 꼽히는 두툼한 패티의 더블 치즈버거 & 두꺼운 베이컨', cost: 75, perPax: 37.5, rsv: '현장 대기 극악', routeInfo: '숙소에서 도보 15분 (West Loop)' }
+                    { type: 'primary', day: '12/22(화) 저녁', name: 'Giordano\'s (Loop)', dish: '치즈 폭포 쏟아지는 오리지널 시카고 딥디쉬 피자 라지 (극강의 탄수화물)', cost: 65, perPax: 32.5, rsv: '워크인 (굽는데 45분)', routeInfo: '숙소(Loop)에서 도보 10분' },
+                    { type: 'primary', day: '12/23(수) 저녁', name: 'Texas de Brazil (Chicago)', dish: '상남자식 통스테이크/양갈비 무한리필! 단백질 한도 초과.', cost: 165, perPax: 82.5, rsv: '공홈 사전 예약', routeInfo: '숙소에서 도보 5분 거리 내 위치' },
+                    { type: 'primary', day: '12/24(목) 점심', name: 'Portillo\'s Hot Dogs', dish: '고기 육즙에 푹 적신 이탈리안 비프 샌드위치 & 칠리 치즈 프라이', cost: 40, perPax: 20, rsv: '패스트푸드', routeInfo: '시내 중심가(River North) 도보' }
                 ],
                 itinerary: [
-                    { date: '12/22(화)', title: '마천루 야경 영접', spots: ['15:55 유니언 역 도착 ➔ 우버(5분) ➔ 숙소 체크인', '저녁: 딥디쉬 피자 수혈 후 네이비 피어 야경 산책'], transit: '역 ➔ 숙소(우버), 시내(도보)' },
-                    { date: '12/23(수)', title: '건축과 예술의 날', spots: ['오전: 무료조식 후 밀레니엄 파크 (클라우드 게이트 인증샷)', '오후: 시카고 미술관 ➔ 텍사스데브라질 뷔페 쓸어담기'], transit: 'CTA 3-Day Pass (지하철/버스 무제한)' },
-                    { date: '12/24(목)', title: '가장 높은 곳으로', spots: ['오전: 윌리스 타워 스카이덱 (투명 바닥)', '오후: 매그니피슨트 마일 구경 및 포틸로스 샌드위치 정복'], transit: '명소 간 CTA L-Train(지하철) 탑승' }
+                    { date: '12/20(일) SEA', title: '45시간 노숙 준비', spots: ['오전: 스페이스 니들 구경', '오후: 우와지마야 마트에서 이틀 치 식량 싹쓸이 ➔ 16:55 기차 탑승'], transit: '도보 위주 이동' },
+                    { date: '12/22(화)', title: '시카고 마천루 야경 영접', spots: ['15:55 유니언 역 도착 ➔ 우버(5분) ➔ 숙소 체크인', '저녁: 딥디쉬 피자 수혈 후 네이비 피어 야경 산책'], transit: '역 ➔ 숙소(우버), 시내(도보)' },
+                    { date: '12/23(수)', title: '건축과 예술의 날', spots: ['오전: 무료조식 후 밀레니엄 파크 (클라우드 게이트 인증샷)', '오후: 텍사스데브라질 뷔페 쓸어담기'], transit: 'CTA 3-Day Pass (지하철/버스 무제한)' }
                 ],
                 hotels: [
                     { type: 'primary', name: '[CHI] La Quinta Inn & Suites by Wyndham Chicago', desc: '윈덤 체인. 투 더블 베드. 유니언역과 시내 랜드마크 한가운데 위치. 아침 뷔페 조식까지 매일 무료!', cost: '3박 $480 (1인 $240)', link: 'https://www.wyndhamhotels.com/' }
@@ -125,18 +135,25 @@
                 costSummary: { 
                     nights: 1, stayDates: '12/26(토) ~ 12/27(일)', 
                     hotel: 130, hotelPerPax: 65, 
-                    food: 100, foodPerPax: 50, 
+                    food: 130, foodPerPax: 65, // 마트 비용 30 추가
                     transit: 70, transitPerPax: 35, 
                     get total() { return this.hotel + this.food + this.transit; },
                     get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
                     desc: '나이아가라 1박' 
+                },
+                mart: {
+                    name: 'Target (유니언 역 지점)',
+                    items: '생수, 탄산음료, 야간수면용 가벼운 스낵',
+                    transit: '시카고 유니언 역 바로 옆 건물 (도보 2분, 교통비 $0)',
+                    cost: 30, perPax: 15
                 },
                 feasts: [
                     { type: 'primary', day: '12/26(토) 저녁', name: 'Anchor Bar (Niagara Falls)', dish: '원조 버팔로 윙의 매콤시큼한 맛에 맥주 피처 (20조각 쉐어)', cost: 80, perPax: 40, rsv: '워크인 대기', routeInfo: '숙소(폭포 근처)에서 도보 7분 거리 위치' },
                     { type: 'alt', day: 'NIA 대안', name: 'The Griffon Gastropub', dish: '진짜 미국인들이 먹는 거대한 로컬 수제버거와 산더미 프렌치프라이.', cost: 75, perPax: 37.5, rsv: '워크인', routeInfo: '숙소에서 나이아가라 강변 따라 도보 15분' }
                 ],
                 itinerary: [
-                    { date: '12/26(토)', title: '얼음 폭포 트래킹', spots: ['08:00 버팔로역 도착 ➔ 폭포 숙소로 우버 직행 (35분)', '바람의 동굴 (Cave of the Winds) 및 고트 섬 트래킹', '저녁: 버팔로 윙 또는 메가 버거 조지기'], transit: '역 ➔ 폭포(우버), 폭포 및 식당(도보)' }
+                    { date: '12/25(금)', title: '크리스마스 밤기차', spots: ['오후: 시카고 명소 구경 ➔ 유니언역 앞 타겟(Target)에서 야식 구매', '21:30 나이아가라행 밤기차 탑승'], transit: '도보' },
+                    { date: '12/26(토)', title: '얼음 폭포 트래킹', spots: ['08:00 버팔로역 도착 ➔ 폭포 숙소로 우버 직행 (35분)', '바람의 동굴 (Cave of the Winds) 및 고트 섬 트래킹', '저녁: 버팔로 윙 조지기'], transit: '역 ➔ 폭포(우버), 폭포 및 식당(도보)' }
                 ],
                 hotels: [
                     { type: 'primary', name: '[NIA] Quality Hotel & Suites At The Falls', desc: '투 더블 베드. 나이아가라 폭포 입구 초근접. 식당/명소 모두 걸어갈 수 있어 추가 교통비가 0원!', cost: '1박 $130 (1인 $65)', link: 'https://www.choicehotels.com/' }
@@ -151,24 +168,29 @@
                 id: 4,
                 type: 'normal',
                 title: '나이아가라 ➔ 보스턴',
-                vibe: '무한리필 스시 뷔페와 이탈리아 타운의 산더미 파스타 접수!',
+                vibe: '미국 지성의 본고장! 산더미 해산물 파스타와 고기 무한 샤브샤브.',
                 train: { name: 'Lake Shore Limited', date: '12/27(일) 08:00 출 ➔ 12/27 20:30 착', duration: '약 12.5시간', saveNight: '주간 이동' },
                 costSummary: { 
                     nights: 2, stayDates: '12/27(일) ~ 12/29(화)', 
                     hotel: 380, hotelPerPax: 190, 
-                    food: 320, foodPerPax: 160,
+                    food: 350, foodPerPax: 175, // 마트 비용 30 추가
                     transit: 82, transitPerPax: 41, 
                     get total() { return this.hotel + this.food + this.transit; },
                     get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
                     desc: '보스턴 2박' 
                 },
+                mart: {
+                    name: 'Tops Friendly Markets (나이아가라)',
+                    items: '서브웨이 샌드위치 2개, 대용량 음료 (12시간 낮기차에서 점심용으로 먹을 식량)',
+                    transit: '우버 부르기 전 폭포 근처 마트 도보 방문 (교통비 $0)',
+                    cost: 30, perPax: 15
+                },
                 feasts: [
                     { type: 'primary', day: '12/28(월) 저녁', name: 'Sora / Yamato II (Sushi Buffet)', dish: '가성비 지리는 초밥, 롤, 사시미 무한리필(AYCE) 뷔페! 해산물로 배 채우기.', cost: 110, perPax: 55, rsv: '워크인 대기', routeInfo: 'Copley 광장 인근. 지하철 Green Line 탑승' },
-                    { type: 'primary', day: '12/29(화) 점심', name: 'Giacomo\'s Ristorante', dish: '접시 밖으로 흘러넘치는 산더미 해산물 파스타 (이탈리아 타운 가성비 킹)', cost: 100, perPax: 50, rsv: '예약불가, 현금결제(Cash Only)', routeInfo: '숙소에서 Green Line 타고 Haymarket 하차 도보 5분' },
-                    { type: 'alt', day: 'BOS 대안', name: 'Spring Shabu-Shabu', dish: '고기/채소 무한리필 샤브샤브 뷔페 (느끼함 싹 내림)', cost: 100, perPax: 50, rsv: 'Yelp 웨이팅 확인', routeInfo: '하버드 투어 후 Red Line 타고 이동' },
-                    { type: 'alt', day: '간식', name: 'Quincy Market (Boston Chowda)', dish: '빵그릇 뚫고 나오는 클램 차우더와 랍스터 롤', cost: 75, perPax: 37.5, rsv: '푸드코트 (팁 없음)', routeInfo: '프리덤 트레일 걷다가 퀸시마켓 방문' }
+                    { type: 'primary', day: '12/29(화) 점심', name: 'Giacomo\'s Ristorante', dish: '접시 밖으로 흘러넘치는 산더미 해산물 파스타 (이탈리아 타운 가성비 킹)', cost: 100, perPax: 50, rsv: '예약불가, 현금결제(Cash Only)', routeInfo: '숙소에서 Green Line 타고 Haymarket 하차 도보 5분' }
                 ],
                 itinerary: [
+                    { date: '12/27(일)', title: '주간 열차 이동', spots: ['오전: Tops 마트에서 점심거리 비축 후 우버로 역 이동', '08:00 암트랙 탑승 (12시간 풍경 감상) ➔ 저녁 20:30 보스턴 도착'], transit: '폭포 ➔ 버팔로역(우버)' },
                     { date: '12/28(월)', title: '두뇌 풀가동 투어', spots: ['오전: 무료 조식 후 Red Line 타고 하버드/MIT 투어', '오후: 보스턴 미술관(MFA) ➔ 저녁: 무한리필 스시 뷔페 조지기'], transit: 'MBTA Red/Green Line (환승 용이)' },
                     { date: '12/29(화)', title: '독립의 역사 걷기', spots: ['오전: 프리덤 트레일 (바닥의 빨간 선 따라 걷기)', '점심: 노스엔드 산더미 파스타 ➔ 남역(South Station) 뉴욕행 탑승'], transit: '도보 위주 일정' }
                 ],
@@ -190,24 +212,28 @@
                 costSummary: { 
                     nights: 4, stayDates: '12/29(화) ~ 1/2(토)', 
                     hotel: 1050, hotelPerPax: 350, 
-                    food: 840, foodPerPax: 280, // 식비 3인 총액 840 (1/n = 280)
+                    food: 885, foodPerPax: 295, // 마트 비용 45(3인) 추가
                     transit: 79.6, transitPerPax: 39.8,
                     get total() { return this.hotel + this.food + this.transit; }, 
                     get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
                     desc: '뉴욕 4박 (숙박 및 식비 모두 3인 1/n 적용)' 
                 },
+                mart: {
+                    name: '보스턴 South Station 델리 코너',
+                    items: '기차 안에서 먹을 커피, 베이글, 파니니 (4시간 짧은 이동용)',
+                    transit: '보스턴 남역 내부에서 구매 (도보 0분, 교통비 $0)',
+                    cost: 45, perPax: 15
+                },
                 feasts: [
                     { type: 'primary', day: '12/30(수) 저녁', name: 'Peter Luger Steak House', dish: '뉴욕의 상징! 겉바속촉 포터하우스 스테이크 for Three (3인용 세트)', cost: 390, perPax: 130, rsv: '전화 또는 Resy 예약 필수', routeInfo: 'J/M/Z 선 Marcy Av 역 하차 (브루클린)' },
                     { type: 'primary', day: '12/31(목) 저녁', name: 'Carmine\'s (Times Square)', dish: '세숫대야에 나오는 패밀리 사이즈 미트볼 파스타. 3명이 1개로 배터짐.', cost: 120, perPax: 40, rsv: '사전 예약 필수', routeInfo: '타임스퀘어 중심부, 볼드롭 후 심야 방문' },
-                    { type: 'primary', day: '1/1(금) 저녁', name: 'Let\'s Meat BBQ (K-Town)', dish: '뉴욕 코리아타운의 소/돼지 고기 무한리필 바베큐! 한국의 맛으로 에너지 완충.', cost: 180, perPax: 60, rsv: '웨이팅 필수', routeInfo: '지하철(N/W) 타고 34 St-Herald Sq 하차' },
-                    { type: 'alt', day: 'NYC 대안', name: 'Dallas BBQ (Times Square)', dish: '미친 크기의 텍사스 사이즈 립 & 통닭 산더미 플래터!', cost: 150, perPax: 50, rsv: '워크인', routeInfo: '숙소에서 7호선 타고 타임스퀘어역 하차' },
-                    { type: 'alt', day: '간식', name: 'Katz\'s Delicatessen', dish: '고기가 팔뚝만하게 쌓인 전설의 파스트라미 샌드위치', cost: 45, perPax: 15, rsv: '웨이팅 극악', routeInfo: 'F라인 타고 2nd Ave 하차 후 도보' }
+                    { type: 'primary', day: '1/1(금) 저녁', name: 'Let\'s Meat BBQ (K-Town)', dish: '뉴욕 코리아타운의 소/돼지 고기 무한리필 바베큐! 한국의 맛으로 에너지 완충.', cost: 180, perPax: 60, rsv: '웨이팅 필수', routeInfo: '지하철(N/W) 타고 34 St-Herald Sq 하차' }
                 ],
                 itinerary: [
+                    { date: '12/29(화)', title: '뉴욕 진입 (3인 합체)', spots: ['오전: 보스턴역 델리에서 식량 픽업 후 탑승', '오후: 뉴욕 펜 역 도착 ➔ LIC 숙소 체크인'], transit: 'MTA 지하철 이동' },
                     { date: '12/30(수)', title: '맨해튼 상륙작전', spots: ['오전: 센트럴 파크 산책 ➔ 자연사 박물관', '오후: MoMA 관람 후 브루클린으로 넘어가 피터루거 스테이크 영접'], transit: '모든 이동은 MTA 7-Day Pass로 해결' },
                     { date: '12/31(목)', title: '볼드롭 카운트다운 존버', spots: ['오전: 하이라인 파크 ➔ 첼시 마켓 (화장실 해결)', '오후 2시: 타임스퀘어 볼드롭 대기 (물 절대금지) ➔ 자정 후 카마인스 파스타'], transit: '지하철로 접근 후 하루 종일 도보 대기' },
-                    { date: '1/1(금)', title: '브루클린 바이브', spots: ['오전: 브루클린 브릿지 도보 횡단 ➔ 덤보(DUMBO) 구경', '오후: K-Town 넘어가서 무한리필 고기파티'], transit: 'MTA 지하철 타고 브루클린 진입' },
-                    { date: '1/2(토)', title: '마지막 일정', spots: ['오전: 베슬(Vessel) 및 엣지 전망대 근처 구경', '점심: Katz 샌드위치 흡입 후 암트랙 역으로 이동'], transit: 'MTA 지하철 탑승' }
+                    { date: '1/1(금)', title: '브루클린 바이브', spots: ['오전: 브루클린 브릿지 도보 횡단 ➔ 덤보(DUMBO) 구경', '오후: K-Town 넘어가서 무한리필 고기파티'], transit: 'MTA 지하철 타고 브루클린 진입' }
                 ],
                 hotels: [
                     { type: 'primary', name: '[NYC] Holiday Inn Express LIC - Manhattan View', desc: '투 더블 베드. 3명이 2개 침대에서 자며 1/n 하기에 최적. 맨해튼 15분 컷. 3명 모두 뷔페 무료 조식!', cost: '4박 총 $1,050 (3인 쉐어 ➔ 1인 $350)', link: 'https://www.ihg.com/' }
@@ -227,22 +253,27 @@
                 costSummary: { 
                     nights: 3, stayDates: '1/2(토) ~ 1/5(화)', 
                     hotel: 480, hotelPerPax: 240,
-                    food: 320, foodPerPax: 160, 
+                    food: 350, foodPerPax: 175, // 마트 비용 30 추가
                     transit: 20, transitPerPax: 10, 
                     get total() { return this.hotel + this.food + this.transit; },
                     get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
                     desc: '워싱턴 3박' 
                 },
+                mart: {
+                    name: 'NY Penn Station 주변 델리마트',
+                    items: '생수, 초코바, 베이글 (3.5시간 가벼운 기차 탑승용)',
+                    transit: '뉴욕 펜 역 지하 아케이드에서 구매 (교통비 $0)',
+                    cost: 30, perPax: 15
+                },
                 feasts: [
                     { type: 'primary', day: '1/3(일) 저녁', name: 'Medium Rare', dish: '단일 메뉴의 근본! 촉촉한 스테이크와 바삭한 감자튀김이 계속 리필되는 가성비 맛집', cost: 90, perPax: 45, rsv: '워크인 또는 사전 예약', routeInfo: 'Metro Red Line 타고 Cleveland Park 역 하차 (필수 코스)' },
                     { type: 'primary', day: '1/4(월) 저녁', name: 'Founding Farmers DC', dish: '농장 직송 식재료로 만든 산더미 같은 미국식 소울푸드 (치킨 앤 와플 추천)', cost: 110, perPax: 55, rsv: 'OpenTable 예약 필수', routeInfo: '백악관 근처. 숙소에서 도보 15분' },
-                    { type: 'primary', day: '1/5(화) 저녁', name: 'Old Ebbitt Grill', dish: '대통령 단골집! 굴, 새우, 랍스터가 탑처럼 쌓인 해산물 타워 (분위기 잡을 때)', cost: 160, perPax: 80, rsv: '사전 예약 필수', routeInfo: '백악관 바로 옆. 숙소에서 도보 20분' },
-                    { type: 'alt', day: '점심/간식', name: 'Five Guys (DC 매장)', dish: '미국 수도에서 먹는 본토 수제버거 2개씩 + 무한 땅콩 버프', cost: 50, perPax: 25, rsv: '패스트푸드', routeInfo: '스미소니언 박물관 주변 매장 도보 이동' }
+                    { type: 'primary', day: '1/5(화) 저녁', name: 'Old Ebbitt Grill', dish: '대통령 단골집! 굴, 새우, 랍스터가 탑처럼 쌓인 해산물 타워 (분위기 잡을 때)', cost: 160, perPax: 80, rsv: '사전 예약 필수', routeInfo: '백악관 바로 옆. 숙소에서 도보 20분' }
                 ],
                 itinerary: [
+                    { date: '1/2(토)', title: '워싱턴 입성', spots: ['오전: 뉴욕 펜 역에서 요깃거리 구매 ➔ 암트랙 탑승', '오후: DC 도착 후 체크인 ➔ 내셔널몰 야경 산책'], transit: '도보 위주 이동' },
                     { date: '1/3(일)', title: '국가 권력급 무료 박물관 1', spots: ['오전: 든든한 무료조식 후 자연사 박물관 (무료)', '오후: 항공우주 박물관 (사전 예약) ➔ Medium Rare 무한 스테이크'], transit: '숙소 ➔ 내셔널몰(도보), 저녁 식당(Metro Red Line)' },
-                    { date: '1/4(월)', title: '국가 권력급 무료 박물관 2', spots: ['오전: 국립 미술관 (National Gallery of Art - 방대함)', '오후: 미 국회의사당 ➔ 링컨 기념관 야경 ➔ 파운딩 파머스 식사'], transit: '내셔널 몰 내부 하루 종일 도보 이동' },
-                    { date: '1/5(화)', title: '조지타운 산책', spots: ['오전: 파이브가이즈 흡입 후 조지타운 대학교 주변 구경', '저녁: 대통령 단골 식당 올드 에빗 그릴에서 해산물 파티'], transit: 'Metro 전철 및 순환 버스 적극 활용' }
+                    { date: '1/4(월)', title: '국가 권력급 무료 박물관 2', spots: ['오전: 국립 미술관 (National Gallery of Art - 방대함)', '오후: 미 국회의사당 ➔ 링컨 기념관 야경 ➔ 파운딩 파머스 식사'], transit: '내셔널 몰 내부 하루 종일 도보 이동' }
                 ],
                 hotels: [
                     { type: 'primary', name: '[DC] Comfort Inn Downtown DC', desc: '투 더블 베드. 내셔널 몰 박물관 단지까지 도보 이동 가능한 꿀위치. 매일 아침 무료 뷔페 조식.', cost: '3박 $480 (1인 $240)', link: 'https://www.choicehotels.com/' }
@@ -262,17 +293,24 @@
                 costSummary: { 
                     nights: 0, stayDates: '숙박 없음', 
                     hotel: 0, hotelPerPax: 0,
-                    food: 40, foodPerPax: 20, 
+                    food: 60, foodPerPax: 30, // 마트 비용 20 추가
                     transit: 37, transitPerPax: 18.5, 
                     get total() { return this.hotel + this.food + this.transit; },
                     get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
                     desc: '숙박 불필요' 
                 },
+                mart: {
+                    name: 'CVS Pharmacy (DC 숙소 근처)',
+                    items: '에너지 드링크, 생수, 버티기용 스낵 (새벽 기차 탑승 전 철야용)',
+                    transit: 'DC 숙소에서 도보 5분 거리 매장 이용 (교통비 $0)',
+                    cost: 20, perPax: 10
+                },
                 feasts: [
                     { type: 'primary', day: '1/6(수) 아침', name: 'Shake Shack (EWR 공항 터미널)', dish: '출국 직전, 남은 달러 털어서 쉑쉑버거 더블 패티로 화려한 수혈', cost: 40, perPax: 20, rsv: '탑승동 내 위치 (팁 없음)', routeInfo: '수속 마치고 공항 내부에서 식사' }
                 ],
                 itinerary: [
-                    { date: '1/6(수)', title: '공항으로', spots: ['새벽 유니언 역 출발', '06:40 EWR 도착 ➔ 터미널 이동 ➔ 쉑쉑버거 ➔ 비행기 탑승'], transit: '암트랙 직행 ➔ AirTrain 탑승' }
+                    { date: '1/5(화)', title: '마지막 밤 버티기', spots: ['저녁: CVS에서 식량 비축 ➔ 식당/펍에서 새벽까지 존버', '새벽: 우버 타고 유니언 역 출발'], transit: '안전을 위해 우버/택시 필수 탑승' },
+                    { date: '1/6(수)', title: '공항으로', spots: ['03:15 암트랙 탑승', '06:40 EWR 도착 ➔ 터미널 이동 ➔ 쉑쉑버거 ➔ 비행기 탑승'], transit: '암트랙 직행 ➔ AirTrain 탑승' }
                 ],
                 hotels: [
                     { type: 'primary', name: '숙박 불필요', desc: '호텔 대신 24시간 펍에서 버티거나 숙소 로비 소파 이용 후 새벽 3시 기차 탑승 (20대 강철체력 특권!)', cost: '$0', link: '#' }
@@ -302,7 +340,7 @@
                         </div>
                         <div>
                         <h1 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">암트랙 횡단 플래너 <span className="text-indigo-600 text-lg">PRO</span></h1>
-                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">팁 & 세금 완전 포함 에디션</p>
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">기차 생존식량 & 세금/팁 포함 에디션</p>
                         </div>
                     </div>
                     <div className="hidden md:flex items-center gap-3 bg-slate-100 px-4 py-2 rounded-full border border-slate-200">
@@ -336,7 +374,7 @@
                             <p className="text-xl font-bold">${myTotalHotel.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
                         </div>
                         <div className="min-w-[100px]">
-                            <p className="text-xs font-bold text-amber-300 uppercase tracking-wider mb-1">내 식비 (팁 포함)</p>
+                            <p className="text-xs font-bold text-amber-300 uppercase tracking-wider mb-1">내 식비 (마트/팁 포함)</p>
                             <p className="text-xl font-bold text-amber-100">${myTotalFood.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
                         </div>
                         <div className="min-w-[100px]">
@@ -348,14 +386,14 @@
                     </div>
                 </div>
 
-                <div className="bg-orange-50 border-b border-orange-100">
+                <div className="bg-teal-50 border-b border-teal-100">
                     <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex flex-col md:flex-row items-start md:items-center gap-3">
                     <div className="flex items-center gap-2">
-                        <i className="fas fa-coins text-orange-600 flex-shrink-0"></i>
-                        <span className="text-sm font-bold text-orange-800">팁(Tip) & 세금(Tax) 100% 반영:</span>
+                        <i className="fas fa-shopping-basket text-teal-600 flex-shrink-0"></i>
+                        <span className="text-sm font-bold text-teal-800">기차 생존 식량(마트) 장보기 추가:</span>
                     </div>
-                    <p className="text-sm text-orange-800 font-medium">
-                        미국 여행에서 가장 당황스러운 추가 지출을 막기 위해, 모든 특식 예산에 <strong>'현지 세금(~9%)과 팁(18~20%)'을 전부 더한 최종 결제 예상 금액</strong>을 반영해 두었습니다! 피터루거, 하우스오브프라임립 등 월클 식당과 보스턴 무한리필 스시 뷔페가 포함되었습니다.
+                    <p className="text-sm text-teal-800 font-medium">
+                        최대 45시간에 달하는 살인적인 기차 탑승을 버티기 위해, <strong>동선상 가장 가깝고 저렴한 마트 위치와 구매 품목, 예상 장보기 예산</strong>을 전체 일정에 추가했습니다. 마트 장보기 비용은 전체 식비에 포함되어 있습니다.
                     </p>
                     </div>
                 </div>
@@ -433,7 +471,7 @@
                                 </div>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                <span>식비:</span> 
+                                <span>식비(마트포함):</span> 
                                 <div className="text-right">
                                     <span className="text-xs text-indigo-400 line-through mr-1">${activeRoute.costSummary.food}</span>
                                     <span className="font-bold">${activeRoute.costSummary.foodPerPax.toLocaleString(undefined, {maximumFractionDigits:0})}</span>
@@ -481,7 +519,7 @@
                             <div className="p-2.5 bg-rose-100 text-rose-600 rounded-xl"><i className="fas fa-route text-lg"></i></div>
                             <div>
                             <h3 className="text-lg font-bold text-slate-900">일정 및 추천 코스</h3>
-                            <p className="text-xs font-bold text-slate-400">명소 이동 교통수단 완벽 정리</p>
+                            <p className="text-xs font-bold text-slate-400">마트 방문 동선 완벽 정리</p>
                             </div>
                         </div>
 
@@ -514,47 +552,77 @@
 
                         <div className="grid lg:grid-cols-2 gap-6">
                         
-                        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 h-fit">
-                            <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2.5 bg-blue-100 text-blue-600 rounded-xl"><i className="fas fa-bed text-lg"></i></div>
-                                <h3 className="text-lg font-bold text-slate-900">숙소 플랜</h3>
-                            </div>
-                            {activeRoute.costSummary.nights > 0 && (
-                                <div className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
-                                {activeRoute.costSummary.nights}박 ({activeRoute.costSummary.stayDates})
+                        <div className="flex flex-col gap-6">
+                            {/* 마트 플랜 새로 추가 */}
+                            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 h-fit">
+                                <div className="flex items-center justify-between mb-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2.5 bg-teal-100 text-teal-600 rounded-xl"><i className="fas fa-shopping-basket text-lg"></i></div>
+                                    <h3 className="text-lg font-bold text-slate-900">기차 생존 식량 (마트)</h3>
                                 </div>
-                            )}
-                            </div>
-                            
-                            <div className="space-y-4">
-                            {activeRoute.hotels.map((hotel, idx) => (
-                                <div key={idx} className={`p-4 rounded-xl border ${hotel.type === 'primary' ? 'bg-blue-50/50 border-blue-200' : 'bg-slate-50 border-slate-100'}`}>
-                                <div className="flex justify-between items-start gap-4 mb-2">
-                                    <div>
-                                    {hotel.type === 'primary' && <span className="text-[10px] font-black text-blue-600 bg-blue-100 px-2 py-0.5 rounded mr-2 mb-1 inline-block"><i className="fas fa-check-circle"></i> 조식무료 & 투베드</span>}
-                                    <p className="font-bold text-slate-800 text-sm leading-snug">{hotel.name}</p>
+                                </div>
+                                
+                                <div className="p-4 rounded-xl border border-teal-100 bg-teal-50/50">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div>
+                                            <span className="text-[10px] font-black text-teal-600 bg-teal-100 px-2 py-0.5 rounded mr-2 mb-1 inline-block"><i className="fas fa-store"></i> 보급소 추천</span>
+                                            <p className="font-bold text-slate-800 text-sm leading-snug">{activeRoute.mart.name}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className="text-sm font-black text-slate-800 block">${activeRoute.mart.cost}</span>
+                                            <span className="text-[10px] text-slate-500">1인 ${activeRoute.mart.perPax}</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-xs text-slate-600 mb-3 leading-relaxed border-l-2 border-teal-300 pl-2 ml-1">{activeRoute.mart.items}</p>
+                                    
+                                    <div className="pt-3 border-t border-teal-100 flex items-start gap-1.5 text-[11px] font-bold text-indigo-600 bg-white p-2 rounded shadow-sm border border-slate-100">
+                                        <i className="fas fa-walking mt-0.5 text-indigo-400 w-3"></i> <span className="leading-snug">{activeRoute.mart.transit}</span>
                                     </div>
                                 </div>
-                                <p className="text-xs text-slate-600 mb-3 leading-relaxed">{hotel.desc}</p>
+                            </div>
+
+                            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 h-fit">
+                                <div className="flex items-center justify-between mb-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2.5 bg-blue-100 text-blue-600 rounded-xl"><i className="fas fa-bed text-lg"></i></div>
+                                    <h3 className="text-lg font-bold text-slate-900">숙소 플랜</h3>
+                                </div>
+                                {activeRoute.costSummary.nights > 0 && (
+                                    <div className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
+                                    {activeRoute.costSummary.nights}박 ({activeRoute.costSummary.stayDates})
+                                    </div>
+                                )}
+                                </div>
                                 
-                                <div className="pt-3 border-t border-slate-200/60 flex items-center justify-between">
-                                    <span className="text-xs font-black text-slate-800">
-                                    {hotel.cost}
-                                    </span>
-                                    {hotel.link !== '#' && (
-                                    <a 
-                                        href={hotel.link} 
-                                        target="_blank" 
-                                        rel="noreferrer" 
-                                        className="text-xs font-bold text-blue-600 flex items-center gap-1 hover:text-blue-800 transition-colors"
-                                    >
-                                        정보 보기 <i className="fas fa-external-link-alt text-[10px]"></i>
-                                    </a>
-                                    )}
+                                <div className="space-y-4">
+                                {activeRoute.hotels.map((hotel, idx) => (
+                                    <div key={idx} className={`p-4 rounded-xl border ${hotel.type === 'primary' ? 'bg-blue-50/50 border-blue-200' : 'bg-slate-50 border-slate-100'}`}>
+                                    <div className="flex justify-between items-start gap-4 mb-2">
+                                        <div>
+                                        {hotel.type === 'primary' && <span className="text-[10px] font-black text-blue-600 bg-blue-100 px-2 py-0.5 rounded mr-2 mb-1 inline-block"><i className="fas fa-check-circle"></i> 조식무료 & 투베드</span>}
+                                        <p className="font-bold text-slate-800 text-sm leading-snug">{hotel.name}</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-xs text-slate-600 mb-3 leading-relaxed">{hotel.desc}</p>
+                                    
+                                    <div className="pt-3 border-t border-slate-200/60 flex items-center justify-between">
+                                        <span className="text-xs font-black text-slate-800">
+                                        {hotel.cost}
+                                        </span>
+                                        {hotel.link !== '#' && (
+                                        <a 
+                                            href={hotel.link} 
+                                            target="_blank" 
+                                            rel="noreferrer" 
+                                            className="text-xs font-bold text-blue-600 flex items-center gap-1 hover:text-blue-800 transition-colors"
+                                        >
+                                            정보 보기 <i className="fas fa-external-link-alt text-[10px]"></i>
+                                        </a>
+                                        )}
+                                    </div>
+                                    </div>
+                                ))}
                                 </div>
-                                </div>
-                            ))}
                             </div>
                         </div>
 
