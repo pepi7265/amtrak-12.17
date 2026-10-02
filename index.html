@@ -1,711 +1,843 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>암트랙 횡단 플래너 PRO - 생존식량 & 완벽동선</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <style>
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USA Coast to Coast 2026-2027 | 남자 둘의 암트랙 횡단</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
+    body { font-family: 'Pretendard', sans-serif; }
+    .tab-active { border-color: #2563eb; color: #2563eb; background-color: #eff6ff; }
+  </style>
 </head>
-<body class="bg-[#F8FAFC]">
-    
-    <div id="root"></div>
+<body class="bg-slate-50 text-slate-800 antialiased pb-20">
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+  <!-- Header -->
+  <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="bg-blue-600 text-xs px-2.5 py-1 rounded font-bold uppercase tracking-wider">Amtrak USA Pass</span>
+          <span class="text-xs text-slate-400">2026.12.17 - 2027.01.06 (20박 21일)</span>
+        </div>
+        <h1 class="text-xl md:text-2xl font-black mt-1 tracking-tight">미국 대륙 횡단 투어 가이드</h1>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-300">
+        <span class="px-3 py-1.5 bg-slate-800 rounded-lg border border-slate-700"><i class="fa-solid fa-user-group text-blue-400 mr-1.5"></i>성인 남성 2인</span>
+        <span class="px-3 py-1.5 bg-slate-800 rounded-lg border border-slate-700"><i class="fa-solid fa-utensils text-amber-400 mr-1.5"></i>1일 1하이엔드 미식</span>
+      </div>
+    </div>
 
-        function App() {
-            const [activeRouteId, setActiveRouteId] = useState(1);
-            const [dDay, setDDay] = useState(0);
+    <!-- City Tabs Nav -->
+    <div class="max-w-6xl mx-auto px-4 overflow-x-auto border-t border-slate-800 flex gap-1 py-2 text-sm no-scrollbar">
+      <button onclick="switchTab('sf')" id="tab-sf" class="tab-btn px-3 py-1.5 rounded-md font-semibold whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800 transition">1. 샌프란시스코</button>
+      <button onclick="switchTab('pdx')" id="tab-pdx" class="tab-btn px-3 py-1.5 rounded-md font-semibold whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800 transition">2. 포틀랜드</button>
+      <button onclick="switchTab('chi')" id="tab-chi" class="tab-btn px-3 py-1.5 rounded-md font-semibold whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800 transition">3. 시카고</button>
+      <button onclick="switchTab('buf')" id="tab-buf" class="tab-btn px-3 py-1.5 rounded-md font-semibold whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800 transition">4. 나이아가라</button>
+      <button onclick="switchTab('bos')" id="tab-bos" class="tab-btn px-3 py-1.5 rounded-md font-semibold whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800 transition">5. 보스턴</button>
+      <button onclick="switchTab('nyc')" id="tab-nyc" class="tab-btn px-3 py-1.5 rounded-md font-semibold whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800 transition">6. 뉴욕</button>
+      <button onclick="switchTab('wdc')" id="tab-wdc" class="tab-btn px-3 py-1.5 rounded-md font-semibold whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800 transition">7. 워싱턴 D.C.</button>
+      <button onclick="switchTab('ret')" id="tab-ret" class="tab-btn px-3 py-1.5 rounded-md font-semibold whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800 transition">8. 귀국 (EWR)</button>
+    </div>
+  </header>
 
-            useEffect(() => {
-                const targetDate = new Date(new Date().getFullYear(), 11, 17); // 12월 17일
-                if(targetDate < new Date()) targetDate.setFullYear(targetDate.getFullYear() + 1);
-                const today = new Date();
-                const diffTime = targetDate - today;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                setDDay(diffDays > 0 ? diffDays : 0);
-            }, []);
+  <!-- Main Content Container -->
+  <main class="max-w-6xl mx-auto px-4 mt-6">
 
-            // 마트 생존식량 추가 및 식비(팁/세금 포함) 전체 예산 조정
-            const routes = [
-                {
-                id: 1,
-                type: 'hell',
-                title: '샌프란시스코 ➔ 시애틀',
-                vibe: '금문교 자전거 횡단으로 체력 방전 후 무한리필 고기로 단백질 보충!',
-                train: { name: 'Coast Starlight', date: '12/18(금) 21:40 출 ➔ 12/19 19:50 착', duration: '약 22시간', saveNight: '기차 내 1박 (숙박비 $0)' },
-                costSummary: { 
-                    nights: 2, stayDates: 'SF(12/17), SEA(12/19) 각 1박', 
-                    hotel: 340, hotelPerPax: 170, 
-                    food: 360, foodPerPax: 180, // 마트 비용 40 추가됨
-                    transit: 51, transitPerPax: 25.5, 
-                    get total() { return this.hotel + this.food + this.transit; },
-                    get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
-                    desc: '총 2박 (SF 1박, 시애틀 1박)' 
-                },
-                mart: {
-                    name: 'Trader Joe\'s (Market St 매장)',
-                    items: '대용량 생수, 샌드위치 2개, 빵, 육포, 에너지바 (22시간 버틸 식량)',
-                    transit: '파월역 숙소에서 도보 5분 (교통비 $0)',
-                    cost: 40, perPax: 20
-                },
-                feasts: [
-                    { type: 'primary', day: '12/17(목) 저녁', name: 'House of Prime Rib', dish: 'SF 최고 존엄! 입에서 녹는 거대한 프라임 립 스테이크', cost: 180, perPax: 90, rsv: '한달 전 예약 필수 (오픈런)', routeInfo: '숙소(파월역)에서 1번 버스 탑승 (약 20분)' },
-                    { type: 'alt', day: 'SF 대안', name: 'Fogo de Chão (SF)', dish: '브라질리언 슈하스코 무한리필. 고기 썰어주는 상남자 뷔페', cost: 170, perPax: 85, rsv: 'OpenTable 사전 예약', routeInfo: '숙소에서 SOMA 지역으로 도보 10분' },
-                    { type: 'primary', day: '12/19(토) 저녁', name: 'Happy Lamb Hot Pot', dish: '가성비 최강! 소/양고기, 채소 몽땅 무한리필 훠궈(샤브샤브).', cost: 90, perPax: 45, rsv: '워크인 대기', routeInfo: '시애틀 암트랙 역에서 도보 10분' }
-                ],
-                itinerary: [
-                    { date: '12/17(목) SF', title: 'SF 도착 및 고기 폭행', spots: ['11:40 SFO 도착 ➔ 파월역 숙소 체크인', '오후: 피어39 ➔ 저녁: House of Prime Rib 조지기'], transit: 'SFO ➔ 파월역(BART), 시내(MUNI 1-Day)' },
-                    { date: '12/18(금) SF', title: '야간열차 탑승 준비', spots: ['오전: 금문교 자전거 렌탈', '오후: 트레이더조 마트에서 식량 비축 ➔ 숙소 짐 픽업 ➔ 21:40 에머리빌 암트랙 탑승'], transit: '숙소 ➔ Salesforce 터미널 (도보 15분) ➔ 무료 셔틀' },
-                    { date: '12/19(토) SEA', title: '시애틀 킹스트리트 입성', spots: ['19:50 시애틀 킹스트리트 역 도착', '역에서 도보 5분 숙소에 짐 던지고 차이나타운 무한리필 훠궈 직행'], transit: '역 ➔ 숙소 (도보 5분 컷)' }
-                ],
-                hotels: [
-                    { type: 'primary', name: '[SF] Holiday Inn Express Union Square', desc: 'IHG 체인. 투 더블 베드. 파월역 도보 5분. 무료 뷔페 조식.', cost: '1박 $180 (1인 $90)', link: 'https://www.ihg.com/' },
-                    { type: 'primary', name: '[SEA] Holiday Inn Express & Suites Seattle', desc: 'IHG 체인. 투 퀸 베드. 시애틀 주요 명소 도보권. 아침 조식 든든.', cost: '1박 $160 (1인 $80)', link: 'https://www.ihg.com/' }
-                ],
-                transitDetails: [
-                    { desc: 'SFO 공항 ➔ SF 숙소', method: 'BART 탑승 (약 35분 소요, 환승 없음)', cost: 21, perPax: 10.5 },
-                    { desc: 'SF 시내 및 식당 이동', method: 'MUNI 모바일 1-Day Pass (버스/케이블카 무제한)', cost: 10, perPax: 5 },
-                    { desc: '시애틀 역 ➔ 시애틀 숙소', method: 'Link 경전철 (3정거장) 또는 우버', cost: 6, perPax: 3 }
-                ]
-                },
-                {
-                id: 2,
-                type: 'hell',
-                title: '시애틀 ➔ 시카고',
-                vibe: '강철 체력 노숙 후 시카고에서 딥디쉬 피자와 고기 무한리필로 보상받기.',
-                train: { name: 'Empire Builder', date: '12/20(일) 16:55 출 ➔ 12/22 15:55 착', duration: '약 45시간', saveNight: '기차 내 2박 (숙박비 $0)' },
-                costSummary: { 
-                    nights: 3, stayDates: '12/22(화) ~ 12/25(금)', 
-                    hotel: 480, hotelPerPax: 240,
-                    food: 450, foodPerPax: 225, // 마트 비용 80 추가됨
-                    transit: 50, transitPerPax: 25, 
-                    get total() { return this.hotel + this.food + this.transit; },
-                    get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
-                    desc: '시카고 3박' 
-                },
-                mart: {
-                    name: 'Uwajimaya Seattle (아시안 마트)',
-                    items: '컵라면 4개, 간편식 도시락, 대용량 생수, 과자 듬뿍 (★45시간 노숙의 생명줄, 필수 방문!)',
-                    transit: '킹스트리트 암트랙 역 바로 앞 (도보 3분, 교통비 $0)',
-                    cost: 80, perPax: 40
-                },
-                feasts: [
-                    { type: 'primary', day: '12/22(화) 저녁', name: 'Giordano\'s (Loop)', dish: '치즈 폭포 쏟아지는 오리지널 시카고 딥디쉬 피자 라지 (극강의 탄수화물)', cost: 65, perPax: 32.5, rsv: '워크인 (굽는데 45분)', routeInfo: '숙소(Loop)에서 도보 10분' },
-                    { type: 'primary', day: '12/23(수) 저녁', name: 'Texas de Brazil (Chicago)', dish: '상남자식 통스테이크/양갈비 무한리필! 단백질 한도 초과.', cost: 165, perPax: 82.5, rsv: '공홈 사전 예약', routeInfo: '숙소에서 도보 5분 거리 내 위치' },
-                    { type: 'primary', day: '12/24(목) 점심', name: 'Portillo\'s Hot Dogs', dish: '고기 육즙에 푹 적신 이탈리안 비프 샌드위치 & 칠리 치즈 프라이', cost: 40, perPax: 20, rsv: '패스트푸드', routeInfo: '시내 중심가(River North) 도보' }
-                ],
-                itinerary: [
-                    { date: '12/20(일) SEA', title: '45시간 노숙 준비', spots: ['오전: 스페이스 니들 구경', '오후: 우와지마야 마트에서 이틀 치 식량 싹쓸이 ➔ 16:55 기차 탑승'], transit: '도보 위주 이동' },
-                    { date: '12/22(화)', title: '시카고 마천루 야경 영접', spots: ['15:55 유니언 역 도착 ➔ 우버(5분) ➔ 숙소 체크인', '저녁: 딥디쉬 피자 수혈 후 네이비 피어 야경 산책'], transit: '역 ➔ 숙소(우버), 시내(도보)' },
-                    { date: '12/23(수)', title: '건축과 예술의 날', spots: ['오전: 무료조식 후 밀레니엄 파크 (클라우드 게이트 인증샷)', '오후: 텍사스데브라질 뷔페 쓸어담기'], transit: 'CTA 3-Day Pass (지하철/버스 무제한)' }
-                ],
-                hotels: [
-                    { type: 'primary', name: '[CHI] La Quinta Inn & Suites by Wyndham Chicago', desc: '윈덤 체인. 투 더블 베드. 유니언역과 시내 랜드마크 한가운데 위치. 아침 뷔페 조식까지 매일 무료!', cost: '3박 $480 (1인 $240)', link: 'https://www.wyndhamhotels.com/' }
-                ],
-                transitDetails: [
-                    { desc: '시애틀 숙소 ➔ 시애틀 역', method: 'Link 경전철 탑승 (또는 도보)', cost: 6, perPax: 3 },
-                    { desc: '시카고 역 ➔ 시카고 숙소', method: '짐 피로도 고려하여 우버 탑승 (5분)', cost: 14, perPax: 7 },
-                    { desc: '시카고 시내 전체 이동', method: 'CTA 3-Day Pass (역에서 구매)', cost: 30, perPax: 15 }
-                ]
-                },
-                {
-                id: 3,
-                type: 'normal',
-                title: '시카고 ➔ 나이아가라',
-                vibe: '원조 버팔로 윙에 맥주 때리고, 미국 본토의 무식한 버거 먹방.',
-                train: { name: 'Lake Shore Limited', date: '12/25(금) 21:30 출 ➔ 12/26 08:00 착', duration: '약 10.5시간', saveNight: '기차 내 1박 (숙박비 $0)' },
-                costSummary: { 
-                    nights: 1, stayDates: '12/26(토) ~ 12/27(일)', 
-                    hotel: 130, hotelPerPax: 65, 
-                    food: 130, foodPerPax: 65, // 마트 비용 30 추가
-                    transit: 70, transitPerPax: 35, 
-                    get total() { return this.hotel + this.food + this.transit; },
-                    get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
-                    desc: '나이아가라 1박' 
-                },
-                mart: {
-                    name: 'Target (유니언 역 지점)',
-                    items: '생수, 탄산음료, 야간수면용 가벼운 스낵',
-                    transit: '시카고 유니언 역 바로 옆 건물 (도보 2분, 교통비 $0)',
-                    cost: 30, perPax: 15
-                },
-                feasts: [
-                    { type: 'primary', day: '12/26(토) 저녁', name: 'Anchor Bar (Niagara Falls)', dish: '원조 버팔로 윙의 매콤시큼한 맛에 맥주 피처 (20조각 쉐어)', cost: 80, perPax: 40, rsv: '워크인 대기', routeInfo: '숙소(폭포 근처)에서 도보 7분 거리 위치' },
-                    { type: 'alt', day: 'NIA 대안', name: 'The Griffon Gastropub', dish: '진짜 미국인들이 먹는 거대한 로컬 수제버거와 산더미 프렌치프라이.', cost: 75, perPax: 37.5, rsv: '워크인', routeInfo: '숙소에서 나이아가라 강변 따라 도보 15분' }
-                ],
-                itinerary: [
-                    { date: '12/25(금)', title: '크리스마스 밤기차', spots: ['오후: 시카고 명소 구경 ➔ 유니언역 앞 타겟(Target)에서 야식 구매', '21:30 나이아가라행 밤기차 탑승'], transit: '도보' },
-                    { date: '12/26(토)', title: '얼음 폭포 트래킹', spots: ['08:00 버팔로역 도착 ➔ 폭포 숙소로 우버 직행 (35분)', '바람의 동굴 (Cave of the Winds) 및 고트 섬 트래킹', '저녁: 버팔로 윙 조지기'], transit: '역 ➔ 폭포(우버), 폭포 및 식당(도보)' }
-                ],
-                hotels: [
-                    { type: 'primary', name: '[NIA] Quality Hotel & Suites At The Falls', desc: '투 더블 베드. 나이아가라 폭포 입구 초근접. 식당/명소 모두 걸어갈 수 있어 추가 교통비가 0원!', cost: '1박 $130 (1인 $65)', link: 'https://www.choicehotels.com/' }
-                ],
-                transitDetails: [
-                    { desc: '시카고 숙소 ➔ 시카고 역', method: '짐 챙겨서 우버 이동', cost: 10, perPax: 5 },
-                    { desc: '버팔로 역 ➔ 나이아가라 숙소', method: '우버/리프트 탑승 (아침 시간대 편하게 직행)', cost: 60, perPax: 30 },
-                    { desc: '나이아가라 내 이동', method: '폭포 및 식당 모두 도보 가능', cost: 0, perPax: 0 }
-                ]
-                },
-                {
-                id: 4,
-                type: 'normal',
-                title: '나이아가라 ➔ 보스턴',
-                vibe: '미국 지성의 본고장! 산더미 해산물 파스타와 고기 무한 샤브샤브.',
-                train: { name: 'Lake Shore Limited', date: '12/27(일) 08:00 출 ➔ 12/27 20:30 착', duration: '약 12.5시간', saveNight: '주간 이동' },
-                costSummary: { 
-                    nights: 2, stayDates: '12/27(일) ~ 12/29(화)', 
-                    hotel: 380, hotelPerPax: 190, 
-                    food: 350, foodPerPax: 175, // 마트 비용 30 추가
-                    transit: 82, transitPerPax: 41, 
-                    get total() { return this.hotel + this.food + this.transit; },
-                    get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
-                    desc: '보스턴 2박' 
-                },
-                mart: {
-                    name: 'Tops Friendly Markets (나이아가라)',
-                    items: '서브웨이 샌드위치 2개, 대용량 음료 (12시간 낮기차에서 점심용으로 먹을 식량)',
-                    transit: '우버 부르기 전 폭포 근처 마트 도보 방문 (교통비 $0)',
-                    cost: 30, perPax: 15
-                },
-                feasts: [
-                    { type: 'primary', day: '12/28(월) 저녁', name: 'Sora / Yamato II (Sushi Buffet)', dish: '가성비 지리는 초밥, 롤, 사시미 무한리필(AYCE) 뷔페! 해산물로 배 채우기.', cost: 110, perPax: 55, rsv: '워크인 대기', routeInfo: 'Copley 광장 인근. 지하철 Green Line 탑승' },
-                    { type: 'primary', day: '12/29(화) 점심', name: 'Giacomo\'s Ristorante', dish: '접시 밖으로 흘러넘치는 산더미 해산물 파스타 (이탈리아 타운 가성비 킹)', cost: 100, perPax: 50, rsv: '예약불가, 현금결제(Cash Only)', routeInfo: '숙소에서 Green Line 타고 Haymarket 하차 도보 5분' }
-                ],
-                itinerary: [
-                    { date: '12/27(일)', title: '주간 열차 이동', spots: ['오전: Tops 마트에서 점심거리 비축 후 우버로 역 이동', '08:00 암트랙 탑승 (12시간 풍경 감상) ➔ 저녁 20:30 보스턴 도착'], transit: '폭포 ➔ 버팔로역(우버)' },
-                    { date: '12/28(월)', title: '두뇌 풀가동 투어', spots: ['오전: 무료 조식 후 Red Line 타고 하버드/MIT 투어', '오후: 보스턴 미술관(MFA) ➔ 저녁: 무한리필 스시 뷔페 조지기'], transit: 'MBTA Red/Green Line (환승 용이)' },
-                    { date: '12/29(화)', title: '독립의 역사 걷기', spots: ['오전: 프리덤 트레일 (바닥의 빨간 선 따라 걷기)', '점심: 노스엔드 산더미 파스타 ➔ 남역(South Station) 뉴욕행 탑승'], transit: '도보 위주 일정' }
-                ],
-                hotels: [
-                    { type: 'primary', name: '[BOS] Holiday Inn Express Boston', desc: '투 퀸 베드. 지하철역 인근. 1박 40만원 넘는 보스턴 시내 숙박비를 방어하며 든든한 조식까지!', cost: '2박 $380 (1인 $190)', link: 'https://www.ihg.com/' }
-                ],
-                transitDetails: [
-                    { desc: '나이아가라 ➔ 버팔로 역', method: '아침 일찍 우버/리프트 탑승', cost: 60, perPax: 30 },
-                    { desc: '보스턴 역 ➔ 보스턴 숙소', method: '지하철 환승 이동', cost: 10, perPax: 5 },
-                    { desc: '보스턴 시내 주요 명소/식당', method: 'MBTA 1-Day Pass (지하철/버스 무제한)', cost: 12, perPax: 6 }
-                ]
-                },
-                {
-                id: 5,
-                type: 'special',
-                title: '보스턴 ➔ 뉴욕 (★3인 합류)',
-                vibe: '지인 합류 3명 파티! 피터루거 스테이크와 무한리필 바베큐 조지기!',
-                train: { name: 'Northeast Regional', date: '12/29(화) 09:00 출 ➔ 12/29 13:30 착', duration: '약 4.5시간', saveNight: '주간 이동' },
-                costSummary: { 
-                    nights: 4, stayDates: '12/29(화) ~ 1/2(토)', 
-                    hotel: 1050, hotelPerPax: 350, 
-                    food: 885, foodPerPax: 295, // 마트 비용 45(3인) 추가
-                    transit: 79.6, transitPerPax: 39.8,
-                    get total() { return this.hotel + this.food + this.transit; }, 
-                    get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
-                    desc: '뉴욕 4박 (숙박 및 식비 모두 3인 1/n 적용)' 
-                },
-                mart: {
-                    name: '보스턴 South Station 델리 코너',
-                    items: '기차 안에서 먹을 커피, 베이글, 파니니 (4시간 짧은 이동용)',
-                    transit: '보스턴 남역 내부에서 구매 (도보 0분, 교통비 $0)',
-                    cost: 45, perPax: 15
-                },
-                feasts: [
-                    { type: 'primary', day: '12/30(수) 저녁', name: 'Peter Luger Steak House', dish: '뉴욕의 상징! 겉바속촉 포터하우스 스테이크 for Three (3인용 세트)', cost: 390, perPax: 130, rsv: '전화 또는 Resy 예약 필수', routeInfo: 'J/M/Z 선 Marcy Av 역 하차 (브루클린)' },
-                    { type: 'primary', day: '12/31(목) 저녁', name: 'Carmine\'s (Times Square)', dish: '세숫대야에 나오는 패밀리 사이즈 미트볼 파스타. 3명이 1개로 배터짐.', cost: 120, perPax: 40, rsv: '사전 예약 필수', routeInfo: '타임스퀘어 중심부, 볼드롭 후 심야 방문' },
-                    { type: 'primary', day: '1/1(금) 저녁', name: 'Let\'s Meat BBQ (K-Town)', dish: '뉴욕 코리아타운의 소/돼지 고기 무한리필 바베큐! 한국의 맛으로 에너지 완충.', cost: 180, perPax: 60, rsv: '웨이팅 필수', routeInfo: '지하철(N/W) 타고 34 St-Herald Sq 하차' }
-                ],
-                itinerary: [
-                    { date: '12/29(화)', title: '뉴욕 진입 (3인 합체)', spots: ['오전: 보스턴역 델리에서 식량 픽업 후 탑승', '오후: 뉴욕 펜 역 도착 ➔ LIC 숙소 체크인'], transit: 'MTA 지하철 이동' },
-                    { date: '12/30(수)', title: '맨해튼 상륙작전', spots: ['오전: 센트럴 파크 산책 ➔ 자연사 박물관', '오후: MoMA 관람 후 브루클린으로 넘어가 피터루거 스테이크 영접'], transit: '모든 이동은 MTA 7-Day Pass로 해결' },
-                    { date: '12/31(목)', title: '볼드롭 카운트다운 존버', spots: ['오전: 하이라인 파크 ➔ 첼시 마켓 (화장실 해결)', '오후 2시: 타임스퀘어 볼드롭 대기 (물 절대금지) ➔ 자정 후 카마인스 파스타'], transit: '지하철로 접근 후 하루 종일 도보 대기' },
-                    { date: '1/1(금)', title: '브루클린 바이브', spots: ['오전: 브루클린 브릿지 도보 횡단 ➔ 덤보(DUMBO) 구경', '오후: K-Town 넘어가서 무한리필 고기파티'], transit: 'MTA 지하철 타고 브루클린 진입' }
-                ],
-                hotels: [
-                    { type: 'primary', name: '[NYC] Holiday Inn Express LIC - Manhattan View', desc: '투 더블 베드. 3명이 2개 침대에서 자며 1/n 하기에 최적. 맨해튼 15분 컷. 3명 모두 뷔페 무료 조식!', cost: '4박 총 $1,050 (3인 쉐어 ➔ 1인 $350)', link: 'https://www.ihg.com/' }
-                ],
-                transitDetails: [
-                    { desc: '보스턴 숙소 ➔ 보스턴 역', method: '지하철 탑승', cost: 5.8, perPax: 2.9 },
-                    { desc: 'NY 펜 역 ➔ NY 숙소(LIC)', method: 'MTA 지하철 이동', cost: 5.8, perPax: 2.9 },
-                    { desc: '뉴욕 시내 전 일정(식당/명소)', method: 'MTA 7-Day Unlimited (지하철/버스 무제한, 가장 완벽한 뽕뽑기)', cost: 68, perPax: 34 } 
-                ]
-                },
-                {
-                id: 6,
-                type: 'normal',
-                title: '뉴욕 ➔ 워싱턴 D.C.',
-                vibe: '모든 박물관 무료 입장! 남은 돈으로 스테이크 무한리필 박살내기.',
-                train: { name: 'Northeast Regional', date: '1/2(토) 11:00 출 ➔ 1/2 14:30 착', duration: '약 3.5시간', saveNight: '주간 이동' },
-                costSummary: { 
-                    nights: 3, stayDates: '1/2(토) ~ 1/5(화)', 
-                    hotel: 480, hotelPerPax: 240,
-                    food: 350, foodPerPax: 175, // 마트 비용 30 추가
-                    transit: 20, transitPerPax: 10, 
-                    get total() { return this.hotel + this.food + this.transit; },
-                    get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
-                    desc: '워싱턴 3박' 
-                },
-                mart: {
-                    name: 'NY Penn Station 주변 델리마트',
-                    items: '생수, 초코바, 베이글 (3.5시간 가벼운 기차 탑승용)',
-                    transit: '뉴욕 펜 역 지하 아케이드에서 구매 (교통비 $0)',
-                    cost: 30, perPax: 15
-                },
-                feasts: [
-                    { type: 'primary', day: '1/3(일) 저녁', name: 'Medium Rare', dish: '단일 메뉴의 근본! 촉촉한 스테이크와 바삭한 감자튀김이 계속 리필되는 가성비 맛집', cost: 90, perPax: 45, rsv: '워크인 또는 사전 예약', routeInfo: 'Metro Red Line 타고 Cleveland Park 역 하차 (필수 코스)' },
-                    { type: 'primary', day: '1/4(월) 저녁', name: 'Founding Farmers DC', dish: '농장 직송 식재료로 만든 산더미 같은 미국식 소울푸드 (치킨 앤 와플 추천)', cost: 110, perPax: 55, rsv: 'OpenTable 예약 필수', routeInfo: '백악관 근처. 숙소에서 도보 15분' },
-                    { type: 'primary', day: '1/5(화) 저녁', name: 'Old Ebbitt Grill', dish: '대통령 단골집! 굴, 새우, 랍스터가 탑처럼 쌓인 해산물 타워 (분위기 잡을 때)', cost: 160, perPax: 80, rsv: '사전 예약 필수', routeInfo: '백악관 바로 옆. 숙소에서 도보 20분' }
-                ],
-                itinerary: [
-                    { date: '1/2(토)', title: '워싱턴 입성', spots: ['오전: 뉴욕 펜 역에서 요깃거리 구매 ➔ 암트랙 탑승', '오후: DC 도착 후 체크인 ➔ 내셔널몰 야경 산책'], transit: '도보 위주 이동' },
-                    { date: '1/3(일)', title: '국가 권력급 무료 박물관 1', spots: ['오전: 든든한 무료조식 후 자연사 박물관 (무료)', '오후: 항공우주 박물관 (사전 예약) ➔ Medium Rare 무한 스테이크'], transit: '숙소 ➔ 내셔널몰(도보), 저녁 식당(Metro Red Line)' },
-                    { date: '1/4(월)', title: '국가 권력급 무료 박물관 2', spots: ['오전: 국립 미술관 (National Gallery of Art - 방대함)', '오후: 미 국회의사당 ➔ 링컨 기념관 야경 ➔ 파운딩 파머스 식사'], transit: '내셔널 몰 내부 하루 종일 도보 이동' }
-                ],
-                hotels: [
-                    { type: 'primary', name: '[DC] Comfort Inn Downtown DC', desc: '투 더블 베드. 내셔널 몰 박물관 단지까지 도보 이동 가능한 꿀위치. 매일 아침 무료 뷔페 조식.', cost: '3박 $480 (1인 $240)', link: 'https://www.choicehotels.com/' }
-                ],
-                transitDetails: [
-                    { desc: 'NY 숙소 ➔ NY 펜 역', method: 'MTA 지하철', cost: 5.8, perPax: 2.9 },
-                    { desc: 'DC 유니언 역 ➔ DC 숙소', method: '메트로 전철 타고 이동', cost: 10, perPax: 5 },
-                    { desc: 'DC 주요 박물관 및 식당', method: 'DC Circulator 버스($1) 및 Metro 전철 병행', cost: 4.2, perPax: 2.1 }
-                ]
-                },
-                {
-                id: 7,
-                type: 'normal',
-                title: '워싱턴 D.C. ➔ 뉴욕 EWR',
-                vibe: '귀국 당일. 새벽 열차 꿀잠으로 호텔 1박비 완벽 방어 후 쉑쉑버거 수혈.',
-                train: { name: 'Train 190 (새벽 첫차)', date: '1/6(수) 새벽 03:15 출 ➔ 1/6 06:40 착', duration: '약 3.5시간', saveNight: '새벽 탑승으로 1박 (숙박비 $0)' },
-                costSummary: { 
-                    nights: 0, stayDates: '숙박 없음', 
-                    hotel: 0, hotelPerPax: 0,
-                    food: 60, foodPerPax: 30, // 마트 비용 20 추가
-                    transit: 37, transitPerPax: 18.5, 
-                    get total() { return this.hotel + this.food + this.transit; },
-                    get perPaxTotal() { return this.hotelPerPax + this.foodPerPax + this.transitPerPax; },
-                    desc: '숙박 불필요' 
-                },
-                mart: {
-                    name: 'CVS Pharmacy (DC 숙소 근처)',
-                    items: '에너지 드링크, 생수, 버티기용 스낵 (새벽 기차 탑승 전 철야용)',
-                    transit: 'DC 숙소에서 도보 5분 거리 매장 이용 (교통비 $0)',
-                    cost: 20, perPax: 10
-                },
-                feasts: [
-                    { type: 'primary', day: '1/6(수) 아침', name: 'Shake Shack (EWR 공항 터미널)', dish: '출국 직전, 남은 달러 털어서 쉑쉑버거 더블 패티로 화려한 수혈', cost: 40, perPax: 20, rsv: '탑승동 내 위치 (팁 없음)', routeInfo: '수속 마치고 공항 내부에서 식사' }
-                ],
-                itinerary: [
-                    { date: '1/5(화)', title: '마지막 밤 버티기', spots: ['저녁: CVS에서 식량 비축 ➔ 식당/펍에서 새벽까지 존버', '새벽: 우버 타고 유니언 역 출발'], transit: '안전을 위해 우버/택시 필수 탑승' },
-                    { date: '1/6(수)', title: '공항으로', spots: ['03:15 암트랙 탑승', '06:40 EWR 도착 ➔ 터미널 이동 ➔ 쉑쉑버거 ➔ 비행기 탑승'], transit: '암트랙 직행 ➔ AirTrain 탑승' }
-                ],
-                hotels: [
-                    { type: 'primary', name: '숙박 불필요', desc: '호텔 대신 24시간 펍에서 버티거나 숙소 로비 소파 이용 후 새벽 3시 기차 탑승 (20대 강철체력 특권!)', cost: '$0', link: '#' }
-                ],
-                transitDetails: [
-                    { desc: 'DC 시내 ➔ 유니언 역 (새벽)', method: '우버/리프트 (새벽이므로 무조건 택시 탑승)', cost: 20, perPax: 10 },
-                    { desc: 'EWR 암트랙역 ➔ 공항 터미널', method: 'EWR AirTrain (모노레일) 탑승', cost: 17, perPax: 8.5 }
-                ]
-                }
-            ];
+    <!-- 1. SAN FRANCISCO -->
+    <section id="content-sf" class="city-section space-y-6">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Leg 1 • 캘리포니아</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">샌프란시스코 (San Francisco)</h2>
+          <p class="text-sm text-slate-500 mt-1">12/17(수) 11:40 SFO 도착 ~ 12/18(목) 21:41 에머리빌 출발</p>
+        </div>
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900">
+          <i class="fa-solid fa-triangle-exclamation mr-1 text-amber-600"></i><strong>주의:</strong> 12/18 야간 암트랙은 SF 시내가 아닌 베이 건너편 <strong>Emeryville 역</strong>에서 출발합니다.
+        </div>
+      </div>
 
-            const activeRoute = routes.find(r => r.id === activeRouteId);
+      <!-- Train & Hotel Info -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Station -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded">출발 역 정보</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Emeryville+Amtrak+Station+California" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Emeryville Amtrak Station (EMY)</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>탑승 열차:</strong> Coast Starlight (Train 14) / 12/18 21:41 출발<br>
+            • <strong>시내에서 이동법:</strong> SF Salesforce Transit Center에서 암트랙 연결 Thruway 버스 탑승 또는 다운타운에서 우버/리프트 이용 (약 25분, $30~40)
+          </p>
+        </div>
 
-            const myTotalHotel = routes.reduce((acc, r) => acc + r.costSummary.hotelPerPax, 0);
-            const myTotalFood = routes.reduce((acc, r) => acc + r.costSummary.foodPerPax, 0);
-            const myTotalTransit = routes.reduce((acc, r) => acc + r.costSummary.transitPerPax, 0);
-            const myGrandTotal = myTotalHotel + myTotalFood + myTotalTransit;
+        <!-- Hotel Placeholder -->
+        <div class="bg-white p-4 rounded-xl border border-dashed border-slate-300">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-slate-100 text-slate-700 rounded">숙소 미정 (추천)</span>
+            <span class="text-xs text-slate-400">12/17 1박</span>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">유니언 스퀘어 인근 추천</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>CitizenM San Francisco Union Square</strong> (남성 2인 깔끔, 보안 우수)<br>
+            • <strong>Handlery Union Square Hotel</strong> (BART Powell역 도보 5분, 가성비)<br>
+            • <em>팁:</em> 텐더로인(Tenderloin) 구역은 치안이 취약하므로 피할 것.
+          </p>
+        </div>
+      </div>
 
-            return (
-                <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-800 pb-20">
-                
-                <div className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-                    <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
-                        <i className="fas fa-train text-white text-lg"></i>
-                        </div>
-                        <div>
-                        <h1 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">암트랙 횡단 플래너 <span className="text-indigo-600 text-lg">PRO</span></h1>
-                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">기차 생존식량 & 세금/팁 포함 에디션</p>
-                        </div>
-                    </div>
-                    <div className="hidden md:flex items-center gap-3 bg-slate-100 px-4 py-2 rounded-full border border-slate-200">
-                        <i className="far fa-calendar-alt text-indigo-600"></i>
-                        <span className="text-sm font-bold text-slate-700">출발 D-{dDay}</span>
-                    </div>
-                    </div>
-                </div>
+      <!-- Schedule & Spots Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- High-End Dining -->
+        <div class="bg-white p-4 rounded-xl border-t-4 border-amber-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-amber-600 font-bold mb-1">
+              <span><i class="fa-solid fa-crown mr-1"></i>오늘의 하이엔드 미식</span>
+              <span>약 $85-110/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">하우스 오브 프라임 립 (House of Prime Rib)</h4>
+            <p class="text-xs text-slate-500 mt-0.5">1949년부터 이어진 샌프란시스코 최고의 프라임 립 스테이크</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              남자 둘이 배 터지게 먹는 카버(Carver) 컷 로스트비프. 예약 마감 시 오후 4:30 오픈런 바(Bar) 좌석 워크인 공략 추천.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>17:00 - 22:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=House+of+Prime+Rib+San+Francisco" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
 
-                <div className="bg-indigo-900 text-white shadow-md">
-                    <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 md:py-8">
-                    <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-                        <div className="flex items-center gap-4 w-full lg:w-auto">
-                        <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                            <i className="fas fa-calculator text-indigo-200 text-2xl"></i>
-                        </div>
-                        <div>
-                            <p className="text-indigo-200 font-medium text-sm mb-1 uppercase tracking-wider">나의 1인 총 예상 경비 (뉴욕 3인 1/n 적용)</p>
-                            <div className="flex items-baseline gap-3">
-                            <h2 className="text-4xl md:text-5xl font-black">${myGrandTotal.toLocaleString(undefined, {maximumFractionDigits:0})}</h2>
-                            <span className="text-indigo-300 font-medium bg-white/10 px-2.5 py-1 rounded-lg text-sm flex items-center gap-1.5">
-                                <i className="fas fa-user-friends"></i> 내 부담액
-                            </span>
-                            </div>
-                        </div>
-                        </div>
-                        
-                        <div className="w-full lg:w-auto bg-black/20 p-4 rounded-2xl border border-white/10 flex gap-4 md:gap-8 backdrop-blur-md overflow-x-auto">
-                        <div className="min-w-[100px]">
-                            <p className="text-xs font-bold text-indigo-300 uppercase tracking-wider mb-1">내 숙박비</p>
-                            <p className="text-xl font-bold">${myTotalHotel.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
-                        </div>
-                        <div className="min-w-[100px]">
-                            <p className="text-xs font-bold text-amber-300 uppercase tracking-wider mb-1">내 식비 (마트/팁 포함)</p>
-                            <p className="text-xl font-bold text-amber-100">${myTotalFood.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
-                        </div>
-                        <div className="min-w-[100px]">
-                            <p className="text-xs font-bold text-emerald-300 uppercase tracking-wider mb-1">내 현지교통</p>
-                            <p className="text-xl font-bold text-emerald-100">${myTotalTransit.toLocaleString(undefined, {maximumFractionDigits:0})}</p>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+        <!-- Quick/Casual Eats -->
+        <div class="bg-white p-4 rounded-xl border-t-4 border-emerald-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-emerald-600 font-bold mb-1">
+              <span><i class="fa-solid fa-burger mr-1"></i>로컬 필수 캐주얼</span>
+              <span>약 $12-25/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">보딘 베이커리 & 인앤아웃</h4>
+            <p class="text-xs text-slate-500 mt-0.5">클램 차우더 볼 & 서부 3대 버거</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              • <strong>Boudin Bakery:</strong> 피셔맨스워프 본점 사워도우 클램차우더 ($14)<br>
+              • <strong>In-N-Out Burger:</strong> 더블더블 애니멀스타일 세트 ($11)
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>10:00 - 23:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Boudin+Bakery+Fishermans+Wharf+San+Francisco" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
 
-                <div className="bg-teal-50 border-b border-teal-100">
-                    <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex flex-col md:flex-row items-start md:items-center gap-3">
-                    <div className="flex items-center gap-2">
-                        <i className="fas fa-shopping-basket text-teal-600 flex-shrink-0"></i>
-                        <span className="text-sm font-bold text-teal-800">기차 생존 식량(마트) 장보기 추가:</span>
-                    </div>
-                    <p className="text-sm text-teal-800 font-medium">
-                        최대 45시간에 달하는 살인적인 기차 탑승을 버티기 위해, <strong>동선상 가장 가깝고 저렴한 마트 위치와 구매 품목, 예상 장보기 예산</strong>을 전체 일정에 추가했습니다. 마트 장보기 비용은 전체 식비에 포함되어 있습니다.
-                    </p>
-                    </div>
-                </div>
+        <!-- Major Attractions -->
+        <div class="bg-white p-4 rounded-xl border-t-4 border-blue-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-blue-600 font-bold mb-1">
+              <span><i class="fa-solid fa-camera mr-1"></i>필수 명소</span>
+              <span>케이블카 $8 / 전망대 무료</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">피어 39 & 금문교 뷰포인트</h4>
+            <p class="text-xs text-slate-500 mt-0.5">바다사자 서식지 및 크리시 필드 산책</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              Powell역에서 케이블카 탑승 후 피셔맨스워프로 이동. 우버를 타고 <strong>Crissy Field</strong>나 <strong>Battery Spencer</strong>로 이동해 금문교 인생샷 촬영.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>상시 개방</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=PIER+39+San+Francisco" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+      </div>
 
-                <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-                    <div className="flex flex-col lg:flex-row gap-8">
-                    
-                    <div className="w-full lg:w-1/3 xl:w-1/4 flex-shrink-0">
-                        <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4 px-2">Itinerary</h2>
-                        <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 scrollbar-hide">
-                        {routes.map((route) => {
-                            const isActive = activeRouteId === route.id;
-                            return (
-                            <button
-                                key={route.id}
-                                onClick={() => setActiveRouteId(route.id)}
-                                className={`flex items-center gap-3 p-4 rounded-2xl text-left transition-all flex-shrink-0 lg:flex-shrink w-72 lg:w-full border-2 ${
-                                isActive 
-                                    ? 'bg-white border-indigo-500 shadow-md shadow-indigo-100' 
-                                    : 'bg-transparent border-transparent hover:bg-white hover:border-slate-200'
-                                }`}
-                            >
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${
-                                isActive ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-600'
-                                }`}>
-                                {route.id}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                <div className={`font-bold truncate flex items-center gap-1.5 ${isActive ? 'text-slate-900' : 'text-slate-600'}`}>
-                                    {route.title} {route.id === 5 && <i className="fas fa-user-plus text-emerald-500 text-xs ml-1"></i>}
-                                </div>
-                                <div className="text-xs text-slate-400 mt-0.5 truncate font-medium">
-                                    내 분담금: <span className={isActive ? 'text-indigo-600 font-bold' : ''}>${route.costSummary.perPaxTotal.toLocaleString(undefined, {maximumFractionDigits:0})}</span>
-                                </div>
-                                </div>
-                                {isActive && <i className="fas fa-chevron-right text-indigo-500 hidden lg:block text-sm"></i>}
-                            </button>
-                            );
-                        })}
-                        </div>
-                    </div>
+      <!-- Alternatives -->
+      <div class="bg-slate-100 p-4 rounded-xl text-xs text-slate-600">
+        <strong class="text-slate-800"><i class="fa-solid fa-shuffle mr-1"></i>일정 대안 & 플랜 B:</strong>
+        비가 오거나 시간이 남을 경우 페리 빌딩(Ferry Building) 마켓 투어 및 블루보틀 본점 방문, 또는 미션 디스트릭트의 원조 타코 맛집 <strong>La Taqueria</strong>(엘 도라도 스타일 부리토)를 강력 추천합니다.
+      </div>
+    </section>
 
-                    <div className="w-full lg:w-2/3 xl:w-3/4 flex flex-col gap-6">
-                        
-                        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 relative overflow-hidden">
-                        <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-6 mb-8">
-                            <div>
-                            <div className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg text-sm font-bold mb-4">
-                                <i className="fas fa-map-marker-alt"></i> Route {activeRoute.id}
-                            </div>
-                            <h2 className="text-3xl font-black text-slate-900 mb-2 flex items-center gap-3">
-                                {activeRoute.title}
-                                {activeRoute.id === 5 && (
-                                <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded-md font-bold flex items-center gap-1.5">
-                                    <i className="fas fa-user-plus"></i> 3인 쉐어 모드
-                                </span>
-                                )}
-                            </h2>
-                            <p className="text-slate-500 font-medium leading-relaxed max-w-xl">
-                                {activeRoute.vibe}
-                            </p>
-                            </div>
-                            
-                            <div className="bg-indigo-50 p-5 rounded-2xl border border-indigo-100 min-w-[240px]">
-                            <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center justify-between">
-                                <span>나의 구간 경비</span>
-                                <span className="bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded text-[10px]">1인 분담액</span>
-                            </p>
-                            <div className="space-y-2 mb-3 text-sm font-medium text-indigo-900">
-                                <div className="flex justify-between items-center">
-                                <span>숙박:</span> 
-                                <div className="text-right">
-                                    <span className="text-xs text-indigo-400 line-through mr-1">${activeRoute.costSummary.hotel}</span>
-                                    <span className="font-bold">${activeRoute.costSummary.hotelPerPax.toLocaleString(undefined, {maximumFractionDigits:0})}</span>
-                                </div>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                <span>식비(마트포함):</span> 
-                                <div className="text-right">
-                                    <span className="text-xs text-indigo-400 line-through mr-1">${activeRoute.costSummary.food}</span>
-                                    <span className="font-bold">${activeRoute.costSummary.foodPerPax.toLocaleString(undefined, {maximumFractionDigits:0})}</span>
-                                </div>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                <span>교통:</span> 
-                                <div className="text-right">
-                                    <span className="text-xs text-indigo-400 line-through mr-1">${activeRoute.costSummary.transit}</span>
-                                    <span className="font-bold">${activeRoute.costSummary.transitPerPax.toLocaleString(undefined, {maximumFractionDigits:0})}</span>
-                                </div>
-                                </div>
-                            </div>
-                            <div className="pt-3 border-t border-indigo-200 flex justify-between items-baseline">
-                                <span className="font-bold text-indigo-900">Total:</span>
-                                <span className="text-2xl font-black text-indigo-700">${activeRoute.costSummary.perPaxTotal.toLocaleString(undefined, {maximumFractionDigits:0})}</span>
-                            </div>
-                            </div>
-                        </div>
+    <!-- 2. PORTLAND -->
+    <section id="content-pdx" class="city-section space-y-6 hidden">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Leg 2 • 오리건</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">포틀랜드 (Portland)</h2>
+          <p class="text-sm text-slate-500 mt-1">12/19(금) 15:40 유니언역 도착 ~ 12/20(토) 16:45 유니언역 출발</p>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-900">
+          <i class="fa-solid fa-tag mr-1 text-emerald-600"></i><strong>오리건주 팁:</strong> 소비세 0% (Tax-Free) 지역이므로 의류나 전자기기 쇼핑에 최적입니다.
+        </div>
+      </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-slate-900 text-white rounded-2xl">
-                            <div>
-                            <p className="text-xs text-slate-400 font-semibold uppercase mb-1">Train</p>
-                            <p className="font-bold flex items-center gap-2">
-                                <i className="fas fa-train text-slate-400"></i> {activeRoute.train.name}
-                            </p>
-                            </div>
-                            <div>
-                            <p className="text-xs text-slate-400 font-semibold uppercase mb-1">Schedule</p>
-                            <p className="font-bold flex items-center gap-2 text-[15px]">
-                                <i className="far fa-calendar-alt text-slate-400"></i> {activeRoute.train.date}
-                            </p>
-                            </div>
-                            <div>
-                            <p className="text-xs text-slate-400 font-semibold uppercase mb-1">Sleep Strategy</p>
-                            <p className="font-bold text-emerald-400 flex items-center gap-2">
-                                <i className="fas fa-moon"></i> {activeRoute.train.saveNight}
-                            </p>
-                            </div>
-                        </div>
-                        </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded">암트랙 역 정보</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Portland+Union+Station+Oregon" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Portland Union Station</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>탑승 열차:</strong> Empire Builder (Train 28) / 12/20 16:45 출발<br>
+            • <strong>특징:</strong> 시내 다운타운 및 펄 디스트릭트(Pearl District)와 도보 10~15분 거리.
+          </p>
+        </div>
 
-                        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2.5 bg-rose-100 text-rose-600 rounded-xl"><i className="fas fa-route text-lg"></i></div>
-                            <div>
-                            <h3 className="text-lg font-bold text-slate-900">일정 및 추천 코스</h3>
-                            <p className="text-xs font-bold text-slate-400">마트 방문 동선 완벽 정리</p>
-                            </div>
-                        </div>
+        <div class="bg-white p-4 rounded-xl border border-dashed border-slate-300">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-slate-100 text-slate-700 rounded">숙소 미정 (추천)</span>
+            <span class="text-xs text-slate-400">12/19 1박</span>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Pearl District 인근 추천</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>The Mark Spencer Hotel</strong> (파월스 북스 도보 3분, 위치 최고)<br>
+            • <strong>Canopy by Hilton Portland Pearl District</strong> (세련되고 안전함)<br>
+            • <em>이동:</em> 유니언역에서 호텔까지 우버 5분 또는 도보 12분.
+          </p>
+        </div>
+      </div>
 
-                        <div className="space-y-6 relative before:absolute before:inset-0 before:ml-4 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
-                            {activeRoute.itinerary.map((day, idx) => (
-                            <div key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                                <div className="flex items-center justify-center w-8 h-8 rounded-full border-4 border-white bg-rose-100 text-rose-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                                <span className="text-[10px] font-black">{idx + 1}</span>
-                                </div>
-                                <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] p-4 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm">
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="text-xs font-bold text-rose-500 bg-rose-50 px-2 py-1 rounded">{day.date}</span>
-                                </div>
-                                <h4 className="font-bold text-slate-800 text-sm mb-2">{day.title}</h4>
-                                <ul className="text-xs text-slate-600 space-y-1.5 mb-3">
-                                    {day.spots.map((spot, i) => (
-                                    <li key={i} className="flex items-start gap-1.5">
-                                        <span className="text-rose-400 mt-0.5">•</span> <span className="leading-snug">{spot}</span>
-                                    </li>
-                                    ))}
-                                </ul>
-                                <div className="pt-2 border-t border-slate-200 text-[11px] font-bold text-indigo-600 flex items-start gap-1.5 leading-snug bg-indigo-50 p-2 rounded">
-                                    <i className="fas fa-subway text-indigo-400 flex-shrink-0 mt-0.5"></i> <span>이동 방법: {day.transit}</span>
-                                </div>
-                                </div>
-                            </div>
-                            ))}
-                        </div>
-                        </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border-t-4 border-amber-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-amber-600 font-bold mb-1">
+              <span><i class="fa-solid fa-crown mr-1"></i>오늘의 하이엔드 미식</span>
+              <span>약 $70-95/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">옥스 레스토랑 (Ox Restaurant)</h4>
+            <p class="text-xs text-slate-500 mt-0.5">아르헨티나 장작 그릴 스테이크 & 제임스 비어드 수상</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              우드파이어 그릴에서 참나무 훈연으로 굽는 립아이 스테이크와 매콤한 치미추리 소스. 남자 2인 고기 파티의 정석.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>17:00 - 22:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Ox+Restaurant+Portland" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
 
-                        <div className="grid lg:grid-cols-2 gap-6">
-                        
-                        <div className="flex flex-col gap-6">
-                            {/* 마트 플랜 새로 추가 */}
-                            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 h-fit">
-                                <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2.5 bg-teal-100 text-teal-600 rounded-xl"><i className="fas fa-shopping-basket text-lg"></i></div>
-                                    <h3 className="text-lg font-bold text-slate-900">기차 생존 식량 (마트)</h3>
-                                </div>
-                                </div>
-                                
-                                <div className="p-4 rounded-xl border border-teal-100 bg-teal-50/50">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <div>
-                                            <span className="text-[10px] font-black text-teal-600 bg-teal-100 px-2 py-0.5 rounded mr-2 mb-1 inline-block"><i className="fas fa-store"></i> 보급소 추천</span>
-                                            <p className="font-bold text-slate-800 text-sm leading-snug">{activeRoute.mart.name}</p>
-                                        </div>
-                                        <div className="text-right">
-                                            <span className="text-sm font-black text-slate-800 block">${activeRoute.mart.cost}</span>
-                                            <span className="text-[10px] text-slate-500">1인 ${activeRoute.mart.perPax}</span>
-                                        </div>
-                                    </div>
-                                    <p className="text-xs text-slate-600 mb-3 leading-relaxed border-l-2 border-teal-300 pl-2 ml-1">{activeRoute.mart.items}</p>
-                                    
-                                    <div className="pt-3 border-t border-teal-100 flex items-start gap-1.5 text-[11px] font-bold text-indigo-600 bg-white p-2 rounded shadow-sm border border-slate-100">
-                                        <i className="fas fa-walking mt-0.5 text-indigo-400 w-3"></i> <span className="leading-snug">{activeRoute.mart.transit}</span>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="bg-white p-4 rounded-xl border-t-4 border-emerald-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-emerald-600 font-bold mb-1">
+              <span><i class="fa-solid fa-mug-hot mr-1"></i>포틀랜드 로컬 맛</span>
+              <span>약 $5-15/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">스텀프타운 커피 & 푸드 카트</h4>
+            <p class="text-xs text-slate-500 mt-0.5">3대 스페셜티 커피 및 파인 스트리트 마켓</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              • <strong>Stumptown Coffee Roasters:</strong> 에이스호텔 지점 콜드브루/라떼 ($6)<br>
+              • <strong>Cartopia or Midtown Food Carts:</strong> 할랄가이즈 스타일 치킨라이스, 타코 ($12)
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>07:00 - 18:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Stumptown+Coffee+Roasters+Downtown+Portland" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
 
-                            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 h-fit">
-                                <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2.5 bg-blue-100 text-blue-600 rounded-xl"><i className="fas fa-bed text-lg"></i></div>
-                                    <h3 className="text-lg font-bold text-slate-900">숙소 플랜</h3>
-                                </div>
-                                {activeRoute.costSummary.nights > 0 && (
-                                    <div className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
-                                    {activeRoute.costSummary.nights}박 ({activeRoute.costSummary.stayDates})
-                                    </div>
-                                )}
-                                </div>
-                                
-                                <div className="space-y-4">
-                                {activeRoute.hotels.map((hotel, idx) => (
-                                    <div key={idx} className={`p-4 rounded-xl border ${hotel.type === 'primary' ? 'bg-blue-50/50 border-blue-200' : 'bg-slate-50 border-slate-100'}`}>
-                                    <div className="flex justify-between items-start gap-4 mb-2">
-                                        <div>
-                                        {hotel.type === 'primary' && <span className="text-[10px] font-black text-blue-600 bg-blue-100 px-2 py-0.5 rounded mr-2 mb-1 inline-block"><i className="fas fa-check-circle"></i> 조식무료 & 투베드</span>}
-                                        <p className="font-bold text-slate-800 text-sm leading-snug">{hotel.name}</p>
-                                        </div>
-                                    </div>
-                                    <p className="text-xs text-slate-600 mb-3 leading-relaxed">{hotel.desc}</p>
-                                    
-                                    <div className="pt-3 border-t border-slate-200/60 flex items-center justify-between">
-                                        <span className="text-xs font-black text-slate-800">
-                                        {hotel.cost}
-                                        </span>
-                                        {hotel.link !== '#' && (
-                                        <a 
-                                            href={hotel.link} 
-                                            target="_blank" 
-                                            rel="noreferrer" 
-                                            className="text-xs font-bold text-blue-600 flex items-center gap-1 hover:text-blue-800 transition-colors"
-                                        >
-                                            정보 보기 <i className="fas fa-external-link-alt text-[10px]"></i>
-                                        </a>
-                                        )}
-                                    </div>
-                                    </div>
-                                ))}
-                                </div>
-                            </div>
-                        </div>
+        <div class="bg-white p-4 rounded-xl border-t-4 border-blue-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-blue-600 font-bold mb-1">
+              <span><i class="fa-solid fa-book-open mr-1"></i>세계 최대 독립 서점</span>
+              <span>입장 무료</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">파월스 시티 오브 북스 (Powell's)</h4>
+            <p class="text-xs text-slate-500 mt-0.5">한 블록 전체를 차지하는 방대한 문화 공간</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              책뿐만 아니라 개성 넘치는 오리건 굿즈와 기념품 쇼핑 가능. 비 오는 포틀랜드 감성을 제대로 즐길 수 있는 곳.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>10:00 - 21:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Powells+City+of+Books+Portland" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+      </div>
 
-                        {/* 식사(특식) 플랜 */}
-                        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 h-fit">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="p-2.5 bg-orange-100 text-orange-600 rounded-xl"><i className="fas fa-utensils text-lg"></i></div>
-                                <div>
-                                    <h3 className="text-lg font-bold text-slate-900">상남자 미식 플랜</h3>
-                                    <p className="text-xs font-bold text-rose-500">팁(18~20%) & 텍스 포함가</p>
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                {activeRoute.feasts.map((feast, idx) => (
-                                    <div key={idx} className={`p-4 rounded-xl border ${feast.type === 'primary' ? 'border-orange-200 bg-orange-50/50' : 'border-slate-200 bg-slate-50'}`}>
-                                        <div className="flex justify-between items-start mb-2">
-                                            <div>
-                                                {feast.type === 'primary' && <span className="text-[10px] font-black text-orange-600 bg-orange-100 px-2 py-0.5 rounded mr-2 mb-1 inline-block"><i className="fas fa-crown"></i> 1순위 추천</span>}
-                                                {feast.type === 'alt' && <span className="text-[10px] font-black text-slate-500 bg-slate-200 px-2 py-0.5 rounded mr-2 mb-1 inline-block">대안 식당</span>}
-                                                <span className="text-[10px] font-black text-slate-600 bg-slate-200 px-2 py-0.5 rounded">{feast.day}</span>
-                                            </div>
-                                            <span className="text-sm font-black text-slate-800">${feast.cost} <span className="text-[10px] text-slate-400 font-normal">(1인 ${feast.perPax})</span></span>
-                                        </div>
-                                        <h4 className="font-bold text-slate-800 text-sm mb-1">{feast.name}</h4>
-                                        <p className="text-xs text-slate-600 mb-3">{feast.dish}</p>
-                                        
-                                        <div className="flex flex-col gap-1.5 pt-3 border-t border-slate-200/60">
-                                            <div className="text-[10px] text-orange-600 font-bold flex items-center gap-1.5">
-                                                <i className="fas fa-bell w-3"></i> {feast.rsv}
-                                            </div>
-                                            <div className="text-[10px] text-indigo-600 font-bold flex items-start gap-1.5 bg-white px-2 py-1.5 rounded shadow-sm border border-slate-100">
-                                                <i className="fas fa-walking mt-0.5 text-indigo-400 w-3"></i> <span className="leading-snug">{feast.routeInfo}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+      <div class="bg-slate-100 p-4 rounded-xl text-xs text-slate-600">
+        <strong class="text-slate-800"><i class="fa-solid fa-train mr-1"></i>Empire Builder 탑승 전 필수 준비:</strong>
+        시카고까지 무려 <strong>48시간 연속 기차 이동</strong>입니다. 유니언역 탑승 전 편의점이나 대형 마트(Safeway)에서 대용량 생수, 컵라면/스낵, 물티슈, 목베개, 보조배터리를 반드시 넉넉하게 구매하세요.
+      </div>
+    </section>
 
-                        {/* 현지 교통비 카드 */}
-                        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 h-fit lg:col-span-2">
-                            <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2.5 bg-emerald-100 text-emerald-600 rounded-xl"><i className="fas fa-directions text-lg"></i></div>
-                            <div>
-                                <h3 className="text-lg font-bold text-slate-900">현지 교통비 총괄표</h3>
-                                <p className="text-xs font-bold text-slate-400">이동 수단별 명확한 요금 반영</p>
-                            </div>
-                            </div>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {activeRoute.transitDetails.map((t, idx) => (
-                                <div key={idx} className="flex flex-col p-4 rounded-xl bg-slate-50 border border-slate-100">
-                                <span className="text-xs font-bold text-slate-500 mb-1">{t.desc}</span>
-                                <span className="text-sm font-bold text-slate-800 mb-3">{t.method}</span>
-                                <div className="flex justify-between items-center text-xs mt-auto">
-                                    <span className="text-slate-400">총: ${t.cost.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 1})}</span>
-                                    <span className={`font-bold px-2 py-1 rounded ${t.perPax === 0 ? 'bg-slate-200 text-slate-600' : 'bg-emerald-50 text-emerald-600'}`}>
-                                    1인당: ${t.perPax.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 1})}
-                                    </span>
-                                </div>
-                                </div>
-                            ))}
-                            </div>
-                            <div className="mt-6 pt-4 border-t border-slate-200 flex justify-end items-center gap-3">
-                                <span className="text-sm font-bold text-slate-600">이 구간 내 교통비 분담액:</span>
-                                <span className="text-2xl font-black text-emerald-600">${activeRoute.costSummary.transitPerPax.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 1})}</span>
-                            </div>
-                        </div>
-                        
-                        </div>
-                        
-                    </div>
-                    </div>
-                </div>
-                </div>
-            );
-        }
+    <!-- 3. CHICAGO -->
+    <section id="content-chi" class="city-section space-y-6 hidden">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Leg 3 • 일리노이</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">시카고 (Chicago)</h2>
+          <p class="text-sm text-slate-500 mt-1">12/22(화) 16:45 도착 ~ 12/25(금) 21:30 출발 (3박)</p>
+        </div>
+        <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 text-xs text-indigo-900">
+          <i class="fa-solid fa-snowflake mr-1 text-indigo-600"></i><strong>크리스마스 시즌:</strong> 12/25 성탄절 당일 오후에는 문을 닫는 식당이 많으므로 사전 예약 필수입니다.
+        </div>
+      </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded">암트랙 역 정보</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Chicago+Union+Station" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Chicago Union Station</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>출발 열차:</strong> Lake Shore Limited (Train 48) / 12/25 21:30 출발<br>
+            • <strong>역 시설:</strong> 대규모 그레이트 홀(Great Hall), 라운지 및 짐 보관소 완비.
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-green-100 text-green-800 rounded">예약 완료 숙소</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=The+Chicago+Hotel+Collection+Magnificent+Mile" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">The Chicago Hotel Collection Mag Mile</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>주소:</strong> 166 E Superior St, Chicago, IL 60611<br>
+            • <strong>교통:</strong> 유니언역에서 우버 12분 ($15~20) 또는 CTA 버스 151번 직행.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border-t-4 border-amber-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-amber-600 font-bold mb-1">
+              <span><i class="fa-solid fa-crown mr-1"></i>오늘의 하이엔드 미식</span>
+              <span>약 $95-130/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">깁슨스 바 & 스테이크하우스</h4>
+            <p class="text-xs text-slate-500 mt-0.5">시카고 정통 클래식 드라이에이징 스테이크</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              자체 USDA 인증을 받은 특상급 W.R.'s 시카고 컷 립아이(Bone-in Ribeye). 고전미 넘치는 활기찬 분위기와 완벽한 서비스.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>11:00 - 24:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Gibsons+Bar+Steakhouse+Chicago" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border-t-4 border-emerald-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-emerald-600 font-bold mb-1">
+              <span><i class="fa-solid fa-pizza-slice mr-1"></i>시카고 2대 대표 맛</span>
+              <span>약 $15-30/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">루 말나티 피자 & 포틸로스</h4>
+            <p class="text-xs text-slate-500 mt-0.5">딥디쉬 피자 & 이탈리안 비프 샌드위치</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              • <strong>Lou Malnati's:</strong> 버터크러스트 딥디쉬 피자 (굽는 데 40분 소요)<br>
+              • <strong>Portillo's:</strong> 육즙에 푹 적신 이탈리안 비프 샌드위치 ($11)
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>11:00 - 23:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Lou+Malnatis+Pizzeria+Chicago+Mag+Mile" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border-t-4 border-blue-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-blue-600 font-bold mb-1">
+              <span><i class="fa-solid fa-building mr-1"></i>명소 & 랜드마크</span>
+              <span>전망대 $35 / 공원 무료</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">360 시카고 & 밀레니엄 파크</h4>
+            <p class="text-xs text-slate-500 mt-0.5">존 핸콕 센터 TILT 체험 & 더 빈(The Bean)</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              숙소 바로 옆 360 시카고에서 미시간호 일몰 감상. 밀레니엄 파크의 거대 조형물 '더 빈'과 야외 스케이트장 구경.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>09:00 - 23:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=360+CHICAGO+Observation+Deck" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-100 p-4 rounded-xl text-xs text-slate-600">
+        <strong class="text-slate-800"><i class="fa-solid fa-shuffle mr-1"></i>대안 식당 (트렌디 핫플):</strong>
+        스테이크 대신 독창적인 요리를 원한다면 웨스트 루프(West Loop)의 <strong>Girl & the Goat</strong>(탑셰프 레스토랑) 또는 <strong>Au Cheval</strong>(미국 1위 치즈버거, 웨이팅 2시간 각오 필수)을 추천합니다.
+      </div>
+    </section>
+
+    <!-- 4. NIAGARA FALLS & BUFFALO -->
+    <section id="content-buf" class="city-section space-y-6 hidden">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Leg 4 • 뉴욕주 서부</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">나이아가라 & 버펄로 (Niagara / Buffalo)</h2>
+          <p class="text-sm text-slate-500 mt-1">12/26(토) 08:53 드퓨역 도착 ~ 12/27(일) 09:05 드퓨역 출발</p>
+        </div>
+        <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 text-xs text-sky-900">
+          <i class="fa-solid fa-id-card mr-1 text-sky-600"></i><strong>여권 소지 필수:</strong> 레인보우 브리지(Rainbow Bridge)를 걸어서 건너면 캐나다 쪽 환상적인 뷰를 감상할 수 있습니다.
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded">암트랙 역 정보</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Buffalo+Depew+Amtrak+Station" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Buffalo-Depew Station (BUF)</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>출발 열차:</strong> Lake Shore Limited (Train 448) / 12/27 09:05 출발<br>
+            • <strong>폭포 이동:</strong> Depew역에서 나이아가라 폭포 주립공원까지는 우버/리프트로 직행하는 것이 가장 빠릅니다 (약 35~40분 소요, $45~60).
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-dashed border-slate-300">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-slate-100 text-slate-700 rounded">숙소 미정 (추천)</span>
+            <span class="text-xs text-slate-400">12/26 1박</span>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">폭포 도보권 or 드퓨역 인근</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>Seneca Niagara Resort & Casino</strong> (폭포 도보 10분, 카지노/사우나 완비)<br>
+            • <strong>Hilton Garden Inn Buffalo Downtown</strong> (다음 날 Depew역 이동 용이)<br>
+            • <em>팁:</em> 폭포 주변 호텔에 짐을 먼저 맡기고 관광을 시작하세요.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border-t-4 border-amber-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-amber-600 font-bold mb-1">
+              <span><i class="fa-solid fa-crown mr-1"></i>오늘의 하이엔드 미식</span>
+              <span>약 $60-85/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">더 레드 코치 인 (The Red Coach Inn)</h4>
+            <p class="text-xs text-slate-500 mt-0.5">나이아가라 급류가 내려다보이는 유서 깊은 레스토랑</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              1923년 오픈한 전통의 명소. 장작 벽난로 옆에서 즐기는 프라임 립, 시푸드 플래터, 립아이 스테이크.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>11:30 - 21:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=The+Red+Coach+Inn+Niagara+Falls" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border-t-4 border-emerald-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-emerald-600 font-bold mb-1">
+              <span><i class="fa-solid fa-drumstick-bite mr-1"></i>오리지널 버펄로 윙</span>
+              <span>약 $18-28/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">앵커 바 (Anchor Bar) 또는 더프스</h4>
+            <p class="text-xs text-slate-500 mt-0.5">버펄로 윙이 탄생한 세계적인 성지</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              매콤새콤한 오리지널 버펄로 소스 핫윙과 블루치즈 드레싱 + 생맥주 조합. 남자 둘이서 20피스 순삭 가능.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>11:00 - 22:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Anchor+Bar+Buffalo+Wings" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border-t-4 border-blue-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-blue-600 font-bold mb-1">
+              <span><i class="fa-solid fa-water mr-1"></i>대자연 장관</span>
+              <span>공원 무료 / 엘리베이터 $14</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">나이아가라 겨울 폭포 & 바람의 동굴</h4>
+            <p class="text-xs text-slate-500 mt-0.5">얼어붙은 거대 빙벽과 압도적인 물보라</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              겨울시즌 '바람의 동굴(Cave of the Winds)' 협곡 엘리베이터 투어 및 밤 8시 폭포를 물들이는 화려한 조명 일루미네이션 쇼 관람.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>09:00 - 21:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Niagara+Falls+State+Park" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. BOSTON -->
+    <section id="content-bos" class="city-section space-y-6 hidden">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-bold text-red-600 uppercase tracking-wider">Leg 5 • 매사추세츠</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">보스턴 (Boston)</h2>
+          <p class="text-sm text-slate-500 mt-1">12/27(일) 20:32 도착 ~ 12/29(화) 09:20 출발 (2박)</p>
+        </div>
+        <div class="bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-900">
+          <i class="fa-solid fa-compass mr-1 text-red-600"></i><strong>도보 여행 팁:</strong> 보스턴은 도로에 그어진 빨간 선(Freedom Trail)만 따라 걸어도 하루 명소를 모두 섭렵합니다.
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded">암트랙 역 정보</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Boston+South+Station" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Boston South Station</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>출발 열차:</strong> Northeast Regional (Train 171) / 12/29 09:20 출발<br>
+            • <strong>교통:</strong> 지하철 레드라인(Red Line) 및 실버라인(Silver Line)이 교차하는 보스턴 최대 교통 요충지.
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-green-100 text-green-800 rounded">예약 완료 숙소</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Cambria+Hotel+Boston+Downtown+Seaport" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Cambria Hotel Boston Downtown - Seaport</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>주소:</strong> 6 W Broadway, Boston, MA 02127<br>
+            • <strong>교통:</strong> 사우스역에서 지하철 레드라인 1정거장 (Broadway역 바로 앞, 이동 매우 편리).
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border-t-4 border-amber-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-amber-600 font-bold mb-1">
+              <span><i class="fa-solid fa-crown mr-1"></i>오늘의 하이엔드 미식</span>
+              <span>약 $90-130/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">그릴 23 & 바 (Grill 23 & Bar)</h4>
+            <p class="text-xs text-slate-500 mt-0.5">보스턴 최고의 전통 독립 프라임 스테이크하우스</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              100% all-natural 블랙 앵거스 비프와 환상적인 와인 리스트. 보스턴 부촌 백베이(Back Bay)의 품격 있는 다이닝.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>17:00 - 22:30</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Grill+23+and+Bar+Boston" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border-t-4 border-emerald-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-emerald-600 font-bold mb-1">
+              <span><i class="fa-solid fa-fish mr-1"></i>뉴잉글랜드 해산물 성지</span>
+              <span>약 $35-50/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">넵튠 오이스터 (Neptune Oyster)</h4>
+            <p class="text-xs text-slate-500 mt-0.5">버터에 적신 따뜻한 핫 랍스터 롤 & 굴 플래터</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              노스엔드 리틀이탈리아의 전설적인 해산물 바. 통통한 랍스터 살이 쏟아져 내리는 핫 버터 랍스터 롤은 필수.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>11:30 - 21:30</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Neptune+Oyster+Boston" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border-t-4 border-blue-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-blue-600 font-bold mb-1">
+              <span><i class="fa-solid fa-landmark mr-1"></i>역사와 캠퍼스</span>
+              <span>도보 무료</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">프리덤 트레일 & 하버드 대학</h4>
+            <p class="text-xs text-slate-500 mt-0.5">보스턴 커먼, 퀸시 마켓 및 캠퍼스 투어</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              보스턴 커먼에서 시작해 패뉴일 홀/퀸시마켓 구경. 오후엔 레드라인 지하철을 타고 케임브리지로 가 하버드 야드 존 하버드 동상 발 만지기.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>상시 개방</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Quincy+Market+Boston" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. NEW YORK CITY -->
+    <section id="content-nyc" class="city-section space-y-6 hidden">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-bold text-purple-600 uppercase tracking-wider">Leg 6 • 뉴욕 맨해튼</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">뉴욕 (New York City)</h2>
+          <p class="text-sm text-slate-500 mt-1">12/29(화) 13:47 도착 ~ 01/02(금) 11:05 출발 (4박)</p>
+        </div>
+        <div class="bg-purple-50 border border-purple-200 rounded-xl p-3 text-xs text-purple-900">
+          <i class="fa-solid fa-glass-cheers mr-1 text-purple-600"></i><strong>12/31 새해 전야:</strong> 타임스스퀘어 볼드롭 현장은 영하의 날씨에 12시간 대기해야 하므로, 덤보 브루클린 브리지 불꽃놀이나 루프탑 바를 추천합니다.
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded">암트랙 역 정보</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Moynihan+Train+Hall+at+Penn+Station" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Moynihan Train Hall at Penn Station</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>출발 열차:</strong> Northeast Regional (Train 173) / 01/02 11:05 출발<br>
+            • <strong>특징:</strong> 현대적인 유리 채광 지붕의 최첨단 기차역, 편의시설 및 식당 밀집.
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-green-100 text-green-800 rounded">예약 완료 숙소</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Romana+Hotel+NYC" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Romana Hotel - NYC (4박)</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>일정:</strong> 12/29 체크인 ~ 01/02 체크아웃<br>
+            • <strong>팁:</strong> 맨해튼 중심부에 위치하여 펜역(Moynihan) 및 주요 지하철 노선 접근 용이.
+          </p>
+        </div>
+      </div>
+
+      <!-- 4 Nights Daily High-End Highlights -->
+      <div class="bg-slate-900 text-white p-4 rounded-xl">
+        <h4 class="font-bold text-sm text-amber-400 mb-2"><i class="fa-solid fa-star mr-1.5"></i>뉴욕 4박 4일 하이엔드 미식 플랜 (1일 1회 엄선)</h4>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+          <div class="bg-slate-800 p-2.5 rounded border border-slate-700">
+            <span class="text-slate-400 font-semibold block">12/29 (도착일 석식)</span>
+            <strong class="text-slate-100 text-sm">킨스 스테이크하우스</strong>
+            <p class="text-slate-400 mt-1">1885년 오픈, 시그니처 양갈비 머튼찹(Mutton Chop)과 티본 스테이크 ($110/인)</p>
+          </div>
+          <div class="bg-slate-800 p-2.5 rounded border border-slate-700">
+            <span class="text-slate-400 font-semibold block">12/30 (쇼핑 & 미식)</span>
+            <strong class="text-slate-100 text-sm">갈라거 스테이크 or 바베트</strong>
+            <p class="text-slate-400 mt-1">타임스스퀘어 히코리 장작 직화 스테이크 또는 세련된 프렌치 스테이크하우스 ($100/인)</p>
+          </div>
+          <div class="bg-slate-800 p-2.5 rounded border border-slate-700">
+            <span class="text-slate-400 font-semibold block">12/31 (NYE 새해전야)</span>
+            <strong class="text-slate-100 text-sm">발타자르 (Balthazar)</strong>
+            <p class="text-slate-400 mt-1">소호 최고의 프렌치 비스트로. 에스카르고, 스테이크 프리츠, 샴페인 축제 분위기 ($120/인)</p>
+          </div>
+          <div class="bg-slate-800 p-2.5 rounded border border-slate-700">
+            <span class="text-slate-400 font-semibold block">01/01 (신정 원기회복)</span>
+            <strong class="text-slate-100 text-sm">꽃 (COTE NYC)</strong>
+            <p class="text-slate-400 mt-1">미쉐린 1스타 코리안 스테이크하우스, 'Butcher's Feast' 4종 소고기 코스 ($82/인)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <h4 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-hotdog text-amber-600 mr-1.5"></i>뉴욕 대표 스트리트 푸드</h4>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            • <strong>카츠 델리 (Katz's Deli):</strong> 산더미 파스트라미 샌드위치 ($30)<br>
+            • <strong>조스 피자 (Joe's Pizza):</strong> 그리니치 빌리지 클래식 치즈 슬라이스 ($4)<br>
+            • <strong>에싸 베이글 (Ess-a-Bagel):</strong> 시그니처 연어 록스(Lox) 베이글 ($17)
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <h4 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-binoculars text-blue-600 mr-1.5"></i>전망대 & 건축 핫플</h4>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            • <strong>서밋 원 밴더빌트 (Summit):</strong> 거울과 유리로 둘러싸인 최신 인기 전망대 ($45)<br>
+            • <strong>하이라인 & 허드슨야드:</strong> 폐철길 공원 산책 후 베슬(Vessel) 관람
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <h4 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-bridge text-purple-600 mr-1.5"></i>인생샷 명소</h4>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            • <strong>덤보(DUMBO) & 브루클린 브리지:</strong> 맨해튼 브리지 사이로 엠파이어 스테이트 빌딩 프레임 촬영 후 일몰 때 다리 도보 건너기.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. WASHINGTON D.C. -->
+    <section id="content-wdc" class="city-section space-y-6 hidden">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-bold text-blue-700 uppercase tracking-wider">Leg 7 • 수도 워싱턴 D.C.</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">워싱턴 D.C. (Washington, D.C.)</h2>
+          <p class="text-sm text-slate-500 mt-1">01/02(금) 14:25 도착 ~ 01/05(월) 22:00 출발 (3박)</p>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-900">
+          <i class="fa-solid fa-building-columns mr-1 text-blue-600"></i><strong>박물관 혜택:</strong> 스미스소니언 항공우주/자연사/미술관 및 국립동물원 전 구역 입장료가 <strong>완전 무료</strong>입니다.
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded">암트랙 역 정보</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Washington+Union+Station" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Washington Union Station</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>복귀 열차:</strong> Northeast Regional (Train 66 심야편) / 01/05 22:00 출발<br>
+            • <strong>도착:</strong> 01/06 05:11 뉴욕 펜역 도착 (기차 내 수면으로 숙박비 절약).
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 bg-green-100 text-green-800 rounded">예약 완료 숙소</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Kellogg+Conference+Hotel+Capitol+Hill" target="_blank" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>지도 보기</a>
+          </div>
+          <h3 class="font-bold text-slate-800 mt-2">Kellogg Conference Hotel Capitol Hill</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            • <strong>주소:</strong> 800 Florida Ave NE, Washington, DC 20002<br>
+            • <strong>교통:</strong> 유니언역에서 우버 7분 ($10~14) 또는 지하철 Red Line NoMa-Gallaudet U 역 이용. 인근에 트렌디한 <strong>유니언 마켓(Union Market)</strong> 위치.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border-t-4 border-amber-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-amber-600 font-bold mb-1">
+              <span><i class="fa-solid fa-crown mr-1"></i>오늘의 하이엔드 미식</span>
+              <span>약 $85-120/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">조스 시푸드, 프라임 스테이크 & 스톤 크랩</h4>
+            <p class="text-xs text-slate-500 mt-0.5">백악관 인근 정·재계 인사들의 단골 최고급 다이닝</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              차가운 플로리다 스톤 크랩 집게발(Stone Crab Claws)과 두툼한 본인 립아이 스테이크의 환상적 조합.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>11:30 - 22:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Joes+Seafood+Prime+Steak+Stone+Crab+Washington+DC" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border-t-4 border-emerald-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-emerald-600 font-bold mb-1">
+              <span><i class="fa-solid fa-beer-mug-empty mr-1"></i>D.C. 역사와 소울푸드</span>
+              <span>약 $15-35/인</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">올드 에빗 그릴 & 벤스 칠리 보울</h4>
+            <p class="text-xs text-slate-500 mt-0.5">1856년 설립된 최고(最古) 술집 & 오바마 단골집</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              • <strong>Old Ebbitt Grill:</strong> 백악관 옆 오이스터 플래터 & 버거 ($30)<br>
+              • <strong>Ben's Chili Bowl:</strong> 반세기 전통 스파이시 하프 스모크 소시지 ($12)
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>09:00 - 02:00</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Old+Ebbitt+Grill+Washington+DC" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border-t-4 border-blue-500 shadow-sm border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs text-blue-600 font-bold mb-1">
+              <span><i class="fa-solid fa-monument mr-1"></i>국가 랜드마크</span>
+              <span>입장 전액 무료</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">내셔널 몰 & 국회의사당</h4>
+            <p class="text-xs text-slate-500 mt-0.5">국회도서관, 링컨 기념관 야경 투어</p>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              스미스소니언 항공우주 박물관 관람 후, 해 질 녘 링컨 기념관 계단에서 바라보는 반사 연못과 워싱턴 기념탑 야경은 압권입니다.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i>기념관 24시간 개방</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Lincoln+Memorial+Washington+DC" target="_blank" class="text-xs text-blue-600 font-medium hover:underline"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. RETURN (EWR AIRPORT) -->
+    <section id="content-ret" class="city-section space-y-6 hidden">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Final Leg • 인천 귀국</span>
+          <h2 class="text-2xl font-bold text-slate-900 mt-0.5">뉴어크 공항 (EWR) 출국 가이드</h2>
+          <p class="text-sm text-slate-500 mt-1">01/06(화) 05:11 펜역 도착 ➔ 10:30 EWR 출발 (인천행)</p>
+        </div>
+        <div class="bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-900">
+          <i class="fa-solid fa-plane-departure mr-1 text-red-600"></i><strong>공항 도착 마감:</strong> 국제선 수속을 위해 <strong>오전 07:30~08:00</strong>까지 EWR 터미널에 반드시 도착해야 합니다.
+        </div>
+      </div>
+
+      <!-- Action Plan Step by Step -->
+      <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-4">
+        <h3 class="font-bold text-slate-800 text-base border-b pb-2"><i class="fa-solid fa-route text-blue-600 mr-2"></i>01/06(화) 귀국 당일 오전 분초 단위 동선</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+          <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+            <span class="font-bold text-blue-600 block text-sm">05:11 - 06:15</span>
+            <strong class="text-slate-800 mt-1 block">펜역 도착 & 정비</strong>
+            <p class="text-slate-500 mt-1">Moynihan Train Hall 화장실에서 세면 및 짐 정리. 역사 내 카페(스타벅스/블루보틀)에서 모닝커피.</p>
+          </div>
+
+          <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+            <span class="font-bold text-blue-600 block text-sm">06:15 - 07:00</span>
+            <strong class="text-slate-800 mt-1 block">뉴욕 모닝 베이글</strong>
+            <p class="text-slate-500 mt-1">펜역 인근 <strong>Best Bagel & Coffee</strong>(06:00 오픈)에서 따끈한 베이글로 미국 마지막 아침 식사.</p>
+          </div>
+
+          <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+            <span class="font-bold text-blue-600 block text-sm">07:05 - 07:45</span>
+            <strong class="text-slate-800 mt-1 block">NJ Transit 탑승</strong>
+            <p class="text-slate-500 mt-1">펜역 지하에서 NJ Transit 기차 탑승 ➔ <strong>Newark Airport Station</strong> 하차 후 모노레일(AirTrain) 환승 ($15.75).</p>
+          </div>
+
+          <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+            <span class="font-bold text-blue-600 block text-sm">08:00 - 10:30</span>
+            <strong class="text-slate-800 mt-1 block">체크인 & 보딩</strong>
+            <p class="text-slate-500 mt-1">수하물 위탁, TSA 보안 검색 통과 후 면세점 구경 및 10:30 인천행 비행기 탑승.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">Best Bagel & Coffee (펜역 앞)</h4>
+            <p class="text-xs text-slate-500 mt-0.5">아침 06:00 오픈, 겉바속촉 쫄깃한 뉴욕 최고의 베이글</p>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=Best+Bagel+and+Coffee+New+York" target="_blank" class="text-xs px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg font-bold hover:bg-blue-100"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">Newark Liberty International Airport (EWR)</h4>
+            <p class="text-xs text-slate-500 mt-0.5">뉴어크 리버티 국제공항 터미널 위치 확인</p>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=Newark+Liberty+International+Airport" target="_blank" class="text-xs px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg font-bold hover:bg-blue-100"><i class="fa-solid fa-map-location-dot mr-1"></i>지도</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchTab(cityId) {
+      // Hide all sections
+      document.querySelectorAll('.city-section').forEach(el => el.classList.add('hidden'));
+      // Remove active tab styling
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white');
+        btn.classList.add('text-slate-300');
+      });
+
+      // Show selected section
+      const target = document.getElementById('content-' + cityId);
+      if (target) target.classList.remove('hidden');
+
+      // Add active styling
+      const activeBtn = document.getElementById('tab-' + cityId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300');
+        activeBtn.classList.add('bg-blue-600', 'text-white');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Default Tab
+    document.addEventListener('DOMContentLoaded', () => {
+      switchTab('sf');
+    });
+  </script>
 </body>
 </html>
-
-
-
