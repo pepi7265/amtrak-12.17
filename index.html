@@ -3,52 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>미국 암트랙 대횡단 완전 정복 (교통패스&뷔페&마트식량 완벽가이드)</title>
+  <title>미국 암트랙 대횡단 마스터 플래너 (풀 스케줄 & 3단계 추천 라인업)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap');
-    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f1f5f9; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .nav-tab-active {
       border: 2px solid #4f46e5 !important;
       background-color: #ffffff !important;
-      box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.15);
+      box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.18);
     }
   </style>
 </head>
-<body class="text-slate-800 antialiased pb-24 select-none">
+<body class="text-slate-800 antialiased pb-28 select-none">
 
   <!-- Mobile Top App Bar -->
-  <header class="bg-white sticky top-0 z-50 border-b border-slate-100 shadow-sm">
-    <div class="max-w-md mx-auto px-4 py-3.5 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-200">
-          <i class="fa-solid fa-train-subway text-lg"></i>
+  <header class="bg-white sticky top-0 z-50 border-b border-slate-200 shadow-sm">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-200 shrink-0">
+          <i class="fa-solid fa-route text-lg"></i>
         </div>
         <div>
           <div class="flex items-center gap-1.5">
-            <h1 class="text-base font-black text-slate-900 tracking-tight">암트랙 대횡단 플래너</h1>
-            <span class="text-[11px] font-black bg-emerald-600 text-white px-1.5 py-0.5 rounded">1일 10만원 식비</span>
+            <h1 class="text-base font-black text-slate-900 tracking-tight">미국 횡단 풀-마스터</h1>
+            <span class="text-[10px] font-black bg-indigo-600 text-white px-1.5 py-0.5 rounded">ALL IN ONE</span>
           </div>
-          <p class="text-[10px] text-slate-400 font-medium">SF 숙소: 힐튼 파이낸셜 디스트릭트 반영</p>
+          <p class="text-[10px] text-slate-400 font-medium">전 일정 상세 소요시간 • 마트 식량 • 3단계 라인업</p>
         </div>
       </div>
     </div>
 
     <!-- Alert Strip -->
-    <div class="bg-indigo-50 border-y border-indigo-100 px-4 py-2">
-      <div class="max-w-md mx-auto flex items-start gap-1.5 text-[10px] text-indigo-900 leading-tight font-medium">
-        <i class="fa-solid fa-circle-check text-indigo-600 mt-0.5"></i>
-        <span>교통 패스 상세안내 + 뷔페식 식단 + 기차 탑승 전 마트 식량 구매 동선 포함!</span>
+    <div class="bg-indigo-900 text-white px-4 py-2">
+      <div class="max-w-md mx-auto flex items-center justify-between text-[11px] font-medium">
+        <span><i class="fa-solid fa-sack-dollar text-amber-400 mr-1"></i> 일일 식비 Target: <strong>10만원 이내</strong></span>
+        <span class="bg-indigo-700 px-2 py-0.5 rounded text-[10px]">1인 분담 기준</span>
       </div>
     </div>
 
     <!-- Horizontal Section Nav -->
-    <div class="max-w-md mx-auto px-4 py-3 bg-white">
-      <div class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase mb-2">구간 선택 (ROUTE SELECT)</div>
-      <div id="routeTabs" class="flex gap-2.5 overflow-x-auto no-scrollbar py-1">
+    <div class="max-w-md mx-auto px-4 py-2.5 bg-white border-b border-slate-100">
+      <div class="text-[10px] font-black tracking-wider text-slate-400 uppercase mb-1.5">도시/구간 선택</div>
+      <div id="routeTabs" class="flex gap-2 overflow-x-auto no-scrollbar py-1">
         <!-- JS rendered -->
       </div>
     </div>
@@ -62,273 +62,422 @@
   <script>
     const makeDirUrl = (origin, dest) => `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(dest)}`;
     
-    // 데이터셋
+    // 데이터셋 (12/17 ~ 1/6 풀 스케줄 & 3단계 옵션)
     const routesData = [
       {
         id: "route1",
         num: 1,
-        title: "샌프란시스코 ➔ 포틀랜드",
-        tag: "Route 1",
+        title: "샌프란시스코",
+        dateRange: "12/17 ~ 12/18",
         hotel: "Hilton San Francisco Financial District",
         transGuide: [
-          { title: "BART (공항↔도심철도)", desc: "공항 ↔ Montgomery St역 편도 $10.55. 숙소까지 도보 8분.", cost: "$10.55" },
-          { title: "Muni 1-Day Visitor Passport", desc: "케이블카(단품 $9) + 모든 버스/전차/지하철 24시간 무제한!", cost: "$15.00" },
-          { title: "Muni 일반 1일 패스", desc: "케이블카 제외한 모든 버스/전차 무제한 (케이블카 안 탈 때 추천).", cost: "$5.70" },
-          { title: "도보 꿀팁 (무료)", desc: "힐튼 숙소에서 차이나타운, 북비치, 페리빌딩은 도보 10~12분 거리로 교통비 $0!" }
+          { title: "BART (공항↔도심)", desc: "SFO 공항 ➔ Montgomery St역 편도 $10.55 (소요시간 30분). 역에서 힐튼 호텔까지 도보 8분.", cost: "$10.55" },
+          { title: "Muni 1-Day Visitor Passport", desc: "케이블카(단품 $9) + F-전차 + 뮤니 버스/지하철 24시간 무제한 탑승.", cost: "$15.00" },
+          { title: "무료 도보 최적 동선", desc: "힐튼 숙소 기준 차이나타운(5분), 코잇타워(12분), 페리빌딩(12분) 도보 가능." }
         ],
         schedules: [
           {
-            day: "12/17(수) SF 입성 (식비: ~$63 / 교통비: ~$25)",
+            day: "12/17(수) SF 입성 & 도심 탐방",
+            summary: "BART 이동 ➔ 호텔 짐보관 ➔ 차이나타운 ➔ 해산물 뷔페 ➔ 피어39 ➔ 케이블카 야경",
             items: [
-              { time: "11:40", title: "SFO 공항 도착 ➔ BART 탑승 ➔ Montgomery St역 하차", origin: "San Francisco International Airport", dest: "Hilton San Francisco Financial District", cost: "BART $10.55 (도보 8분)" },
-              { time: "13:00", title: "힐튼 숙소 체크인/짐보관 ➔ 차이나타운 도보 산책", origin: "Hilton San Francisco Financial District", dest: "Chinatown San Francisco", cost: "도보 $0" },
-              { time: "13:30", title: "[점심-뷔페] Asian Seafood & Dim Sum AYCE (해산물/딤섬 뷔페)", origin: "Chinatown San Francisco", dest: "Daly Buffet San Francisco", cost: "식비 $35 (팁/세금 포함)" },
-              { time: "15:30", title: "페리 빌딩 & 블루보틀 커피", origin: "Daly Buffet San Francisco", dest: "Ferry Building San Francisco", cost: "도보 $0 / 커피 $6" },
-              { time: "17:00", title: "California St 케이블카 탑승 ➔ 피어39 바다사자 관람", origin: "Ferry Building San Francisco", dest: "PIER 39", cost: "1-Day Pass $15 사용" },
-              { time: "19:00", title: "[저녁-명물] 보딘 베이커리 (사워도우 클램 차우더 수프)", origin: "PIER 39", dest: "Boudin Bakery Pier 39", cost: "식비 $18" },
-              { time: "20:30", title: "F-Market 역사 전차 타고 유니언 스퀘어 야경 후 숙소 복귀", origin: "Boudin Bakery Pier 39", dest: "Hilton San Francisco Financial District", cost: "1-Day Pass 적용" }
+              { time: "11:40 - 12:40", title: "SFO 공항 입국 ➔ BART 탑승 (30분 소요)", origin: "San Francisco International Airport", dest: "Montgomery St Station SF", cost: "BART $10.55", duration: "이동 30분" },
+              { time: "12:40 - 13:00", title: "Montgomery St역 ➔ 힐튼 SF 디스트릭트 짐 보관", origin: "Montgomery St Station SF", dest: "Hilton San Francisco Financial District", cost: "도보 $0", duration: "도보 8분" },
+              { time: "13:00 - 13:10", title: "숙소 ➔ 차이나타운 중심가 이동", origin: "Hilton San Francisco Financial District", dest: "Chinatown San Francisco", cost: "도보 $0", duration: "도보 5분" },
+              { time: "13:10 - 14:30", title: "[점심-뷔페] Daly Buffet / Dragon Beaux (해산물&딤섬 뷔페)", origin: "Chinatown San Francisco", dest: "Daly Buffet San Francisco", cost: "식비 $35 (팁포함)", duration: "식사 1시간20분" },
+              { time: "14:30 - 16:00", title: "페리 빌딩 & 블루보틀 본점 커피 한 잔", origin: "Daly Buffet San Francisco", dest: "Ferry Building San Francisco", cost: "커피 $6", duration: "도보 12분 + 산책" },
+              { time: "16:00 - 18:00", title: "F-Market 역사 전차 타고 피어39 바다사자 관람", origin: "Ferry Building San Francisco", dest: "PIER 39", cost: "Muni 무제한 사용", duration: "전차 15분 + 관람" },
+              { time: "18:00 - 19:20", title: "[저녁-명물] 보딘 베이커리 (사워도우 클램 차우더 수프)", origin: "PIER 39", dest: "Boudin Bakery Pier 39", cost: "식비 $18", duration: "도보 5분 + 식사" },
+              { time: "19:20 - 20:30", title: "Powell-Mason 케이블카 탑승 ➔ 유니언 스퀘어 야경", origin: "Boudin Bakery Pier 39", dest: "Union Square San Francisco", cost: "Muni 패스 적용", duration: "케이블카 20분" },
+              { time: "20:30 - 21:00", title: "유니언 스퀘어 ➔ 힐튼 호텔 복귀 후 체크인 & 휴식", origin: "Union Square San Francisco", dest: "Hilton San Francisco Financial District", cost: "도보 $0", duration: "도보 12분" }
             ]
           },
           {
-            day: "12/18(목) SF 명소 & 기차 탑승 (식비: ~$65 / 교통비: ~$15)",
+            day: "12/18(목) 금문교 뷰 & 암트랙 장거리 탑승",
+            summary: "북비치 산책 ➔ 인앤아웃 ➔ 금문교 뷰 ➔ 마트 식량 구매 ➔ 에머리빌역 이동 ➔ 밤기차 탑승",
             items: [
-              { time: "09:30", title: "숙소 ➔ 북비치 산책 ➔ 워싱턴 스퀘어", origin: "Hilton San Francisco Financial District", dest: "Washington Square San Francisco", cost: "도보 $0" },
-              { time: "11:30", title: "[점심-명물] 인앤아웃 버거 (In-N-Out 피셔맨스워프점)", origin: "Washington Square San Francisco", dest: "In-N-Out Burger Fisherman's Wharf", cost: "식비 $11" },
-              { time: "13:00", title: "금문교 뷰 포인트 (크리시 필드 산책)", origin: "In-N-Out Burger Fisherman's Wharf", dest: "Crissy Field San Francisco", cost: "Muni 버스 $2.85" },
-              { time: "15:30", title: "[핵심] 마트(Trader Joe's/Safeway) 암트랙 24시간 식량 구매", origin: "Crissy Field San Francisco", dest: "Trader Joe's San Francisco", cost: "기차 식량 $25 (샌드위치,과일,음료)" },
-              { time: "18:00", title: "[저녁-뷔페] 토다이/해산물 일식 뷔페 식사", origin: "Trader Joe's San Francisco", dest: "Makino Seafood Buffet", cost: "식비 $35 (팁 포함)" },
-              { time: "20:00", title: "에머리빌 암트랙 역 이동 (AC Transit F 버스 또는 우버)", origin: "Makino Seafood Buffet", dest: "Emeryville Amtrak Station", cost: "우버/버스 $12" },
-              { time: "21:41", title: "Coast Starlight 밤기차 탑승 (포틀랜드 행)", origin: "Emeryville Amtrak Station", dest: "Portland Union Station", cost: "암트랙 탑승!" }
+              { time: "09:30 - 11:00", title: "힐튼 출발 ➔ 북비치 산책 ➔ 워싱턴 스퀘어 파크", origin: "Hilton San Francisco Financial District", dest: "Washington Square San Francisco", cost: "도보 $0", duration: "도보 10분" },
+              { time: "11:00 - 12:30", title: "[점심-명물] 인앤아웃 버거 (피셔맨스워프점)", origin: "Washington Square San Francisco", dest: "In-N-Out Burger Fisherman's Wharf", cost: "식비 $11", duration: "도보 12분 + 식사" },
+              { time: "12:30 - 15:00", title: "Muni 28번 버스 ➔ 크리시 필드 (금문교 조망 산책)", origin: "In-N-Out Burger Fisherman's Wharf", dest: "Crissy Field San Francisco", cost: "Muni 버스 20분", duration: "관람 1시간반" },
+              { time: "15:00 - 17:00", title: "[필수-마트] Trader Joe's / Safeway 24시간 기차 식량 구매", origin: "Crissy Field San Francisco", dest: "Trader Joe's San Francisco", cost: "기차식량 $25", duration: "쇼핑 1시간" },
+              { time: "17:00 - 18:30", title: "[저녁-뷔페] Makino Seafood Buffet (스시/해산물 뷔페)", origin: "Trader Joe's San Francisco", dest: "Makino Seafood Buffet", cost: "식비 $35 (팁포함)", duration: "식사 1시간" },
+              { time: "18:30 - 19:30", title: "힐튼 호텔 짐 픽업 ➔ 에머리빌 암트랙 역 이동", origin: "Hilton San Francisco Financial District", dest: "Emeryville Amtrak Station", cost: "우버/AC버스 $12", duration: "이동 25분" },
+              { time: "21:41 ~ ", title: "Coast Starlight 밤기차 탑승! (포틀랜드 향해 출발)", origin: "Emeryville Amtrak Station", dest: "Portland Union Station", cost: "암트랙 탑승", duration: "열차 18시간 소요" }
             ]
           }
         ],
-        alts: [
-          { name: "Scoma's (스코마스)", type: "명물", desc: "피셔맨스워프 원조 던지니스 크랩 ($55)", dest: "Scoma's Restaurant SF" },
-          { name: "The Boiling Crab", type: "해산물", desc: "봉지 해산물 케이준 보일 ($40)", dest: "The Boiling Crab San Jose" },
-          { name: "City Gold Seafood", type: "딤섬/뷔페", desc: "정통 차이나타운 해산물 딤섬 ($25)", dest: "City Gold Seafood Restaurant SF" }
-        ]
+        tiers: {
+          budget: [
+            { name: "롬바드 스트리트 (Lombard St)", desc: "세계에서 가장 꼬불꼬불한 언덕길 산책 (입장료 무료)", dest: "Lombard Street SF" },
+            { name: "금문교 도보 건너기 (Golden Gate Bridge)", desc: "태평양 바람을 맞으며 교량 도보 산책 (무료)", dest: "Golden Gate Bridge" },
+            { name: "Ghirardelli Square", desc: "초콜릿 샘플 시식 및 기네스 스토어 구경 (무료)", dest: "Ghirardelli Square" }
+          ],
+          standard: [
+            { name: "보딘 베이커리 본점", desc: "사워도우 클램 차우더 수프의 원조 ($18)", dest: "Boudin Bakery Pier 39" },
+            { name: "인앤아웃 버거", desc: "미 서부 최고의 가성비 수제 버거 ($10~$12)", dest: "In-N-Out Burger Fisherman's Wharf" },
+            { name: "알카트라즈 섬 투어", desc: "연방 교도소 역사 투어 (사전예약 필수, $45)", dest: "Alcatraz Island" }
+          ],
+          premium: [
+            { name: "하우스 오브 프라임 립 (House of Prime Rib)", desc: "샌프란시스코 최고 프리미엄 로스트비프 스테이크 ($90~$110)", dest: "House of Prime Rib SF" },
+            { name: "Scoma's (스코마스)", type: "해산물", desc: "부두에서 직송되는 통 던지니스 크랩 요리 ($70~$90)", dest: "Scoma's Restaurant SF" },
+            { name: "헬리콥터 금문교 투어", desc: "베이에어리어 하늘에서 바라보는 럭셔리 투어 ($250+)", dest: "San Francisco Helicopter Tours" }
+          ]
+        }
       },
       {
         id: "route2",
         num: 2,
-        title: "포틀랜드 ➔ 시카고",
-        tag: "Route 2",
+        title: "포틀랜드 & 암트랙 대횡단",
+        dateRange: "12/19 ~ 12/21",
         hotel: "Holiday Inn Express Hotel & Suites Portland-NW Downtown",
         transGuide: [
-          { title: "포틀랜드 트램 (Portland Streetcar)", desc: "유니언역 ↔ 숙소 이동 시 유용. 1회 $2.00 / 2.5시간 이용.", cost: "$2.00" },
-          { title: "MAX Light Rail", desc: "도심 전역 연결. 1일 무제한 패스 $5.00.", cost: "$5.00" },
-          { title: "우버/리프트", desc: "짐이 많을 경우 유니언역 ↔ 호텔 우버 약 $10~$12.", cost: "$10.00" }
+          { title: "Portland Streetcar", desc: "유니언역 ↔ 숙소 / 다운타운 이동 시 편도 $2.00 (2.5시간 유효).", cost: "$2.00" },
+          { title: "MAX Light Rail", desc: "시내 전역 연결. 1일 무제한 라이트레일 패스 $5.00.", cost: "$5.00" },
+          { title: "우버/리프트", desc: "짐이 있을 때 유니언역 ↔ 호텔 이동 시 $10 내외." }
         ],
         schedules: [
           {
-            day: "12/19(금) 포틀랜드도착 (식비: ~$55 / 교통비: ~$8)",
+            day: "12/19(금) 포틀랜드 도착 & 감성 거리 산책",
+            summary: "15:40 기차 도착 ➔ 호텔 체크인 ➔ 파월스 북스 ➔ 스시 뷔페 ➔ 부두 도넛",
             items: [
-              { time: "15:40", title: "포틀랜드 유니언역 도착 ➔ Holiday Inn Express 이동", origin: "Portland Union Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "우버/트램 $8" },
-              { time: "17:00", title: "파월스 북스 (세계 최대 독립 서점) 탐방", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Powell's City of Books", cost: "도보 $0" },
-              { time: "19:00", title: "[저녁-뷔페] 포틀랜드 AYCE 스시 & 해산물 뷔페", origin: "Powell's City of Books", dest: "Maki Japanese Buffet Portland", cost: "식비 $38 (팁/세금 포함)" },
-              { time: "20:30", title: "[간식-명물] 부두 도넛 (Voodoo Doughnut) 야식", origin: "Maki Japanese Buffet Portland", dest: "Voodoo Doughnut Portland", cost: "식비 $6" }
+              { time: "15:40 - 16:20", title: "포틀랜드 유니언역 도착 ➔ Holiday Inn Express 이동", origin: "Portland Union Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "우버 $10", duration: "이동 10분" },
+              { time: "16:20 - 17:00", title: "호텔 체크인 및 짐 정리", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "휴식", duration: "40분" },
+              { time: "17:00 - 18:30", title: "파월스 북스 (세계 최대 독립 서점) 탐방", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Powell's City of Books", cost: "도보 $0", duration: "도보 12분 + 구경" },
+              { time: "18:30 - 20:00", title: "[저녁-뷔페] Maki Japanese / Seafood AYCE 뷔페", origin: "Powell's City of Books", dest: "Maki Japanese Buffet Portland", cost: "식비 $38 (팁포함)", duration: "식사 1시간반" },
+              { time: "20:00 - 21:00", title: "[디저트-명물] 부두 도넛 (Voodoo Doughnut) 야식", origin: "Maki Japanese Buffet Portland", dest: "Voodoo Doughnut Portland", cost: "식비 $6", duration: "도보 10분" }
             ]
           },
           {
-            day: "12/20(토) 48시간 대장정 기차 준비 (식비: ~$62 / 교통비: ~$10)",
+            day: "12/20(토) 포틀랜드 명소 & 48시간 기차 준비",
+            summary: "스텀프타운 커피 ➔ 푸드트럭 ➔ Safeway 48시간 식량 쇼핑 ➔ 16:45 Empire Builder 탑승",
             items: [
-              { time: "09:30", title: "[아침-명물] 스텀프타운 커피 & 갓 구운 베이글", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Stumptown Coffee Roasters Downtown Portland", cost: "식비 $10" },
-              { time: "11:00", title: "포틀랜드 노스웨스트 23번가 감성 거리 산책", origin: "Stumptown Coffee Roasters Downtown Portland", dest: "NW 23rd Ave Portland", cost: "도보 $0" },
-              { time: "12:30", title: "[점심-명물] 푸드트럭 카트 (Nong's Khao Man Gai 치킨라이스)", origin: "NW 23rd Ave Portland", dest: "Nong's Khao Man Gai Portland", cost: "식비 $16" },
-              { time: "14:00", title: "[필수] 세이프웨이/마트 48시간 기차 식량 대량 구매", origin: "Nong's Khao Man Gai Portland", dest: "Safeway Portland", cost: "기차 식량 $35 (샐러드,샌드위치,스낵)" },
-              { time: "16:00", title: "포틀랜드 유니언역 이동 및 대기", origin: "Safeway Portland", dest: "Portland Union Station", cost: "우버 $10" },
-              { time: "16:45", title: "Empire Builder 탑승 (시카고 향해 48시간 출발!)", origin: "Portland Union Station", dest: "Chicago Union Station", cost: "기차 출발" }
+              { time: "09:30 - 10:30", title: "[아침-명물] 스텀프타운 커피 & 베이글", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Stumptown Coffee Roasters Downtown Portland", cost: "식비 $10", duration: "도보 10분" },
+              { time: "10:30 - 12:00", title: "노스웨스트 23번가 감성 쇼핑 거리 산책", origin: "Stumptown Coffee Roasters Downtown Portland", dest: "NW 23rd Ave Portland", cost: "도보 $0", duration: "산책 1시간반" },
+              { time: "12:00 - 13:30", title: "[점심-명물] 푸드트럭 카트 (Nong's 치킨라이스)", origin: "NW 23rd Ave Portland", dest: "Nong's Khao Man Gai Portland", cost: "식비 $16", duration: "식사 1시간" },
+              { time: "13:30 - 15:00", title: "[필수-마트] Safeway 48시간 대장정 기차 식량 대량 구매", origin: "Nong's Khao Man Gai Portland", dest: "Safeway Portland", cost: "기차식량 $35", duration: "쇼핑 1시간. 샌드위치/스낵/생수" },
+              { time: "15:00 - 16:00", title: "호텔 짐 픽업 ➔ 포틀랜드 유니언역 이동 및 대기", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Portland Union Station", cost: "우버 $10", duration: "이동 10분" },
+              { time: "16:45 ~ ", title: "Empire Builder 탑승 (48시간 시카고 횡단 대장정 시작!)", origin: "Portland Union Station", dest: "Chicago Union Station", cost: "기차 출발", duration: "48시간 소요" }
+            ]
+          },
+          {
+            day: "12/21(일) 암트랙 기차 안 (몬태나 설경 & 로키산맥)",
+            summary: "기차 안에서 전망칸(Observation Car) 즐기기 & 마트 식량 소비",
+            items: [
+              { time: "하루종일", title: "설경 감상, 마트 식량 및 라운지 카 이용, 휴식", origin: "Empire Builder Train", dest: "Montana Rockies", cost: "기차내 식량 사용", duration: "온종일 기차여행" }
             ]
           }
         ],
-        alts: [
-          { name: "Deschutes Brewery", type: "맥주/펍", desc: "오리건 최고 크래프트 수제맥주 ($30)", dest: "Deschutes Brewery Portland" },
-          { name: "Pine Street Market", type: "푸드홀", desc: "실내 트렌디 푸드홀 ($20)", dest: "Pine Street Market Portland" }
-        ]
+        tiers: {
+          budget: [
+            { name: "워싱턴 파크 & 장원 산책", desc: "맑은 공기와 포틀랜드 도심 전경 (입장료 무료)", dest: "Washington Park Portland" },
+            { name: "포틀랜드 푸드 트럭 팟", desc: "전 세계 다양한 음식을 $10 내외로 즐기는 푸드 카트", dest: "Pioneer Courthouse Square Food Carts" },
+            { name: "파월스 북스 탐방", desc: "세계 최대 독립 서점에서 책과 굿즈 구경 (무료)", dest: "Powell's City of Books" }
+          ],
+          standard: [
+            { name: "스텀프타운 커피 (Stumptown)", desc: "미국 3대 힙스터 커피 브랜드 본점 ($6~$10)", dest: "Stumptown Coffee Roasters Downtown Portland" },
+            { name: "부두 도넛 (Voodoo Doughnut)", desc: "괴짜 디자인과 독특한 맛의 포틀랜드 명물 ($5~$8)", dest: "Voodoo Doughnut Portland" },
+            { name: "데슈츠 브루어리 (Deschutes)", desc: "오리건 대표 크래프트 수제 맥주 펍 ($25~$35)", dest: "Deschutes Brewery Portland" }
+          ],
+          premium: [
+            { name: "Ox Restaurant", desc: "참나무 숯불로 구워내는 아르헨티나식 고급 우드파이어 스테이크 ($90~$120)", dest: "Ox Restaurant Portland" },
+            { name: "Le Pigeon", desc: "포틀랜드 최고 프리미엄 파인다이닝 프렌치 코스 ($130+)", dest: "Le Pigeon Portland" }
+          ]
+        }
       },
       {
         id: "route3",
         num: 3,
-        title: "시카고 ➔ 버팔로",
-        tag: "Route 3",
+        title: "시카고",
+        dateRange: "12/22 ~ 12/25",
         hotel: "The Chicago Hotel Collection Magnificent Mile",
         transGuide: [
-          { title: "CTA 1-Day Ventra Pass", desc: "시카고 전철(L) 및 버스 24시간 무제한 탑승 패스.", cost: "$5.00" },
-          { title: "CTA 싱글 라이드", desc: "전철 1회 $2.50 / 버스 1회 $2.25.", cost: "$2.50" },
-          { title: "도보 동선", desc: "호텔에서 매그니피센트마일, 360시카고, 밀레니엄파크 도보 가능." }
+          { title: "CTA 1-Day Ventra Pass", desc: "시카고 전철(L) 및 버스 24시간 무제한 패스.", cost: "$5.00" },
+          { title: "CTA 1회권", desc: "전철 $2.50 / 버스 $2.25.", cost: "$2.50" },
+          { title: "도보 동선", desc: "호텔 위치상 매그니피센트마일, 360시카고, 리버워크 도보 가능." }
         ],
         schedules: [
           {
-            day: "12/22(월) 시카고 입성 (식비: ~$35 / 교통비: ~$8)",
+            day: "12/22(월) 시카고 도착 & 딥디쉬 피자",
+            summary: "16:45 시카고 도착 ➔ 호텔 체크인 ➔ 루 말나티 피자 ➔ 야경 산책",
             items: [
-              { time: "16:45", title: "시카고 유니언역 도착 ➔ 호텔 체크인", origin: "Chicago Union Station", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "CTA 버스 $2.25 / 우버 $10" },
-              { time: "18:30", title: "[저녁-명물] 루 말나티 (Lou Malnati's) 시카고 딥디쉬 피자", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Lou Malnati's Pizzeria Magnificent Mile", cost: "식비 $28 (팁 포함)" }
+              { time: "16:45 - 17:30", title: "시카고 유니언역 도착 ➔ 호텔 이동", origin: "Chicago Union Station", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "CTA 버스 $2.25 / 우버 $10", duration: "이동 18분" },
+              { time: "17:30 - 18:30", title: "호텔 체크인 및 짐 정리", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "휴식", duration: "1시간" },
+              { time: "18:30 - 20:00", title: "[저녁-명물] 루 말나티 (Lou Malnati's) 시카고 딥디쉬 피자", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Lou Malnati's Pizzeria Magnificent Mile", cost: "식비 $28 (팁포함)", duration: "도보 8분 + 식사" },
+              { time: "20:00 - 21:00", title: "매그니피센트 마일 야경 산책 후 복귀", origin: "Lou Malnati's Pizzeria Magnificent Mile", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "도보 $0", duration: "도보 산책" }
             ]
           },
           {
-            day: "12/23(화) 시카고 시티투어 (식비: ~$68 / 교통비: ~$5)",
+            day: "12/23(화) 시카고 랜드마크 & 바비큐 뷔페",
+            summary: "밀레니엄 파크 ➔ 이탈리안 비프 ➔ 360 시카고 ➔ 슈하스코 바비큐 뷔페",
             items: [
-              { time: "10:00", title: "밀레니엄 파크 (The Bean 강낭콩 동상) 사진 촬영", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Millennium Park Chicago", cost: "CTA 1일 패스 $5 사용" },
-              { time: "12:00", title: "[점심-명물] 포틸로스 (Portillo's) 이탈리안 비프 샌드위치", origin: "Millennium Park Chicago", dest: "Portillo's Ontario St Chicago", cost: "식비 $15" },
-              { time: "15:00", title: "360 시카고 전망대 (94층 시카고 스카이라인)", origin: "Portillo's Ontario St Chicago", dest: "360 CHICAGO", cost: "입장료 $35" },
-              { time: "18:00", title: "[저녁-뷔페] 시카고 브라질리언 슈하스코 바비큐 뷔페", origin: "360 CHICAGO", dest: "Fogo de Chao Brazilian Steakhouse Chicago", cost: "런치/특가 뷔페 $42 (팁 포함)" }
+              { time: "10:00 - 11:30", title: "밀레니엄 파크 (The Bean 강낭콩 동상) 포토존", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Millennium Park Chicago", cost: "CTA 전철 $2.50", duration: "이동 12분 + 구경" },
+              { time: "11:30 - 13:00", title: "[점심-명물] 포틸로스 (Portillo's) 이탈리안 비프 샌드위치", origin: "Millennium Park Chicago", dest: "Portillo's Ontario St Chicago", cost: "식비 $15", duration: "도보 10분 + 식사" },
+              { time: "13:00 - 15:30", title: "시카고 리버워크 & 루프 지구 도보 산책", origin: "Portillo's Ontario St Chicago", dest: "Chicago Riverwalk", cost: "도보 $0", duration: "산책 2시간" },
+              { time: "15:30 - 17:30", title: "360 시카고 전망대 (94층 일몰 & 초고층 조망)", origin: "Chicago Riverwalk", dest: "360 CHICAGO", cost: "입장료 $35", duration: "관람 1시간반" },
+              { time: "17:30 - 19:30", title: "[저녁-뷔페] Fogo de Chão (브라질리언 슈하스코 바비큐 뷔페)", origin: "360 CHICAGO", dest: "Fogo de Chao Brazilian Steakhouse Chicago", cost: "식비 $42 (팁포함)", duration: "식사 2시간" }
             ]
           },
           {
-            day: "12/24~25 야간열차 이동 (식비: ~$35 / 교통비: ~$10)",
+            day: "12/24(수) 크리스마스 이브 시카고",
+            summary: "네이비 피어 ➔ 시카고 미술관 ➔ Au Cheval 버거 ➔ 야경",
             items: [
-              { time: "14:00", title: "[필수] Trader Joe's 마트 야간열차 식량 구매", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Trader Joe's Chicago", cost: "기차 식량 $22" },
-              { time: "19:00", title: "유니언역 이동 ➔ 21:30 Lake Shore Limited 탑승", origin: "Trader Joe's Chicago", dest: "Chicago Union Station", cost: "우버/버스 $8" }
+              { time: "10:30 - 12:30", title: "네이비 피어 (Navy Pier) 미시간 호수 조망", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Navy Pier Chicago", cost: "CTA 버스 $2.25", duration: "이동 15분" },
+              { time: "12:30 - 14:00", title: "[점심-명물] 지오다노스 (Giordano's) 피자/수제버거", origin: "Navy Pier Chicago", dest: "Giordano's Chicago", cost: "식비 $22", duration: "식사 1시간" },
+              { time: "14:00 - 17:00", title: "시카고 미술관 (Art Institute of Chicago)", origin: "Giordano's Chicago", dest: "Art Institute of Chicago", cost: "입장료 $32", duration: "관람 2시간반" },
+              { time: "17:00 - 19:00", title: "[저녁-명물] 오 슈발 (Au Cheval) 미국 1위 치즈버거", origin: "Art Institute of Chicago", dest: "Au Cheval Chicago", cost: "식비 $25", duration: "식사 1시간반" }
+            ]
+          },
+          {
+            day: "12/25(목) 크리스마스 & 야간열차 탑승",
+            summary: "시내 휴식 ➔ Trader Joe's 기차 식량 구매 ➔ 21:30 Lake Shore Limited 탑승",
+            items: [
+              { time: "12:00 - 14:00", title: "체크아웃 후 짐 보관 & 크리스마스 거리 산책", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Magnificent Mile", cost: "도보 $0", duration: "산책" },
+              { time: "15:00 - 16:30", title: "[필수-마트] Trader Joe's 마트 야간 기차 식량 구매", origin: "Magnificent Mile", dest: "Trader Joe's Chicago", cost: "기차식량 $22", duration: "쇼핑 1시간" },
+              { time: "19:30 - 20:30", title: "호텔 짐 픽업 ➔ 시카고 유니언역 이동 및 대기", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Chicago Union Station", cost: "우버 $10", duration: "이동 15분" },
+              { time: "21:30 ~ ", title: "Lake Shore Limited 야간열차 탑승 (버팔로 향해 출발)", origin: "Chicago Union Station", dest: "Buffalo-Depew Amtrak Station", cost: "열차 출발", duration: "10시간23분 소요" }
             ]
           }
         ],
-        alts: [
-          { name: "Au Cheval (오 슈발)", type: "명물", desc: "미국 1위 치즈버거 ($25)", dest: "Au Cheval Chicago" },
-          { name: "Giordano's", type: "명물", desc: "또다른 딥디쉬 피자 명가 ($25)", dest: "Giordano's Chicago" }
-        ]
+        tiers: {
+          budget: [
+            { name: "밀레니엄 파크 강낭콩 (The Bean)", desc: "시카고 최고의 시그니처 무료 포토존", dest: "Millennium Park Chicago" },
+            { name: "시카고 리버워크 산책", desc: "마천루 건물 사이를 걷는 강변 산책로 (무료)", dest: "Chicago Riverwalk" },
+            { name: "포틸로스 (Portillo's)", desc: "갓 가성비 이탈리안 비프 샌드위치 ($9~$14)", dest: "Portillo's Ontario St Chicago" }
+          ],
+          standard: [
+            { name: "루 말나티 (Lou Malnati's)", desc: "딥디쉬 피자의 대명사 ($25~$30)", dest: "Lou Malnati's Pizzeria Magnificent Mile" },
+            { name: "360 시카고 전망대", desc: "94층 높이에서 즐기는 스카이라인 ($35)", dest: "360 CHICAGO" },
+            { name: "시카고 미술관", desc: "세계 3대 미술관 중 하나 ($32)", dest: "Art Institute of Chicago" }
+          ],
+          premium: [
+            { name: "깁슨스 스테이크하우스 (Gibsons)", desc: "시카고 전통 프리미엄 알카포네 스타일 스테이크 ($100~$130)", dest: "Gibsons Bar & Steakhouse Chicago" },
+            { name: "시카고 건축 아키텍처 크루즈", desc: "강 위에서 전문 가이드와 함께 즐기는 건물 투어 ($50~$65)", dest: "Chicago Architecture River Tour" },
+            { name: "Alinea (알리니아)", desc: "미슐랭 3스타 세계 최고 전설의 분자요리 ($400+)", dest: "Alinea Chicago" }
+          ]
+        }
       },
       {
         id: "route4",
         num: 4,
-        title: "버팔로(나이아가라) ➔ 보스턴",
-        tag: "Route 4",
+        title: "버팔로 & 나이아가라",
+        dateRange: "12/26 ~ 12/27",
         hotel: "Comfort Inn & Suites Buffalo Airport",
         transGuide: [
-          { title: "NFTA 버스 (40번)", desc: "버팔로 도심 ↔ 나이아가라 폭포 이동 버스.", cost: "$2.00" },
-          { title: "우버/리프트 분담", desc: "드퓨역 ↔ 나이아가라 폭포 직행 시 약 $35 (동행 분담 필수)." }
+          { title: "NFTA 40번 버스", desc: "버팔로 도심 ↔ 나이아가라 폭포 연결 버스 ($2.00).", cost: "$2.00" },
+          { title: "우버 분담", desc: "드퓨역 ↔ 나이아가라 폭포 직행 우버 약 $35 (동행 분담 추천)." }
         ],
         schedules: [
           {
-            day: "12/26(금) 나이아가라 폭포 (식비: ~$60 / 교통비: ~$25)",
+            day: "12/26(금) 나이아가라 폭포 웅장함 체험",
+            summary: "08:53 드퓨역 도착 ➔ 바람의 동굴 ➔ 앵커바 버팔로 윙 ➔ 뷔페 ➔ 마트 식량 구매",
             items: [
-              { time: "08:53", title: "버팔로 드퓨역 도착 ➔ 호텔 짐보관 ➔ 나이아가라 이동", origin: "Buffalo-Depew Station", dest: "Cave of the Winds Niagara Falls", cost: "우버 분담 $20" },
-              { time: "11:00", title: "바람의 동굴 (Cave of the Winds) 겨울 폭포 관람", origin: "Cave of the Winds Niagara Falls", dest: "Goat Island Niagara Falls", cost: "입장료 $14" },
-              { time: "13:00", title: "[점심-명물] 앵커 바 (Anchor Bar 오리지널 버팔로 윙)", origin: "Goat Island Niagara Falls", dest: "Anchor Bar Niagara Falls", cost: "식비 $22" },
-              { time: "18:00", title: "[저녁-뷔페] 나이아가라/버팔로 올유캔잇 뷔페", origin: "Anchor Bar Niagara Falls", dest: "Asian Buffet Buffalo", cost: "식비 $28 (팁 포함)" },
-              { time: "20:00", title: "[마트] 다음날 보스턴행 11시간 주간열차 식량 구매", origin: "Asian Buffet Buffalo", dest: "Walmart Supercenter Buffalo", cost: "기차 식량 $15" }
+              { time: "08:53 - 09:30", title: "버팔로 드퓨역 도착 ➔ Comfort Inn 짐보관", origin: "Buffalo-Depew Station", dest: "Comfort Inn & Suites Buffalo Airport", cost: "우버 $12", duration: "이동 10분" },
+              { time: "09:30 - 10:30", title: "호텔 ➔ 나이아가라 폭포 주립공원 이동", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Cave of the Winds Niagara Falls", cost: "우버 분담 $25", duration: "이동 35분" },
+              { time: "10:30 - 12:30", title: "바람의 동굴 (Cave of the Winds) 관람", origin: "Cave of the Winds Niagara Falls", dest: "Goat Island Niagara Falls", cost: "입장료 $14", duration: "관람 1시간반" },
+              { time: "12:30 - 14:00", title: "[점심-명물] 앵커 바 (Anchor Bar 원조 버팔로 윙)", origin: "Goat Island Niagara Falls", dest: "Anchor Bar Niagara Falls", cost: "식비 $22", duration: "식사 1시간" },
+              { time: "14:00 - 17:30", title: "고트 아일랜드 & 나이아가라 폭포 일몰 산책", origin: "Anchor Bar Niagara Falls", dest: "Niagara Falls State Park", cost: "도보 $0", duration: "산책 2시간반" },
+              { time: "17:30 - 19:00", title: "[저녁-뷔페] Asian Buffet Buffalo (올유캔잇 뷔페)", origin: "Niagara Falls State Park", dest: "Asian Buffet Buffalo", cost: "식비 $28 (팁포함)", duration: "식사 1시간" },
+              { time: "19:00 - 20:30", title: "[필수-마트] Walmart / Wegmans 11시간 보스턴 기차 식량 구매", origin: "Asian Buffet Buffalo", dest: "Walmart Supercenter Buffalo", cost: "기차식량 $15", duration: "쇼핑 1시간" }
             ]
           },
           {
-            day: "12/27(토) 보스턴행 주간 열차",
+            day: "12/27(토) 보스턴행 11시간 주간 열차 탑승",
+            summary: "드퓨역 이동 ➔ 09:05 Lake Shore Limited 탑승 ➔ 20:32 보스턴도착",
             items: [
-              { time: "08:15", title: "버팔로 드퓨역 이동 ➔ 09:05 Lake Shore Limited 탑승", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Buffalo-Depew Station", cost: "우버 $10" }
+              { time: "08:00 - 08:30", title: "호텔 체크아웃 ➔ 버팔로 드퓨역 이동", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Buffalo-Depew Station", cost: "우버 $10", duration: "이동 10분" },
+              { time: "09:05 ~ 20:32", title: "Lake Shore Limited 탑승 (보스턴 사우스역 도착)", origin: "Buffalo-Depew Station", dest: "Boston South Station", cost: "열차 탑승", duration: "11시간27분 소요" }
             ]
           }
         ],
-        alts: [
-          { name: "Duff's Famous Wings", type: "명물", desc: "버팔로 현지인 바삭한 윙 ($20)", dest: "Duff's Famous Wings Buffalo" }
-        ]
+        tiers: {
+          budget: [
+            { name: "나이아가라 주립공원 산책", desc: "미국 측 폭포 전경 및 고트 아일랜드 도보 관람 (무료)", dest: "Niagara Falls State Park" },
+            { name: "더프스 윙스 (Duff's)", desc: "로컬들이 더 쳐주는 바삭한 가성비 버팔로 윙 ($18)", dest: "Duff's Famous Wings Buffalo" }
+          ],
+          standard: [
+            { name: "바람의 동굴 (Cave of the Winds)", desc: "폭포 바로 아래까지 걸어 내려가는 액티비티 ($14)", dest: "Cave of the Winds Niagara Falls" },
+            { name: "앵커 바 (Anchor Bar)", desc: "1964년 버팔로 윙이 최초로 탄생한 성지 ($22)", dest: "Anchor Bar Niagara Falls" }
+          ],
+          premium: [
+            { name: "더 레드 코치 인 (The Red Coach Inn)", desc: "폭포를 바라보며 즐기는 역사 깊은 파인다이닝 스테이크 ($80~$100)", dest: "The Red Coach Inn Niagara Falls" },
+            { name: "나이아가라 헬기 투어", desc: "상공에서 바라보는 거대한 폭포 물줄기 ($160+)", dest: "Niagara Helicopters" }
+          ]
+        }
       },
       {
         id: "route5",
         num: 5,
-        title: "보스턴 ➔ 뉴욕",
-        tag: "Route 5",
+        title: "보스턴",
+        dateRange: "12/27 ~ 12/29",
         hotel: "Cambria Hotel Boston Downtown Seaport",
         transGuide: [
-          { title: "MBTA 1-Day LinkPass", desc: "보스턴 전철(T) 및 버스 24시간 무제한.", cost: "$11.00" },
-          { title: "MBTA 싱글 라이드", desc: "지하철 1회 $2.40.", cost: "$2.40" }
+          { title: "MBTA 1-Day LinkPass", desc: "보스턴 지하철(T) 및 버스 24시간 무제한 패스.", cost: "$11.00" },
+          { title: "MBTA 1회권", desc: "지하철 1회 $2.40.", cost: "$2.40" }
         ],
         schedules: [
           {
-            day: "12/28(월) 보스턴 랍스터 & 캠퍼스 (식비: ~$72 / 교통비: ~$11)",
+            day: "12/27(일) 보스턴 밤 도착",
+            summary: "20:32 사우스역 도착 ➔ 호텔 체크인 및 휴식",
             items: [
-              { time: "09:30", title: "프리덤 트레일 (보스턴 커먼 공원 ~ 퀸시 마켓)", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Quincy Market Boston", cost: "1-Day Pass $11 사용" },
-              { time: "12:00", title: "[점심-명물] 넵튠 오이스터 (Neptune Oyster 버터 랍스터롤)", origin: "Quincy Market Boston", dest: "Neptune Oyster Boston", cost: "식비 $42 (팁 포함)" },
-              { time: "15:00", title: "하버드 대학교 (존 하버드 동상 발가락 만지기)", origin: "Neptune Oyster Boston", dest: "Harvard Yard Cambridge", cost: "MBTA 전철 이용" },
-              { time: "18:00", title: "[저녁-뷔페] 보스턴 스시 & 해산물 AYCE 뷔페", origin: "Harvard Yard Cambridge", dest: "Minado Seafood Buffet Boston", cost: "식비 $30 (팁 포함)" },
-              { time: "20:00", title: "[마트] 뉴욕행 기차 간식 구매 (Trader Joe's)", origin: "Minado Seafood Buffet Boston", dest: "Trader Joe's Boston", cost: "기차 식량 $12" }
+              { time: "20:32 - 21:00", title: "보스턴 사우스역 도착 ➔ Cambria Hotel 체크인", origin: "Boston South Station", dest: "Cambria Hotel Boston Downtown Seaport", cost: "MBTA 전철 $2.40", duration: "이동 12분" }
             ]
           },
           {
-            day: "12/29(화) 뉴욕행 열차",
+            day: "12/28(월) 랍스터롤 & 하버드 대학",
+            summary: "프리덤 트레일 ➔ 넵튠 오이스터 랍스터롤 ➔ 하버드 대학 ➔ 스시 뷔페",
             items: [
-              { time: "08:30", title: "사우스역 이동 ➔ 09:20 Northeast Regional 탑승", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Boston South Station", cost: "전철 $2.40" }
+              { time: "09:30 - 11:30", title: "프리덤 트레일 도보 산책 (보스턴 커먼 ~ 퀸시 마켓)", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Quincy Market Boston", cost: "MBTA 무제한 사용", duration: "도보 산책" },
+              { time: "11:30 - 13:30", title: "[점심-명물] 넵튠 오이스터 (Neptune Oyster 버터 랍스터롤)", origin: "Quincy Market Boston", dest: "Neptune Oyster Boston", cost: "식비 $42 (팁포함)", duration: "식사 1.5시간" },
+              { time: "13:30 - 16:30", title: "MBTA Red Line ➔ 하버드 대학교 (존 하버드 동상)", origin: "Neptune Oyster Boston", dest: "Harvard Yard Cambridge", cost: "MBTA 전철 20분", duration: "구경 2시간" },
+              { time: "16:30 - 18:30", title: "[저녁-뷔페] Minado / Yamato Japanese Seafood AYCE 뷔페", origin: "Harvard Yard Cambridge", dest: "Minado Seafood Buffet Boston", cost: "식비 $32 (팁포함)", duration: "식사 1.5시간" },
+              { time: "18:30 - 19:30", title: "[필수-마트] Trader Joe's 뉴욕행 기차 간식 구매", origin: "Minado Seafood Buffet Boston", dest: "Trader Joe's Boston", cost: "기차식량 $12", duration: "쇼핑 40분" }
+            ]
+          },
+          {
+            day: "12/29(화) 뉴욕행 열차 출발",
+            summary: "사우스역 이동 ➔ 09:20 Northeast Regional 탑승 ➔ 13:47 뉴욕 도착",
+            items: [
+              { time: "08:30 - 09:00", title: "호텔 출발 ➔ 보스턴 사우스역 이동", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Boston South Station", cost: "도보 10분", duration: "이동 10분" },
+              { time: "09:20 ~ 13:47", title: "Northeast Regional 171 탑승 (뉴욕 모이니핸 펜역 도착)", origin: "Boston South Station", dest: "New York Moynihan Train Hall", cost: "열차 탑승", duration: "4시간27분 소요" }
             ]
           }
         ],
-        alts: [
-          { name: "Mike's Pastry", type: "디저트", desc: "보스턴 리틀이탈리아 카놀리 ($6)", dest: "Mike's Pastry Boston" }
-        ]
+        tiers: {
+          budget: [
+            { name: "프리덤 트레일 (Freedom Trail)", desc: "붉은 보도블록을 따라 보스턴 미국 독립 역사 걷기 (무료)", dest: "Freedom Trail Boston" },
+            { name: "하버드 야드 산책", desc: "세계 명문 하버드 캠퍼스 및 존 하버드 동상 관람 (무료)", dest: "Harvard Yard Cambridge" },
+            { name: "마이크스 패스트리 (Mike's Pastry)", desc: "리틀 이탈리아 줄 서는 카놀리 맛집 ($6)", dest: "Mike's Pastry Boston" }
+          ],
+          standard: [
+            { name: "넵튠 오이스터 (Neptune Oyster)", desc: "따뜻한 버터 포획 랍스터롤의 정석 ($42)", dest: "Neptune Oyster Boston" },
+            { name: "퀸시 마켓 (Quincy Market)", desc: "클램 차우더와 다양한 음식이 모인 역사적 푸드홀 ($15~$25)", dest: "Quincy Market Boston" }
+          ],
+          premium: [
+            { name: "그릴 23 & 바 (Grill 23 & Bar)", desc: "보스턴 최고 등급 에이징 블랙 앵거스 스테이크 ($110~$140)", dest: "Grill 23 & Bar Boston" },
+            { name: "O Ya (오 야)", desc: "미국 최고의 프리미엄 오마카세 일식 다이닝 ($250+)", dest: "O Ya Boston" }
+          ]
+        }
       },
       {
         id: "route6",
         num: 6,
-        title: "뉴욕 ➔ 워싱턴 D.C.",
-        tag: "Route 6",
+        title: "뉴욕",
+        dateRange: "12/29 ~ 1/2",
         hotel: "Romana Hotel NYC (Manhattan)",
         transGuide: [
-          { title: "MTA OMNY (컨택리스)", desc: "신용카드 찍고 탑승. 1회 $2.90. 12회 이상 탑승 시 이후 주중 무료 자동 적용!", cost: "$2.90" }
+          { title: "MTA OMNY (컨택리스)", desc: "신용카드/Apple Pay 바로 찍기. 1회 $2.90. 월~일 12회 이상 탑승 시 이후 무제한 무료!", cost: "$2.90" }
         ],
         schedules: [
           {
-            day: "12/29(화) 뉴욕 입성 (식비: ~$55 / 교통비: ~$6)",
+            day: "12/29(화) 뉴욕 입성 & 타임스 스퀘어",
+            summary: "13:47 펜역 도착 ➔ 호텔 짐보관 ➔ 타임스 스퀘어 ➔ K-BBQ 뷔페",
             items: [
-              { time: "13:47", title: "모이니핸 펜역 도착 ➔ 숙소 짐보관", origin: "Moynihan Train Hall at Penn Station", dest: "Romana Hotel NYC", cost: "MTA 지하철 $2.90" },
-              { time: "15:00", title: "타임스 스퀘어 & 브로드웨이 산책", origin: "Romana Hotel NYC", dest: "Times Square NYC", cost: "도보 $0" },
-              { time: "18:00", title: "[저녁-뷔페] K-Town K-BBQ & 해산물 뷔페", origin: "Times Square NYC", dest: "Picnic Garden BBQ Buffet NYC", cost: "식비 $40 (팁 포함)" }
+              { time: "13:47 - 14:30", title: "모이니핸 펜역 도착 ➔ Romana Hotel 짐보관", origin: "Moynihan Train Hall at Penn Station", dest: "Romana Hotel NYC", cost: "도보 $0", duration: "도보 8분" },
+              { time: "14:30 - 17:30", title: "타임스 스퀘어 & 록펠러 센터 트리 야경 산책", origin: "Romana Hotel NYC", dest: "Times Square NYC", cost: "도보 $0", duration: "도보 산책" },
+              { time: "17:30 - 19:30", title: "[저녁-뷔페] Picnic Garden / K-BBQ & 해산물 뷔페", origin: "Times Square NYC", dest: "Picnic Garden BBQ Buffet NYC", cost: "식비 $40 (팁포함)", duration: "식사 2시간" },
+              { time: "19:30 - 20:30", title: "호텔 체크인 및 휴식", origin: "Picnic Garden BBQ Buffet NYC", dest: "Romana Hotel NYC", cost: "도보 $0", duration: "휴식" }
             ]
           },
           {
-            day: "12/30(수) 뉴욕 핫플 (식비: ~$60 / 교통비: ~$9)",
+            day: "12/30(수) 뉴욕 핫플 (서밋 & 덤보)",
+            summary: "에싸 베이글 ➔ 서밋 전망대 ➔ 브루클린 덤보 ➔ 카츠 델리",
             items: [
-              { time: "09:00", title: "[아침-명물] 에싸 베이글 (Ess-a-Bagel 연어 크림치즈)", origin: "Romana Hotel NYC", dest: "Ess-a-Bagel NYC", cost: "식비 $15" },
-              { time: "12:00", title: "서밋 원 밴더빌트 거울 전망대", origin: "Ess-a-Bagel NYC", dest: "Summit One Vanderbilt", cost: "입장료 $45" },
-              { time: "15:00", title: "브루클린 덤보 (DUMBO) 인생샷 포토존", origin: "Summit One Vanderbilt", dest: "DUMBO Brooklyn", cost: "MTA 지하철 $2.90" },
-              { time: "18:00", title: "[저녁-명물] 카츠 델리 (Katz's Delicatessen 파스트라미 샌드위치)", origin: "DUMBO Brooklyn", dest: "Katz's Delicatessen NYC", cost: "식비 $30" }
+              { time: "09:00 - 10:30", title: "[아침-명물] 에싸 베이글 (Ess-a-Bagel 연어 크림치즈)", origin: "Romana Hotel NYC", dest: "Ess-a-Bagel NYC", cost: "식비 $15", duration: "도보 12분 + 식사" },
+              { time: "10:30 - 13:00", title: "서밋 원 밴더빌트 (Summit One Vanderbilt) 거울 전망대", origin: "Ess-a-Bagel NYC", dest: "Summit One Vanderbilt", cost: "입장료 $45", duration: "관람 2시간" },
+              { time: "13:00 - 16:30", title: "MTA F선 ➔ 브루클린 덤보 (DUMBO) & 브루클린 브릿지 도보", origin: "Summit One Vanderbilt", dest: "DUMBO Brooklyn", cost: "MTA $2.90", duration: "전철 20분 + 산책" },
+              { time: "16:30 - 18:30", title: "[저녁-명물] 카츠 델리 (Katz's Delicatessen 파스트라미 샌드위치)", origin: "DUMBO Brooklyn", dest: "Katz's Delicatessen NYC", cost: "식비 $30", duration: "도보 15분 + 식사" }
             ]
           },
           {
-            day: "1/2(금) D.C. 이동 (식비: ~$30 / 교통비: ~$5)",
+            day: "12/31 ~ 1/1 연말연시 뉴욕 즐기기",
+            summary: "센트럴파크 산책 ➔ 조스 피자 ➔ 할랄가이즈 ➔ 신정 분위기 즐기기",
             items: [
-              { time: "10:00", title: "[마트] 워싱턴행 기차 간식 구매 및 펜역 이동", origin: "Romana Hotel NYC", dest: "Moynihan Train Hall at Penn Station", cost: "식량 $15" },
-              { time: "11:05", title: "Northeast Regional 탑승 (워싱턴 D.C. 행)", origin: "Moynihan Train Hall at Penn Station", dest: "Washington Union Station", cost: "기차 출발" }
+              { time: "자유 일정", title: "센트럴파크, 조스 피자($5), 할랄가이즈($12) 자유 탐방", origin: "Times Square NYC", dest: "Central Park NYC", cost: "자유 경비", duration: "온종일" }
+            ]
+          },
+          {
+            day: "1/2(금) 워싱턴 D.C. 이동",
+            summary: "10:00 기차 간식 구매 ➔ 11:05 Northeast Regional 탑승",
+            items: [
+              { time: "10:00 - 10:30", title: "[필수-마트] 기차 간식 구매 및 펜역 이동", origin: "Romana Hotel NYC", dest: "Moynihan Train Hall at Penn Station", cost: "간식 $15", duration: "이동 8분" },
+              { time: "11:05 ~ 14:25", title: "Northeast Regional 탑승 (워싱턴 유니언역 도착)", origin: "Moynihan Train Hall at Penn Station", dest: "Washington Union Station", cost: "열차 탑승", duration: "3시간20분 소요" }
             ]
           }
         ],
-        alts: [
-          { name: "Joe's Pizza", type: "명물", desc: "스파이더맨 피자 슬라이스 ($5)", dest: "Joe's Pizza Carmine St" },
-          { name: "Halal Guys", type: "명물", desc: "스트리트 푸드 치킨 오버 라이스 ($12)", dest: "The Halal Guys 53rd and 6th" }
-        ]
+        tiers: {
+          budget: [
+            { name: "센트럴 파크 산책", desc: "뉴욕 도심 속 거대한 최강 공원 산책 (무료)", dest: "Central Park NYC" },
+            { name: "브루클린 브릿지 도보 건너기", desc: "맨해튼 마천루를 바라보며 다리 건너기 (무료)", dest: "Brooklyn Bridge" },
+            { name: "조스 피자 (Joe's Pizza)", desc: "스파이더맨 피자로 유망한 원조 뉴욕 슬라이스 ($5)", dest: "Joe's Pizza Carmine St" },
+            { name: "할랄 가이즈 (The Halal Guys)", desc: "스트리트 푸드 근본 치킨 오버 라이스 ($12)", dest: "The Halal Guys 53rd and 6th" }
+          ],
+          standard: [
+            { name: "에싸 베이글 (Ess-a-Bagel)", desc: "쫄깃한 훈제연어 크림치즈 베이글 ($15)", dest: "Ess-a-Bagel NYC" },
+            { name: "카츠 델리 (Katz's Delicatessen)", desc: "영화에 나온 소고기 파스트라미 폭탄 샌드위치 ($30)", dest: "Katz's Delicatessen NYC" },
+            { name: "서밋 원 밴더빌트 전망대", desc: "거울과 유리로 가득한 인스타그램 최고 핫플 전망대 ($45)", dest: "Summit One Vanderbilt" }
+          ],
+          premium: [
+            { name: "피터 루거 스테이크 (Peter Luger)", desc: "130년 전통 브루클린 최고의 드라이에이징 포터하우스 ($120~$150)", dest: "Peter Luger Steak House Brooklyn" },
+            { name: "킨스 스테이크하우스 (Keens)", desc: "맨해튼 한복판 역사 깊은 머튼찹 & 스테이크 성지 ($110~$140)", dest: "Keens Steakhouse NYC" },
+            { name: "브로드웨이 뮤지컬 (라이온킹/위키드)", desc: "뉴욕에 왔다면 무조건 봐야 할 브로드웨이 라이브 ($150+)", dest: "Gershwin Theatre NYC" }
+          ]
+        }
       },
       {
         id: "route7",
         num: 7,
-        title: "워싱턴 D.C. ➔ 귀국",
-        tag: "Route 7",
+        title: "워싱턴 D.C. & 귀국",
+        dateRange: "1/2 ~ 1/6",
         hotel: "Kellogg Conference Hotel Capitol Hill",
         transGuide: [
-          { title: "WMATA 메트로", desc: "거리별 $2.25 ~ $3.85. 박물관 대부분 무료라 교통비 적게 듦!", cost: "$2.25+" },
+          { title: "WMATA 메트로", desc: "거리별 $2.25 ~ $3.85.", cost: "$2.25+" },
           { title: "박물관 무료 혜택", desc: "스미스소니언 항공우주, 자연사, 국립미술관 모두 입장료 $0!" }
         ],
         schedules: [
           {
-            day: "1/2(금) 국회의사당 & 스미스소니언 (식비: ~$50 / 교통비: ~$8)",
+            day: "1/2(금) 스미스소니언 & 뷔페",
+            summary: "14:25 D.C. 도착 ➔ 호텔 짐보관 ➔ 항공우주 박물관 ➔ 스시 뷔페",
             items: [
-              { time: "14:25", title: "워싱턴 유니언역 도착 ➔ 숙소 이동", origin: "Washington Union Station", dest: "Kellogg Conference Hotel Capitol Hill", cost: "우버/버스 $8" },
-              { time: "16:00", title: "스미스소니언 국립 항공우주 박물관", origin: "Kellogg Conference Hotel Capitol Hill", dest: "National Air and Space Museum", cost: "입장료 무료 ($0)" },
-              { time: "18:30", title: "[저녁-뷔페] D.C. 올유캔잇 뷔페/스시 뷔페", origin: "National Air and Space Museum", dest: "Hibachi Buffet Washington DC", cost: "식비 $32 (팁 포함)" }
+              { time: "14:25 - 15:30", title: "워싱턴 유니언역 도착 ➔ Kellogg Hotel 짐보관", origin: "Washington Union Station", dest: "Kellogg Conference Hotel Capitol Hill", cost: "우버 $8", duration: "이동 10분" },
+              { time: "16:00 - 18:00", title: "스미스소니언 국립 항공우주 박물관 관람", origin: "Kellogg Conference Hotel Capitol Hill", dest: "National Air and Space Museum", cost: "입장료 무료", duration: "관람 2시간" },
+              { time: "18:00 - 19:30", title: "[저녁-뷔페] Hibachi / Todai DC AYCE 스시 뷔페", origin: "National Air and Space Museum", dest: "Hibachi Buffet Washington DC", cost: "식비 $32 (팁포함)", duration: "식사 1.5시간" }
             ]
           },
           {
-            day: "1/3~1/4 D.C. 랜드마크 (식비: ~$55 / 교통비: ~$6)",
+            day: "1/3(토) D.C. 주요 랜드마크",
+            summary: "링컨 기념관 ➔ 벤스 칠리 보울 ➔ 백악관 ➔ 올드 에빗 그릴",
             items: [
-              { time: "10:00", title: "링컨 기념관 & 워싱턴 기념탑", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Lincoln Memorial", cost: "입장료 무료 ($0)" },
-              { time: "13:00", title: "[점심-명물] 벤스 칠리 보울 (Ben's Chili Bowl 오바마 단골)", origin: "Lincoln Memorial", dest: "Ben's Chili Bowl DC", cost: "식비 $14" },
-              { time: "17:00", title: "백악관 외부 관람 및 산책", origin: "Ben's Chili Bowl DC", dest: "The White House", cost: "도보 $0" },
-              { time: "19:00", title: "[저녁-명물] 올드 에빗 그릴 (Old Ebbitt Grill 굴 & 다이닝)", origin: "The White House", dest: "Old Ebbitt Grill Washington DC", cost: "식비 $35" }
+              { time: "10:00 - 12:30", title: "링컨 기념관 & 워싱턴 기념탑 산책", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Lincoln Memorial", cost: "무료 ($0)", duration: "산책 2시간" },
+              { time: "12:30 - 14:00", title: "[점심-명물] 벤스 칠리 보울 (Ben's Chili Bowl 오바마 단골)", origin: "Lincoln Memorial", dest: "Ben's Chili Bowl DC", cost: "식비 $14", duration: "식사 1시간" },
+              { time: "14:00 - 17:00", title: "백악관 외부 관람 & 국회도서관 내부 투어", origin: "Ben's Chili Bowl DC", dest: "The White House", cost: "무료 ($0)", duration: "투어 2.5시간" },
+              { time: "17:00 - 19:00", title: "[저녁-명물] 올드 에빗 그릴 (Old Ebbitt Grill 굴 & 다이닝)", origin: "The White House", dest: "Old Ebbitt Grill Washington DC", cost: "식비 $35", duration: "식사 1.5시간" }
             ]
           },
           {
-            day: "1/5~1/6 귀국길",
+            day: "1/5(월) 밤 ~ 1/6(화) 심야 열차 & 인천 귀국",
+            summary: "22:00 D.C. 밤기차 탑승 ➔ 05:11 뉴욕 도착 ➔ EWR 공항 이동 ➔ 귀국!",
             items: [
-              { time: "22:00", title: "심야 열차 탑승 ➔ 05:11 뉴욕 펜역 도착 ➔ EWR 공항 이동 ➔ 귀국!", origin: "Washington Union Station", dest: "Newark Liberty International Airport", cost: "NJ Transit $15" }
+              { time: "21:00 - 22:00", title: "호텔 짐 픽업 ➔ 워싱턴 유니언역 이동", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Washington Union Station", cost: "우버 $8", duration: "이동 10분" },
+              { time: "22:00 ~ 05:11", title: "Night Amtrak 탑승 (뉴욕 펜역 05:11 도착 / 숙박비 아낌!)", origin: "Washington Union Station", dest: "Moynihan Train Hall at Penn Station", cost: "열차 이동", duration: "7시간11분 소요" },
+              { time: "06:00 - 07:00", title: "뉴욕 펜역 ➔ NJ Transit 기차 ➔ 뉴어크(EWR) 공항 이동", origin: "Moynihan Train Hall at Penn Station", dest: "Newark Liberty International Airport", cost: "NJ Transit $15", duration: "이동 30분" },
+              { time: "10:30 ~ ", title: "뉴어크 EWR 공항 출발 ➔ 인천(ICN) 귀국 비행기 탑승!", origin: "Newark Liberty International Airport", dest: "ICN Airport", cost: "귀국 완료", duration: "비행" }
             ]
           }
         ],
-        alts: [
-          { name: "Founding Farmers", type: "명물", desc: "미국 정통 농장직송 다이닝 ($35)", dest: "Founding Farmers DC" }
-        ]
+        tiers: {
+          budget: [
+            { name: "스미스소니언 모든 박물관", desc: "항공우주, 자연사, 국립미술관 등 전부 입장료 $0!", dest: "National Air and Space Museum" },
+            { name: "링컨 기념관 & 반사못", desc: "미국 민주주의의 상징적인 무료 명소", dest: "Lincoln Memorial" },
+            { name: "벤스 칠리 보울 (Ben's Chili Bowl)", desc: "오바마 대통령 단골 스파이시 수제 소시지 ($12~$15)", dest: "Ben's Chili Bowl DC" }
+          ],
+          standard: [
+            { name: "올드 에빗 그릴 (Old Ebbitt Grill)", desc: "1856년 설립된 DC 최고의 굴 & 다이닝 ($35~$50)", dest: "Old Ebbitt Grill Washington DC" },
+            { name: "파운딩 파머스 (Founding Farmers)", desc: "농장 직송 정통 캐주얼 미국식 다이닝 ($30~$45)", dest: "Founding Farmers DC" }
+          ],
+          premium: [
+            { name: "조스 시푸드 (Joe's Seafood Prime Steak)", desc: "워싱턴 정재계 인사들이 찾는 프리미엄 스톤크랩 & 프라임 스테이크 ($110~$150)", dest: "Joe's Seafood Prime Steak Washington DC" },
+            { name: "The Inn at Little Washington", desc: "DC 인근 세계 최고 미슐랭 3스타 다이닝 ($300+)", dest: "The Inn at Little Washington" }
+          ]
+        }
       }
     ];
 
@@ -340,17 +489,17 @@
         const isActive = idx === currentRouteIndex;
         return `
           <button onclick="selectRoute(${idx})" 
-            class="flex items-center gap-2 px-3 py-2 rounded-xl text-left border shrink-0 transition-all ${
+            class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-left border shrink-0 transition-all ${
               isActive 
                 ? 'nav-tab-active bg-white border-indigo-600' 
                 : 'bg-slate-50 border-slate-200 text-slate-500'
             }">
-            <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+            <div class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-black ${
               isActive ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-400'
             }">${route.num}</div>
-            <div class="pr-1">
-              <div class="text-[12px] font-bold leading-tight ${isActive ? 'text-slate-900' : 'text-slate-600'}">${route.title}</div>
-              <div class="text-[10px] ${isActive ? 'text-indigo-600 font-semibold' : 'text-slate-400'}">식비 1일 10만원 이내</div>
+            <div>
+              <div class="text-[11px] font-extrabold leading-tight ${isActive ? 'text-slate-900' : 'text-slate-600'}">${route.title}</div>
+              <div class="text-[9px] ${isActive ? 'text-indigo-600 font-bold' : 'text-slate-400'}">${route.dateRange}</div>
             </div>
           </button>
         `;
@@ -362,66 +511,74 @@
       const container = document.getElementById('mainContent');
 
       container.innerHTML = `
-        <!-- Hotel & Route Header Card -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm space-y-3">
-          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold">
-            <i class="fa-solid fa-hotel"></i> ${r.tag} 확정 숙소
+        <!-- Hotel Header -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-extrabold px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-md">
+              <i class="fa-solid fa-hotel"></i> ${r.num}구간 확정 숙소
+            </span>
+            <span class="text-[10px] font-bold text-slate-400">${r.dateRange}</span>
           </div>
-          <h2 class="text-lg font-black text-slate-900 leading-snug">${r.hotel}</h2>
+          <h2 class="text-base font-black text-slate-900 leading-snug">${r.hotel}</h2>
         </div>
 
-        <!-- Transportation Guide Card -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm space-y-3">
-          <div class="flex items-center gap-2 mb-1">
-            <div class="w-7 h-7 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 font-bold text-xs">
+        <!-- Transit Guide Card -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">
               <i class="fa-solid fa-bus"></i>
             </div>
-            <h3 class="text-sm font-black text-slate-900">교통비 & 패스 상세 가이드</h3>
+            <h3 class="text-xs font-black text-slate-900">교통 패스 & 이동 꿀팁</h3>
           </div>
-          <div class="space-y-2">
+          <div class="space-y-1.5">
             ${r.transGuide.map(t => `
-              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex justify-between items-start">
+              <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex justify-between items-start">
                 <div class="pr-2">
-                  <div class="text-xs font-bold text-slate-800">${t.title}</div>
+                  <div class="text-[11px] font-bold text-slate-800">${t.title}</div>
                   <div class="text-[10px] text-slate-500 mt-0.5 leading-tight">${t.desc}</div>
                 </div>
-                ${t.cost ? `<span class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded shrink-0">${t.cost}</span>` : ''}
+                ${t.cost ? `<span class="text-[9px] font-black bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded shrink-0">${t.cost}</span>` : ''}
               </div>
             `).join('')}
           </div>
         </div>
 
-        <!-- Daily Itinerary Card -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-7 h-7 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs">
-              <i class="fa-regular fa-calendar-check"></i>
+        <!-- Timed Itinerary Schedule Card -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
+              <i class="fa-regular fa-clock"></i>
             </div>
             <div>
-              <h3 class="text-sm font-black text-slate-900">일자별 상세 동선 & 비용</h3>
-              <p class="text-[10px] text-slate-400 font-medium">1일 식비 10만원($70~$75) 제한 준수</p>
+              <h3 class="text-xs font-black text-slate-900">분단위 세부 일자별 일정표</h3>
+              <p class="text-[9px] text-slate-400 font-medium">소요시간 & 이동 수단 완벽 세팅</p>
             </div>
           </div>
 
           ${r.schedules.map(sch => `
-            <div class="mb-6">
-              <div class="inline-block px-2.5 py-1 bg-slate-900 text-white rounded-lg text-[11px] font-black mb-3">
+            <div class="mb-5 border-b border-slate-100 pb-4 last:border-0 last:pb-0">
+              <div class="bg-slate-900 text-white px-3 py-1.5 rounded-xl text-[11px] font-black mb-1">
                 ${sch.day}
               </div>
-              <div class="relative pl-4 border-l-2 border-indigo-200 space-y-4 ml-1">
+              <p class="text-[10px] text-indigo-600 font-bold mb-3 px-1">💡 요약: ${sch.summary}</p>
+              
+              <div class="relative pl-3.5 border-l-2 border-indigo-200 space-y-3.5 ml-1">
                 ${sch.items.map(item => `
                   <div class="relative">
-                    <div class="absolute w-3 h-3 bg-indigo-600 rounded-full -left-[23px] top-1 border-2 border-white"></div>
-                    <div class="text-[11px] font-black text-indigo-600 mb-0.5">${item.time}</div>
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                      <div class="flex justify-between items-start mb-1.5">
-                        <h4 class="font-bold text-xs text-slate-900 leading-tight pr-2">${item.title}</h4>
-                        <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 shrink-0">${item.cost}</span>
+                    <div class="absolute w-2.5 h-2.5 bg-indigo-600 rounded-full -left-[19px] top-1 border-2 border-white"></div>
+                    <div class="flex justify-between items-center mb-0.5">
+                      <span class="text-[10px] font-black text-indigo-600">${item.time}</span>
+                      <span class="text-[9px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.2 rounded">${item.duration}</span>
+                    </div>
+                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                      <div class="flex justify-between items-start mb-1">
+                        <h4 class="font-bold text-[11px] text-slate-900 leading-tight pr-2">${item.title}</h4>
+                        <span class="text-[9px] font-extrabold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 shrink-0 whitespace-nowrap">${item.cost}</span>
                       </div>
                       ${item.origin && item.dest ? `
                         <a href="${makeDirUrl(item.origin, item.dest)}" target="_blank" 
-                           class="w-full bg-white hover:bg-indigo-50 text-indigo-600 text-[10px] font-bold py-1.5 rounded-lg border border-slate-200 flex items-center justify-center gap-1 transition">
-                           <i class="fa-solid fa-location-arrow text-[10px]"></i> 길찾기 지도 열기
+                           class="w-full bg-white hover:bg-indigo-50 text-indigo-600 text-[9px] font-bold py-1 rounded-lg border border-slate-200 flex items-center justify-center gap-1 transition">
+                           <i class="fa-solid fa-location-arrow text-[8px]"></i> 길찾기 지도 연결
                         </a>
                       ` : ''}
                     </div>
@@ -432,31 +589,84 @@
           `).join('')}
         </div>
 
-        <!-- Local Specialty & Buffet Alts -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm space-y-3">
+        <!-- 3-Tier Option Categories -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-3">
           <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 font-bold text-xs">
-              <i class="fa-solid fa-utensils"></i>
+            <div class="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold">
+              <i class="fa-solid fa-layer-group"></i>
             </div>
-            <h3 class="text-sm font-black text-slate-900">추천 명물 & 대체 맛집</h3>
+            <div>
+              <h3 class="text-xs font-black text-slate-900">3단계 추천 선택 라인업</h3>
+              <p class="text-[9px] text-slate-400 font-medium">가성비 / 일반추천 / 무조건 가볼 프리미엄</p>
+            </div>
           </div>
-          <div class="space-y-2">
-            ${r.alts.map(alt => `
-              <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                <div>
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800">${alt.type}</span>
-                    <strong class="text-slate-800 text-xs">${alt.name}</strong>
+
+          <!-- Tier 1: Budget -->
+          <div class="border border-emerald-200 bg-emerald-50/40 rounded-2xl p-3">
+            <div class="flex items-center gap-1.5 mb-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <h4 class="text-[11px] font-black text-emerald-900">1. 가성비 & 무료 라인업 (Budget / Free)</h4>
+            </div>
+            <div class="space-y-1.5">
+              ${r.tiers.budget.map(item => `
+                <div class="bg-white p-2 rounded-xl border border-emerald-100 flex justify-between items-center">
+                  <div class="pr-2">
+                    <div class="text-[10px] font-bold text-slate-800">${item.name}</div>
+                    <div class="text-[9px] text-slate-500">${item.desc}</div>
                   </div>
-                  <p class="text-[10px] text-slate-500 mt-0.5">${alt.desc}</p>
+                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.dest)}" target="_blank" 
+                     class="w-6 h-6 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 text-[10px]">
+                    <i class="fa-solid fa-map-pin"></i>
+                  </a>
                 </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(alt.dest)}" target="_blank" 
-                   class="w-7 h-7 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center hover:text-indigo-600 shrink-0">
-                  <i class="fa-solid fa-map-pin text-xs"></i>
-                </a>
-              </div>
-            `).join('')}
+              `).join('')}
+            </div>
           </div>
+
+          <!-- Tier 2: Standard -->
+          <div class="border border-blue-200 bg-blue-50/40 rounded-2xl p-3">
+            <div class="flex items-center gap-1.5 mb-2">
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+              <h4 class="text-[11px] font-black text-blue-900">2. 필수 & 클래식 라인업 (Standard / Must)</h4>
+            </div>
+            <div class="space-y-1.5">
+              ${r.tiers.standard.map(item => `
+                <div class="bg-white p-2 rounded-xl border border-blue-100 flex justify-between items-center">
+                  <div class="pr-2">
+                    <div class="text-[10px] font-bold text-slate-800">${item.name}</div>
+                    <div class="text-[9px] text-slate-500">${item.desc}</div>
+                  </div>
+                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.dest)}" target="_blank" 
+                     class="w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 text-[10px]">
+                    <i class="fa-solid fa-map-pin"></i>
+                  </a>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Tier 3: Premium -->
+          <div class="border border-purple-200 bg-purple-50/40 rounded-2xl p-3">
+            <div class="flex items-center gap-1.5 mb-2">
+              <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+              <h4 class="text-[11px] font-black text-purple-900">3. 돈 더 내도 꼭 가볼 라인업 (Premium Splurge)</h4>
+            </div>
+            <div class="space-y-1.5">
+              ${r.tiers.premium.map(item => `
+                <div class="bg-white p-2 rounded-xl border border-purple-100 flex justify-between items-center">
+                  <div class="pr-2">
+                    <div class="text-[10px] font-bold text-slate-800">${item.name}</div>
+                    <div class="text-[9px] text-slate-500">${item.desc}</div>
+                  </div>
+                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.dest)}" target="_blank" 
+                     class="w-6 h-6 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 text-[10px]">
+                    <i class="fa-solid fa-map-pin"></i>
+                  </a>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
         </div>
       `;
     }
