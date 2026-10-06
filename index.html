@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>미국 암트랙 대횡단 마스터 플래너 (공유/우버연동/치안 완전판)</title>
+  <title>미국 암트랙 대횡단 마스터 플래너 (폐업 장소 전면 수정 완전판)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -31,9 +31,9 @@
         <div>
           <div class="flex items-center gap-1.5">
             <h1 class="text-base font-black text-slate-900 tracking-tight">미국 횡단 플래너</h1>
-            <span class="text-[10px] font-black bg-indigo-600 text-white px-1.5 py-0.5 rounded">V6 실시간 공유</span>
+            <span class="text-[10px] font-black bg-emerald-600 text-white px-1.5 py-0.5 rounded">영업장소 재검증</span>
           </div>
-          <p class="text-[10px] text-slate-400 font-medium">우버/리프트 원클릭 연동 • 치안 가이드</p>
+          <p class="text-[10px] text-slate-400 font-medium">포틀랜드 Cascades Station 연동</p>
         </div>
       </div>
       <div class="flex items-center gap-1">
@@ -46,10 +46,10 @@
       </div>
     </div>
 
-    <!-- Global Share Alert Bar -->
+    <!-- Alert Bar -->
     <div class="bg-indigo-950 text-indigo-200 px-4 py-2">
       <div class="max-w-md mx-auto flex items-center justify-between text-[10px] font-medium">
-        <span><i class="fa-solid fa-globe text-amber-400 mr-1"></i> 일정 수정 후 <strong>[공유]</strong> 버튼을 누르면 상대방에게도 똑같이 전달됩니다!</span>
+        <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> 다운타운 폐업 반영! <strong>Cascades Station</strong> 쇼핑몰로 수정되었습니다.</span>
       </div>
     </div>
 
@@ -104,7 +104,6 @@
           <label class="text-[10px] font-black text-slate-800"><i class="fa-solid fa-taxi text-amber-500"></i> 우버/리프트 호출 버튼 활성화</label>
           <input type="checkbox" id="editNeedsRide" class="w-4 h-4 text-indigo-600 rounded">
         </div>
-        <p class="text-[9px] text-slate-400">대중교통이 너무 오래 걸리거나 위험할 때 체킹하세요.</p>
       </div>
 
       <!-- Map Location Inputs -->
@@ -117,7 +116,7 @@
           <input type="text" id="editDest" class="w-full text-xs p-2 border rounded-xl bg-white mt-0.5 focus:ring-2 focus:ring-indigo-500 outline-none">
         </div>
         <div>
-          <label class="text-[9px] font-bold text-slate-500">출발 장소명 (선택 - 길찾기용)</label>
+          <label class="text-[9px] font-bold text-slate-500">출발 장소명 (선택)</label>
           <input type="text" id="editOrigin" class="w-full text-xs p-2 border rounded-xl bg-white mt-0.5 focus:ring-2 focus:ring-indigo-500 outline-none">
         </div>
       </div>
@@ -129,9 +128,8 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'amtrak_master_planner_v6';
+    const STORAGE_KEY = 'amtrak_master_planner_v7';
 
-    // 우버 & 리프트 & 구글지도 딥링크 생성기
     const makeUberUrl = (dest) => `https://m.uber.com/ul/?action=setPickup&dropoff[formatted_address]=${encodeURIComponent(dest)}`;
     const makeLyftUrl = (dest) => `https://lyft.com/ride?id=lyft&destination[address]=${encodeURIComponent(dest)}`;
     const makeMapUrl = (origin, dest) => {
@@ -149,7 +147,6 @@
       return '';
     };
 
-    // 데이터 세트 (모든 이동의 소요시간/비용/우버연동 완비)
     const defaultRoutesData = [
       {
         id: "route1",
@@ -157,11 +154,11 @@
         title: "샌프란시스코",
         dateRange: "12/17 ~ 12/18",
         hotel: "Hilton San Francisco Financial District",
-        safetyOverview: "텐더로인(Tenderloin) 및 시빅센터 구역은 약물/노숙자 밀집으로 절대 진입 금지. 힐튼 호텔 중심 상권 및 주요 관광지는 안전함.",
+        safetyOverview: "텐더로인(Tenderloin) 및 시빅센터 구역은 절대 진입 금지. 힐튼 호텔 중심 상권 및 관광지는 낮 시간대 매우 안전함.",
         transGuide: [
           { title: "BART (공항↔도심)", desc: "SFO 공항 ➔ Montgomery St역 (30분 소요 / $10.55). 호텔까지 도보 8분.", cost: "$10.55" },
           { title: "Muni 1-Day Visitor Passport", desc: "케이블카 + F-전차 + 뮤니 버스/지하철 24시간 무제한.", cost: "$15.00" },
-          { title: "SFC 암트랙 버스정류장", desc: "Salesforce Transit Center 정류장까지 도보 10분. 야간 이동 시 큰길 이용." }
+          { title: "SFC 암트랙 버스정류장", desc: "Salesforce Transit Center 정류장까지 도보 10분." }
         ],
         schedules: [
           {
@@ -170,12 +167,12 @@
             items: [
               { time: "11:40 - 12:40", title: "SFO 공항 입국 ➔ BART 탑승", origin: "San Francisco International Airport", dest: "Montgomery St Station SF", cost: "$10.55", duration: "전철 30분", safetyLevel: "yellow", safetyNote: "BART 내부 캐리어 및 소지품 밀착 관리", needsRide: false, done: false },
               { time: "12:40 - 13:00", title: "Montgomery St역 ➔ 힐튼 SF 디스트릭트 짐 보관", origin: "Montgomery St Station SF", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "도보 8분", safetyLevel: "green", safetyNote: "금융지구 대로변 안전", needsRide: false, done: false },
-              { time: "13:00 - 14:30", title: "[점심-뷔페] Daly Buffet / Dragon Beaux (해산물&딤섬 뷔페)", origin: "Hilton San Francisco Financial District", dest: "Daly Buffet San Francisco", cost: "$35", duration: "도보 5분", safetyLevel: "green", safetyNote: "차이나타운 낮시간대 유동인구 많아 안전", needsRide: false, done: false },
+              { time: "13:00 - 14:30", title: "[점심-뷔페] Daly Buffet / Dragon Beaux (해산물&딤섬 뷔페)", origin: "Hilton San Francisco Financial District", dest: "Daly Buffet San Francisco", cost: "$35", duration: "도보 5분", safetyLevel: "green", safetyNote: "낮시간대 유동인구 많아 안전", needsRide: false, done: false },
               { time: "14:30 - 16:00", title: "페리 빌딩 산책 & 블루보틀 본점 커피", origin: "Daly Buffet San Francisco", dest: "Ferry Building San Francisco", cost: "$6", duration: "도보 12분", safetyLevel: "green", safetyNote: "수변 산책로 치안 우수", needsRide: false, done: false },
               { time: "16:00 - 18:00", title: "F-Market 전차 ➔ 피어39 바다사자 관람", origin: "Ferry Building San Francisco", dest: "PIER 39", cost: "패스", duration: "전차 15분", safetyLevel: "green", safetyNote: "관광객 인파 많음. 소매치기 유의", needsRide: false, done: false },
-              { time: "18:00 - 19:20", title: "[저녁-명물] 보딘 베이커리 (사워도우 클램 차우더 수프)", origin: "PIER 39", dest: "Boudin Bakery Pier 39", cost: "$18", duration: "도보 5분", safetyLevel: "green", safetyNote: "피셔맨스워프 밤에도 조명 밝고 안전", needsRide: false, done: false },
-              { time: "19:20 - 20:30", title: "Powell-Mason 케이블카 ➔ 유니언 스퀘어 야경", origin: "Boudin Bakery Pier 39", dest: "Union Square San Francisco", cost: "패스", duration: "케이블카 20분", safetyLevel: "yellow", safetyNote: "유니언스퀘어 야간 홈리스 구걸 접촉 유의", needsRide: false, done: false },
-              { time: "20:30 - 21:00", title: "유니언 스퀘어 ➔ 힐튼 호텔 복귀 후 휴식", origin: "Union Square San Francisco", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "도보 12분", safetyLevel: "green", safetyNote: "대로변(Kearny St) 도보 이동 안전", needsRide: false, done: false }
+              { time: "18:00 - 19:20", title: "[저녁-명물] 보딘 베이커리 (사워도우 클램 차우더 수프)", origin: "PIER 39", dest: "Boudin Bakery Pier 39", cost: "$18", duration: "도보 5분", safetyLevel: "green", safetyNote: "피셔맨스워프 밤에도 안전", needsRide: false, done: false },
+              { time: "19:20 - 20:30", title: "Powell-Mason 케이블카 ➔ 유니언 스퀘어 야경", origin: "Boudin Bakery Pier 39", dest: "Union Square San Francisco", cost: "패스", duration: "케이블카 20분", safetyLevel: "yellow", safetyNote: "유니언스퀘어 야간 홈리스 접촉 유의", needsRide: false, done: false },
+              { time: "20:30 - 21:00", title: "유니언 스퀘어 ➔ 힐튼 호텔 복귀 후 휴식", origin: "Union Square San Francisco", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "도보 12분", safetyLevel: "green", safetyNote: "대로변 도보 이동 안전", needsRide: false, done: false }
             ]
           },
           {
@@ -188,8 +185,8 @@
               { time: "15:00 - 17:00", title: "[필수-마트] Trader Joe's / Safeway 24시간 기차 식량 구매", origin: "Crissy Field San Francisco", dest: "Trader Joe's San Francisco", cost: "$25", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "주택가 상권 안심", needsRide: false, done: false },
               { time: "17:00 - 18:30", title: "[저녁-뷔페] Makino Seafood Buffet (스시/해산물 뷔페)", origin: "Trader Joe's San Francisco", dest: "Makino Seafood Buffet", cost: "$35", duration: "식사 1시간", safetyLevel: "green", safetyNote: "식당 내부 치안 양호", needsRide: false, done: false },
               { time: "18:30 - 19:30", title: "힐튼 호텔 복귀 및 짐 픽업", origin: "Makino Seafood Buffet", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "이동 20분", safetyLevel: "green", safetyNote: "가방 건사 주의", needsRide: false, done: false },
-              { time: "19:30 - 20:10", title: "샌프란시스코 암트랙 정류장 (SFC) 이동", origin: "Hilton San Francisco Financial District", dest: "Salesforce Transit Center", cost: "$0 (우버 $12)", duration: "도보 10분", safetyLevel: "yellow", safetyNote: "밤시간대 Market St/Mission St 큰길 이동. 짐 많으면 우버 추천", needsRide: true, done: false },
-              { time: "20:50 - 21:25", title: "Amtrak Thruway 버스 탑승 (SFC ➔ Emeryville)", origin: "Salesforce Transit Center", dest: "Emeryville Amtrak Station", cost: "암트랙 포함", duration: "버스 35분", safetyLevel: "green", safetyNote: "터미널 내부 경찰 상주로 매우 안전", needsRide: false, done: false },
+              { time: "19:30 - 20:10", title: "샌프란시스코 암트랙 정류장 (SFC) 이동", origin: "Hilton San Francisco Financial District", dest: "Salesforce Transit Center", cost: "$0 (우버 $12)", duration: "도보 10분", safetyLevel: "yellow", safetyNote: "밤시간대 큰길 이동. 짐 많으면 우버 추천", needsRide: true, done: false },
+              { time: "20:50 - 21:25", title: "Amtrak Thruway 버스 탑승 (SFC ➔ Emeryville)", origin: "Salesforce Transit Center", dest: "Emeryville Amtrak Station", cost: "암트랙 포함", duration: "버스 35분", safetyLevel: "green", safetyNote: "터미널 내부 매우 안전", needsRide: false, done: false },
               { time: "21:41 ~ ", title: "Coast Starlight 밤기차 환승! (포틀랜드 향해 출발)", origin: "Emeryville Amtrak Station", dest: "Portland Union Station", cost: "암트랙 탑승", duration: "열차 18시간", safetyLevel: "green", safetyNote: "승강장 내 즉시 탑승", needsRide: false, done: false }
             ]
           }
@@ -207,32 +204,33 @@
         title: "포틀랜드 (폴로&데이브)",
         dateRange: "12/19 ~ 12/21",
         hotel: "Holiday Inn Express Hotel & Suites Portland-NW Downtown",
-        safetyOverview: "유니언역 및 올드타운/차이나타운 부근은 노숙자 텐트 밀집. 역 도착 직후 우버로 빠르게 숙소 이동 권장.",
+        safetyOverview: "유니언역 및 올드타운 부근 노숙자 밀집. Cascades Station 대형 쇼핑몰 구역은 치안이 우수하고 안전함.",
         transGuide: [
           { title: "포틀랜드 세금 0% (NO TAX)", desc: "표기 가격만 결제! 미국 최저가 쇼핑 도시." },
-          { title: "다운타운 이동시간", desc: "호텔 ↔ 다운타운 스트리트카/우버 10분 소요." }
+          { title: "Cascades Station 쇼핑몰", desc: "다운타운 폐업으로 인해 공항 근처 대형 야외 쇼핑몰(Cascades Station)로 이동!" }
         ],
         schedules: [
           {
-            day: "12/19(금) 포틀랜드 도착 & 로스/랙 폴로 쇼핑 싹쓸이",
-            summary: "15:40 도착 ➔ 체크인 ➔ Ross & Nordstrom Rack 노택스 폴로 쇼핑 ➔ 저녁 데이브 바베큐",
+            day: "12/19(금) 포틀랜드 도착 & 도심 산책",
+            summary: "15:40 도착 ➔ 체크인 ➔ 스텀프타운 커피 ➔ 노스웨스트 23번가 감성 거리 ➔ Voodoo Doughnut",
             items: [
               { time: "15:40 - 16:20", title: "포틀랜드 유니언역 도착 ➔ Holiday Inn Express 이동", origin: "Portland Union Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "우버 $10", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "역 외부 노숙자 배회. 역사 나오자마자 우버 탑승 강추!", needsRide: true, done: false },
               { time: "16:20 - 17:00", title: "호텔 체크인 및 짐 정리", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "$0", duration: "40분", safetyLevel: "green", safetyNote: "NW Downtown 거주지 기반 안심 구역", needsRide: false, done: false },
-              { time: "17:00 - 19:00", title: "[쇼핑-핵심] Ross & Nordstrom Rack (다운타운 세금 0% 폴로 싹쓸이!)", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Nordstrom Rack Portland Downtown", cost: "쇼핑", duration: "트램 10분 + 쇼핑 1.5시간", safetyLevel: "green", safetyNote: "매장 내부 안전. 쇼핑백 소지품 유의", needsRide: false, done: false },
-              { time: "19:00 - 20:30", title: "[저녁-명물] 데이브 바베큐 / Dave's Hot Chicken (훈제 바베큐 만찬)", origin: "Nordstrom Rack Portland Downtown", dest: "Famous Dave's Bar-B-Que", cost: "$35", duration: "식사 1.5시간", safetyLevel: "green", safetyNote: "유동인구 많아 안전", needsRide: false, done: false },
-              { time: "20:30 - 21:15", title: "[디저트-명물] 부두 도넛 (Voodoo Doughnut) 야식 픽업 후 숙소 복귀", origin: "Famous Dave's Bar-B-Que", dest: "Voodoo Doughnut Portland", cost: "$6", duration: "도보 8분", safetyLevel: "yellow", safetyNote: "야간 주변 구걸자 유의. 도넛 픽업 후 즉시 복귀", needsRide: false, done: false }
+              { time: "17:00 - 18:30", title: "노스웨스트 23번가 (NW 23rd Ave) 감성 도심 산책 & 스텀프타운 커피", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "NW 23rd Ave Portland", cost: "커피 $6", duration: "도보 10분 + 산책 1시간", safetyLevel: "green", safetyNote: "포틀랜드에서 가장 안전하고 고급스러운 상권", needsRide: false, done: false },
+              { time: "18:30 - 20:00", title: "[점심/저녁] Nong's Khao Man Gai (포틀랜드 1위 태국 치킨라이스)", origin: "NW 23rd Ave Portland", dest: "Nong's Khao Man Gai Portland", cost: "$16", duration: "식사 1시간", safetyLevel: "green", safetyNote: "다운타운 본점 정상 영업 중! 매우 안전", needsRide: false, done: false },
+              { time: "20:00 - 20:45", title: "[디저트] 부두 도넛 (Voodoo Doughnut) 야식 픽업 후 숙소 복귀", origin: "Nong's Khao Man Gai Portland", dest: "Voodoo Doughnut Portland", cost: "$6", duration: "도보 8분", safetyLevel: "yellow", safetyNote: "야간 주변 구걸자 유의. 도넛 픽업 후 즉시 우버/숙소 복귀", needsRide: true, done: false }
             ]
           },
           {
-            day: "12/20(토) 포틀랜드 도심 산책 & 48시간 기차 탑승 (쇼핑X)",
-            summary: "스텀프타운 커피 ➔ 노스웨스트 23번가 ➔ Safeway 48시간 식량 ➔ 16:45 기차 탑승",
+            day: "12/20(토) Cascades Station 폴로 폭풍 쇼핑 ➔ 데이브 바베큐 ➔ 16:45 기차 탑승",
+            summary: "유니언역 짐보관 ➔ MAX 전철 ➔ Cascades Station (Ross & TJ Maxx 폴로 쇼핑) ➔ Famous Dave's 바베큐 ➔ 기차 탑승",
             items: [
-              { time: "09:30 - 10:30", title: "[아침-명물] 스텀프타운 커피 & 베이글", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Stumptown Coffee Roasters Downtown Portland", cost: "$10", duration: "도보 10분", safetyLevel: "green", safetyNote: "오전 다운타운 평화로움", needsRide: false, done: false },
-              { time: "10:30 - 12:00", title: "노스웨스트 23번가 트렌디한 도심 거리 산책", origin: "Stumptown Coffee Roasters Downtown Portland", dest: "NW 23rd Ave Portland", cost: "$0", duration: "산책 1.5시간", safetyLevel: "green", safetyNote: "포틀랜드에서 가장 안전하고 감성적인 부티크 거리", needsRide: false, done: false },
-              { time: "12:00 - 13:00", title: "[점심-명물] Nong's Khao Man Gai (포틀랜드 1위 치킨라이스)", origin: "NW 23rd Ave Portland", dest: "Nong's Khao Man Gai Portland", cost: "$16", duration: "식사 1시간", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
-              { time: "13:00 - 14:30", title: "[필수-마트] Safeway 마트 48시간 대장정 기차 식량 대량 구매", origin: "Nong's Khao Man Gai Portland", dest: "Safeway Portland", cost: "$35", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "대형 마트 안심", needsRide: false, done: false },
-              { time: "15:00 - 16:00", title: "호텔 짐 픽업 ➔ 포틀랜드 유니언역 이동 및 대기", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Portland Union Station", cost: "우버 $10", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "유니언역 대기 시 역사 내 승객 전용 라운지 이용 필수!", needsRide: true, done: false },
+              { time: "09:30 - 10:10", title: "호텔 체크아웃 ➔ 포틀랜드 유니언역 이동 및 짐 보관", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Portland Union Station", cost: "우버 $10", duration: "차량 10분", safetyLevel: "green", safetyNote: "짐 보관 후 가볍게 전철 탑승", needsRide: true, done: false },
+              { time: "10:10 - 10:45", title: "유니언역 ➔ MAX Red Line 전철 탑승 ➔ Cascades Station 이동", origin: "Portland Union Station", dest: "Cascades Station Portland", cost: "전철 $2.80", duration: "전철 35분", safetyLevel: "green", safetyNote: "전철 직행으로 편리하고 안전함", needsRide: false, done: false },
+              { time: "10:45 - 13:00", title: "[쇼핑-핵심] Ross Dress for Less & TJ Maxx (세금 0% 폴로 싹쓸이!)", origin: "Cascades Station Portland", dest: "Ross Dress for Less Cascade Station", cost: "쇼핑", duration: "쇼핑 2시간", safetyLevel: "green", safetyNote: "다운타운 폐업 대안! 정상 영업 중인 거대 쇼핑몰로 매우 안전", needsRide: false, done: false },
+              { time: "13:00 - 14:30", title: "[저녁/점심-명물] 데이브 바베큐 (Famous Dave's Bar-B-Que 쇼핑몰 바로 옆!)", origin: "Ross Dress for Less Cascade Station", dest: "Famous Dave's Cascade Station", cost: "$35", duration: "도보 3분 + 식사 1.5시간", safetyLevel: "green", safetyNote: "쇼핑몰 단지 내 정상 영업 중인 오리지널 바베큐 맛집!", needsRide: false, done: false },
+              { time: "14:30 - 15:30", title: "[필수-마트] Target / Safeway 48시간 기차 대장정 식량 구매", origin: "Famous Dave's Cascade Station", dest: "Target Cascade Station", cost: "$35", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "쇼핑몰 내 대형 마트 안심", needsRide: false, done: false },
+              { time: "15:30 - 16:10", title: "Cascades Station ➔ MAX Red Line ➔ 유니언역 복귀", origin: "Target Cascade Station", dest: "Portland Union Station", cost: "전철 $2.80", duration: "전철 35분", safetyLevel: "green", safetyNote: "기차 탑승시간 30분 전 유효 도착", needsRide: false, done: false },
               { time: "16:45 ~ ", title: "Empire Builder 탑승 (48시간 시카고 횡단 대장정 시작!)", origin: "Portland Union Station", dest: "Chicago Union Station", cost: "암트랙 탑승", duration: "48시간 소요", safetyLevel: "green", safetyNote: "암트랙 열차 내 보안관 상주로 극도로 안전", needsRide: false, done: false }
             ]
           },
@@ -248,7 +246,7 @@
           budget: [{ name: "파월스 북스", desc: "세계 최대 독립 서점 구경 (무료)", dest: "Powell's City of Books" }],
           standard: [{ name: "데슈츠 브루어리", desc: "오리건 최고 수제 맥주와 버거 ($25~$35)", dest: "Deschutes Brewery Portland" }],
           premium: [{ name: "Ox Restaurant", desc: "숯불 우드파이어 아르헨티나 스테이크 ($90~$120)", dest: "Ox Restaurant Portland" }],
-          shopping: [{ name: "Ross Dress for Less (Downtown)", desc: "다운타운 위치. 노택스로 폴로/타미 득템 1위 매장.", dest: "Ross Dress for Less Portland" }]
+          shopping: [{ name: "Ross & TJ Maxx (Cascades Station)", desc: "정상 영업 중인 세금 0% 폴로/브랜드 초특가 쇼핑몰!", dest: "Ross Dress for Less Cascade Station" }]
         }
       },
       {
@@ -298,7 +296,7 @@
             items: [
               { time: "12:00 - 14:00", title: "체크아웃 후 짐 보관 & 크리스마스 거리 산책", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Magnificent Mile", cost: "$0", duration: "산책 2시간", safetyLevel: "green", safetyNote: "거리 분위기 평화로움", needsRide: false, done: false },
               { time: "15:00 - 16:30", title: "[필수-마트] Trader Joe's 야간 기차 식량 구매", origin: "Magnificent Mile", dest: "Trader Joe's Chicago", cost: "$22", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "마트 내 안전", needsRide: false, done: false },
-              { time: "19:30 - 20:30", title: "호텔 짐 픽업 ➔ 시카고 유니언역 이동 및 대기", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Chicago Union Station", cost: "우버 $12", duration: "차량 15분", safetyLevel: "yellow", safetyNote: "밤 9시 이후 유니언역 외부 배회 절대 금지! 역사 라운지 대기", needsRide: true, done: false },
+              { time: "19:30 - 20:30", title: "호텔 짐 픽업 ➔ 시카고 유니언역 이동 및 대기", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Chicago Union Station", cost: "우버 $12", duration: "차량 15분", safetyLevel: "yellow", safetyNote: "밤 9시 이후 역 외부 배회 금지! 역사 라운지 대기", needsRide: true, done: false },
               { time: "21:30 ~ ", title: "Lake Shore Limited 탑승 (버팔로 향해 출발)", origin: "Chicago Union Station", dest: "Buffalo-Depew Amtrak Station", cost: "암트랙 탑승", duration: "10시간23분", safetyLevel: "green", safetyNote: "기차 승차 안전", needsRide: false, done: false }
             ]
           }
@@ -504,7 +502,6 @@
     let routesData = [];
     let currentRouteIndex = 0;
 
-    // 데이터 로드 (URL Hash 공유 데이터 우선 -> LocalStorage -> Default)
     function loadUserData() {
       if (window.location.hash && window.location.hash.startsWith('#data=')) {
         try {
@@ -533,7 +530,6 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(routesData));
     }
 
-    // 모두에게 변경 사항 공유하는 URL 생성 및 복사
     function shareLink() {
       saveUserDataLocally();
       try {
