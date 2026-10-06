@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>미국 암트랙 대횡단 마스터 플래너 (치안&안전 가이드 포함)</title>
+  <title>미국 암트랙 대횡단 마스터 플래너 (실시간 지도 연동 & 자동 저장)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -25,14 +25,14 @@
     <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <div class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-200 shrink-0">
-          <i class="fa-solid fa-shield-halved text-lg"></i>
+          <i class="fa-solid fa-map-location-dot text-lg"></i>
         </div>
         <div>
           <div class="flex items-center gap-1.5">
             <h1 class="text-base font-black text-slate-900 tracking-tight">미국 횡단 마스터</h1>
-            <span class="text-[10px] font-black bg-rose-600 text-white px-1.5 py-0.5 rounded">치안/안전 맞춤</span>
+            <span class="text-[10px] font-black bg-indigo-600 text-white px-1.5 py-0.5 rounded">지도 연동 강화</span>
           </div>
-          <p class="text-[10px] text-slate-400 font-medium">시간·장소별 위험도 경고 • 내 기기 자동 저장</p>
+          <p class="text-[10px] text-slate-400 font-medium">일정 수정 시 구글지도 동적 자동갱신</p>
         </div>
       </div>
       <button onclick="resetToDefault()" class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-lg border hover:bg-slate-200">
@@ -40,11 +40,11 @@
       </button>
     </div>
 
-    <!-- Safety Banner -->
+    <!-- Alert Strip -->
     <div class="bg-slate-900 text-white px-4 py-2">
       <div class="max-w-md mx-auto flex items-center justify-between text-[10px] font-medium">
-        <span><i class="fa-solid fa-shield-cat text-amber-400 mr-1"></i> <strong>치안 레벨 안내:</strong> 🟢양호 | 🟡주의 | 🔴특수위험</span>
-        <span class="bg-slate-700 px-2 py-0.5 rounded text-[9px]">자동 세이프티 적용</span>
+        <span><i class="fa-solid fa-location-dot text-indigo-400 mr-1"></i> 장소 수정 시 구글 지도 버튼이 실시간 업데이트됩니다.</span>
+        <span class="bg-indigo-600 text-white px-1.5 py-0.5 rounded text-[9px]">자동 세이프티</span>
       </div>
     </div>
 
@@ -66,7 +66,7 @@
   <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl w-full max-w-sm p-5 space-y-3 shadow-2xl">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="text-sm font-black text-slate-900" id="modalTitle">일정 수정</h3>
+        <h3 class="text-sm font-black text-slate-900" id="modalTitle">일정 및 지도장소 수정</h3>
         <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <input type="hidden" id="editSchIdx">
@@ -76,7 +76,7 @@
         <input type="text" id="editTime" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
       </div>
       <div>
-        <label class="text-[10px] font-extrabold text-slate-500">일정 내용 / 장소명</label>
+        <label class="text-[10px] font-extrabold text-slate-500">일정 제목</label>
         <input type="text" id="editItemTitle" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
       </div>
       <div class="grid grid-cols-2 gap-2">
@@ -90,30 +90,43 @@
         </div>
       </div>
       <div>
-        <label class="text-[10px] font-extrabold text-slate-500">치안 경고 메세지</label>
+        <label class="text-[10px] font-extrabold text-slate-500">치안 메모</label>
         <input type="text" id="editSafety" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
       </div>
-      <div class="grid grid-cols-2 gap-2">
-        <div>
-          <label class="text-[10px] font-extrabold text-slate-500">출발지 (구글지도용)</label>
-          <input type="text" id="editOrigin" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
+      
+      <!-- Map Location Inputs -->
+      <div class="bg-indigo-50/60 p-2.5 rounded-2xl border border-indigo-100 space-y-2">
+        <div class="text-[10px] font-black text-indigo-900 flex items-center gap-1">
+          <i class="fa-solid fa-map-pin text-indigo-600"></i> 구글 지도 연동 설정
         </div>
         <div>
-          <label class="text-[10px] font-extrabold text-slate-500">도착지 (구글지도용)</label>
-          <input type="text" id="editDest" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <label class="text-[9px] font-bold text-slate-500">도착지 / 검색 장소명 (필수)</label>
+          <input type="text" id="editDest" placeholder="예: Nordstrom Rack Portland Downtown" class="w-full text-xs p-2 border rounded-xl bg-white mt-0.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+        </div>
+        <div>
+          <label class="text-[9px] font-bold text-slate-500">출발지 (선택 - 입력 시 길찾기 연동)</label>
+          <input type="text" id="editOrigin" placeholder="예: Holiday Inn Express Portland" class="w-full text-xs p-2 border rounded-xl bg-white mt-0.5 focus:ring-2 focus:ring-indigo-500 outline-none">
         </div>
       </div>
+
       <div class="pt-2">
-        <button onclick="saveModalChanges()" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-indigo-700 shadow-md">수정 완료 & 저장</button>
+        <button onclick="saveModalChanges()" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-indigo-700 shadow-md">수정 완료 & 지도 반영</button>
       </div>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = 'amtrak_master_planner_user_data_v4';
-    const makeDirUrl = (origin, dest) => `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(dest)}`;
+    const STORAGE_KEY = 'amtrak_master_planner_user_data_v5';
 
-    // 치안 배지 렌더링 헬퍼
+    // 지능형 구글 지도 URL 생성기 (출발지가 없어도 도착지만으로 장소 지도 자동연동)
+    const makeMapUrl = (origin, dest) => {
+      if (!dest || dest.trim() === '') return null;
+      if (origin && origin.trim() !== '') {
+        return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin.trim())}&destination=${encodeURIComponent(dest.trim())}`;
+      }
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dest.trim())}`;
+    };
+
     const getSafetyBadge = (level) => {
       if (level === 'green') return '<span class="text-[9px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded shrink-0">🟢 치안 양호</span>';
       if (level === 'yellow') return '<span class="text-[9px] font-black bg-amber-100 text-amber-800 border border-amber-200 px-1.5 py-0.5 rounded shrink-0">🟡 주의 필요</span>';
@@ -121,7 +134,6 @@
       return '';
     };
 
-    // 기본 데이터 세트 (시간/장소별 치안 수칙 탑재)
     const defaultRoutesData = [
       {
         id: "route1",
@@ -646,7 +658,7 @@
                 <i class="fa-regular fa-clock"></i>
               </div>
               <div>
-                <h3 class="text-xs font-black text-slate-900">일자별 일정표 (치안레벨 탑재)</h3>
+                <h3 class="text-xs font-black text-slate-900">일자별 일정표 (구글지도 자동연동)</h3>
                 <p class="text-[9px] text-slate-400 font-medium">편집 후 꼭 상단/하단 [저장] 클릭</p>
               </div>
             </div>
@@ -666,51 +678,57 @@
               <p class="text-[10px] text-indigo-600 font-bold mb-3 px-1">💡 요약: ${sch.summary}</p>
               
               <div class="relative pl-3.5 border-l-2 border-indigo-200 space-y-3 ml-1">
-                ${sch.items.map((item, itemIdx) => `
-                  <div class="relative ${item.done ? 'opacity-40 line-through' : ''}">
-                    <div class="absolute w-2.5 h-2.5 bg-indigo-600 rounded-full -left-[19px] top-1 border-2 border-white"></div>
-                    
-                    <div class="flex justify-between items-center mb-0.5">
-                      <div class="flex items-center gap-1.5">
-                        <span class="text-[10px] font-black text-indigo-600">${item.time}</span>
-                        ${getSafetyBadge(item.safetyLevel)}
-                      </div>
-                      <div class="flex items-center gap-1">
-                        <span class="text-[9px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.2 rounded">${item.duration || '이동'}</span>
-                        <button onclick="toggleDone(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-emerald-600 px-1">
-                          <i class="fa-solid ${item.done ? 'fa-circle-check text-emerald-600' : 'fa-circle'}"></i>
-                        </button>
-                        <button onclick="openModal(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-indigo-600 px-1">
-                          <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-                        <button onclick="deleteItem(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-rose-600 px-1">
-                          <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                      </div>
-                    </div>
+                ${sch.items.map((item, itemIdx) => {
+                  const mapUrl = makeMapUrl(item.origin, item.dest);
+                  const isRoute = item.origin && item.origin.trim() !== '';
 
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                      <div class="flex justify-between items-start mb-1">
-                        <h4 class="font-bold text-[11px] text-slate-900 leading-tight pr-2">${item.title}</h4>
-                        <span class="text-[9px] font-extrabold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 shrink-0 whitespace-nowrap">${item.cost}</span>
-                      </div>
+                  return `
+                    <div class="relative ${item.done ? 'opacity-40 line-through' : ''}">
+                      <div class="absolute w-2.5 h-2.5 bg-indigo-600 rounded-full -left-[19px] top-1 border-2 border-white"></div>
                       
-                      ${item.safetyNote ? `
-                        <div class="text-[9px] text-slate-500 bg-amber-50/60 border border-amber-100 p-1.5 rounded-lg mt-1 leading-tight flex items-start gap-1">
-                          <i class="fa-solid fa-shield text-amber-500 text-[9px] mt-0.5"></i>
-                          <span><strong>치안 팁:</strong> ${item.safetyNote}</span>
+                      <div class="flex justify-between items-center mb-0.5">
+                        <div class="flex items-center gap-1.5">
+                          <span class="text-[10px] font-black text-indigo-600">${item.time}</span>
+                          ${getSafetyBadge(item.safetyLevel)}
                         </div>
-                      ` : ''}
+                        <div class="flex items-center gap-1">
+                          <span class="text-[9px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.2 rounded">${item.duration || '이동'}</span>
+                          <button onclick="toggleDone(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-emerald-600 px-1">
+                            <i class="fa-solid ${item.done ? 'fa-circle-check text-emerald-600' : 'fa-circle'}"></i>
+                          </button>
+                          <button onclick="openModal(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-indigo-600 px-1">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </button>
+                          <button onclick="deleteItem(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-rose-600 px-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                          </button>
+                        </div>
+                      </div>
 
-                      ${item.origin && item.dest ? `
-                        <a href="${makeDirUrl(item.origin, item.dest)}" target="_blank" 
-                           class="w-full bg-white hover:bg-indigo-50 text-indigo-600 text-[9px] font-bold py-1 rounded-lg border border-slate-200 flex items-center justify-center gap-1 transition mt-1">
-                           <i class="fa-solid fa-location-arrow text-[8px]"></i> 길찾기 지도 연결
-                        </a>
-                      ` : ''}
+                      <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                        <div class="flex justify-between items-start mb-1">
+                          <h4 class="font-bold text-[11px] text-slate-900 leading-tight pr-2">${item.title}</h4>
+                          <span class="text-[9px] font-extrabold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 shrink-0 whitespace-nowrap">${item.cost}</span>
+                        </div>
+                        
+                        ${item.safetyNote ? `
+                          <div class="text-[9px] text-slate-500 bg-amber-50/60 border border-amber-100 p-1.5 rounded-lg mt-1 leading-tight flex items-start gap-1">
+                            <i class="fa-solid fa-shield text-amber-500 text-[9px] mt-0.5"></i>
+                            <span><strong>치안 팁:</strong> ${item.safetyNote}</span>
+                          </div>
+                        ` : ''}
+
+                        ${mapUrl ? `
+                          <a href="${mapUrl}" target="_blank" 
+                             class="w-full bg-white hover:bg-indigo-50 text-indigo-600 text-[9px] font-bold py-1 rounded-lg border border-slate-200 flex items-center justify-center gap-1 transition mt-1">
+                             <i class="fa-solid ${isRoute ? 'fa-location-arrow' : 'fa-map-pin'} text-[8px]"></i> 
+                             ${isRoute ? '구글 지도 길찾기 연결' : '구글 지도 장소 보기'}
+                          </a>
+                        ` : ''}
+                      </div>
                     </div>
-                  </div>
-                `).join('')}
+                  `;
+                }).join('')}
               </div>
             </div>
           `).join('')}
@@ -835,7 +853,7 @@
       document.getElementById('editDuration').value = item.duration || '';
       document.getElementById('editSafety').value = item.safetyNote || '';
       document.getElementById('editOrigin').value = item.origin || '';
-      document.getElementById('editDest').value = item.dest || '';
+      document.getElementById('editDest').value = item.dest || item.title || '';
       document.getElementById('editModal').classList.remove('hidden');
     }
 
@@ -887,7 +905,7 @@
         safetyLevel: 'green',
         safetyNote: '소지품 유의',
         origin: '',
-        dest: title,
+        dest: title, // 자동으로 장소명 지정
         done: false
       });
 
