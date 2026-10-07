@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>미국 암트랙 대횡단 마스터 플래너 V9 (전 도시 폴로 아울렛 확충판)</title>
+  <title>미국 암트랙 대횡단 마스터 플래너 V10 (3대 쇼핑&대중교통 완벽판)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -31,9 +31,9 @@
         <div>
           <div class="flex items-center gap-1.5">
             <h1 class="text-base font-black text-slate-900 tracking-tight">미국 횡단 플래너</h1>
-            <span class="text-[10px] font-black bg-indigo-600 text-white px-1.5 py-0.5 rounded">V9 폴로아울렛</span>
+            <span class="text-[10px] font-black bg-indigo-600 text-white px-1.5 py-0.5 rounded">V10 알짜쇼핑</span>
           </div>
-          <p class="text-[10px] text-slate-400 font-medium">전 도시 공식 Polo Factory Store 연동</p>
+          <p class="text-[10px] text-slate-400 font-medium">쇼핑 3곳 슬림화 & 애플/안드로이드 패스 안내</p>
         </div>
       </div>
       <div class="flex items-center gap-1">
@@ -49,7 +49,7 @@
     <!-- Alert Bar -->
     <div class="bg-indigo-950 text-indigo-200 px-4 py-2">
       <div class="max-w-md mx-auto flex items-center justify-between text-[10px] font-medium">
-        <span><i class="fa-solid fa-shirt text-amber-400 mr-1"></i> <strong>폴로(Polo) 아우터 초특가 팩토리 아울렛</strong>이 일정 및 추천에 추가되었습니다!</span>
+        <span><i class="fa-solid fa-mobile-screen-button text-amber-400 mr-1"></i> <strong>알짜 3대 쇼핑 도시</strong> & <strong>애플/안드로이드 대중교통 팁</strong> 반영!</span>
       </div>
     </div>
 
@@ -131,7 +131,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'amtrak_master_planner_v9_polo';
+    const STORAGE_KEY = 'amtrak_master_planner_v10_slim';
 
     const makeUberUrl = (dest) => `https://m.uber.com/ul/?action=setPickup&dropoff[formatted_address]=${encodeURIComponent(dest || '')}`;
     const makeLyftUrl = (dest) => `https://lyft.com/ride?id=lyft&destination[address]=${encodeURIComponent(dest || '')}`;
@@ -157,24 +157,23 @@
         title: "샌프란시스코",
         dateRange: "12/17 ~ 12/18",
         hotel: "Hilton San Francisco Financial District",
-        safetyOverview: "텐더로인(Tenderloin) 및 시빅센터 구역은 절대 진입 금지. 힐튼 호텔 중심 상권 및 관광지는 낮 시간대 매우 안전함.",
+        safetyOverview: "텐더로인 및 시빅센터 구역 진입 금지. 힐튼 호텔 중심 상권 및 주요 관광지는 낮 시간대 매우 안전함.",
         transGuide: [
-          { title: "BART (공항↔도심)", desc: "SFO 공항 ➔ Montgomery St역 (30분 소요 / $10.55). 호텔까지 도보 8분.", cost: "$10.55" },
-          { title: "Muni 1-Day Visitor Passport", desc: "케이블카 + F-전차 + 뮤니 버스/지하철 24시간 무제한.", cost: "$15.00" },
-          { title: "SFC 암트랙 버스정류장", desc: "Salesforce Transit Center 정류장까지 도보 10분." }
+          { title: "BART (공항↔도심)", desc: "SFO 공항 ➔ Montgomery St역 (전철 30분 / $10.55). 애플페이/구글페이 Clipper 결제 가능.", cost: "$10.55" },
+          { title: "Muni 1-Day Passport", desc: "케이블카 + F-전차 + 뮤니 전철/버스 24시간 무제한.", cost: "$15.00" }
         ],
         schedules: [
           {
             day: "12/17(수) SF 입성 & 도심 탐방",
             summary: "BART 이동 ➔ 호텔 짐보관 ➔ 차이나타운 딤섬/해산물 뷔페 ➔ 피어39 ➔ 케이블카 야경",
             items: [
-              { time: "11:40 - 12:40", title: "SFO 공항 입국 ➔ BART 탑승", origin: "San Francisco International Airport", dest: "Montgomery St Station SF", cost: "$10.55", duration: "전철 30분", safetyLevel: "yellow", safetyNote: "BART 내부 캐리어 및 소지품 밀착 관리", needsRide: false, done: false },
+              { time: "11:40 - 12:40", title: "SFO 공항 입국 ➔ BART 탑승", origin: "San Francisco International Airport", dest: "Montgomery St Station SF", cost: "$10.55", duration: "전철 30분", safetyLevel: "yellow", safetyNote: "BART 내부 소지품 밀착 관리", needsRide: false, done: false },
               { time: "12:40 - 13:00", title: "Montgomery St역 ➔ 힐튼 SF 디스트릭트 짐 보관", origin: "Montgomery St Station SF", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "도보 8분", safetyLevel: "green", safetyNote: "금융지구 대로변 안전", needsRide: false, done: false },
-              { time: "13:00 - 14:30", title: "[점심-뷔페] Daly Buffet / Dragon Beaux (해산물&딤섬 뷔페)", origin: "Hilton San Francisco Financial District", dest: "Daly Buffet San Francisco", cost: "$35", duration: "도보 5분", safetyLevel: "green", safetyNote: "낮시간대 유동인구 많아 안전", needsRide: false, done: false },
+              { time: "13:00 - 14:30", title: "[점심-뷔페] Daly Buffet / Dragon Beaux (해산물&딤섬 뷔페)", origin: "Hilton San Francisco Financial District", dest: "Daly Buffet San Francisco", cost: "$35", duration: "도보 5분", safetyLevel: "green", safetyNote: "유동인구 많아 안전", needsRide: false, done: false },
               { time: "14:30 - 16:00", title: "페리 빌딩 산책 & 블루보틀 본점 커피", origin: "Daly Buffet San Francisco", dest: "Ferry Building San Francisco", cost: "$6", duration: "도보 12분", safetyLevel: "green", safetyNote: "수변 산책로 치안 우수", needsRide: false, done: false },
-              { time: "16:00 - 18:00", title: "F-Market 전차 ➔ 피어39 바다사자 관람", origin: "Ferry Building San Francisco", dest: "PIER 39", cost: "패스", duration: "전차 15분", safetyLevel: "green", safetyNote: "관광객 인파 많음. 소매치기 유의", needsRide: false, done: false },
+              { time: "16:00 - 18:00", title: "F-Market 전차 ➔ 피어39 바다사자 관람", origin: "Ferry Building San Francisco", dest: "PIER 39", cost: "패스", duration: "전차 15분", safetyLevel: "green", safetyNote: "관광객 인파 많음", needsRide: false, done: false },
               { time: "18:00 - 19:20", title: "[저녁-명물] 보딘 베이커리 (사워도우 클램 차우더 수프)", origin: "PIER 39", dest: "Boudin Bakery Pier 39", cost: "$18", duration: "도보 5분", safetyLevel: "green", safetyNote: "피셔맨스워프 밤에도 안전", needsRide: false, done: false },
-              { time: "19:20 - 20:30", title: "Powell-Mason 케이블카 ➔ 유니언 스퀘어 야경", origin: "Boudin Bakery Pier 39", dest: "Union Square San Francisco", cost: "패스", duration: "케이블카 20분", safetyLevel: "yellow", safetyNote: "유니언스퀘어 야간 홈리스 접촉 유의", needsRide: false, done: false },
+              { time: "19:20 - 20:30", title: "Powell-Mason 케이블카 ➔ 유니언 스퀘어 야경", origin: "Boudin Bakery Pier 39", dest: "Union Square San Francisco", cost: "패스", duration: "케이블카 20분", safetyLevel: "yellow", safetyNote: "유니언스퀘어 야간 구걸자 유의", needsRide: false, done: false },
               { time: "20:30 - 21:00", title: "유니언 스퀘어 ➔ 힐튼 호텔 복귀 후 휴식", origin: "Union Square San Francisco", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "도보 12분", safetyLevel: "green", safetyNote: "대로변 도보 이동 안전", needsRide: false, done: false }
             ]
           },
@@ -185,10 +184,10 @@
               { time: "09:30 - 11:00", title: "힐튼 출발 ➔ 북비치 산책 ➔ 워싱턴 스퀘어 파크", origin: "Hilton San Francisco Financial District", dest: "Washington Square San Francisco", cost: "$0", duration: "도보 10분", safetyLevel: "green", safetyNote: "이탈리안 거리 평화로움", needsRide: false, done: false },
               { time: "11:00 - 12:30", title: "[점심-명물] 인앤아웃 버거 (피셔맨스워프점)", origin: "Washington Square San Francisco", dest: "In-N-Out Burger Fisherman's Wharf", cost: "$11", duration: "도보 12분", safetyLevel: "green", safetyNote: "낮시간 안전", needsRide: false, done: false },
               { time: "12:30 - 15:00", title: "Muni 28번 버스 ➔ 크리시 필드 (금문교 조망)", origin: "In-N-Out Burger Fisherman's Wharf", dest: "Crissy Field San Francisco", cost: "패스", duration: "버스 20분", safetyLevel: "green", safetyNote: "태평양 조망로 치안 우수", needsRide: false, done: false },
-              { time: "15:00 - 17:00", title: "[필수-마트] Trader Joe's / Safeway 24시간 기차 식량 구매", origin: "Crissy Field San Francisco", dest: "Trader Joe's San Francisco", cost: "$25", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "주택가 상권 안심", needsRide: false, done: false },
+              { time: "15:00 - 17:00", title: "[필수-마트] Trader Joe's 24시간 기차 식량 구매", origin: "Crissy Field San Francisco", dest: "Trader Joe's San Francisco", cost: "$25", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "안심 상권", needsRide: false, done: false },
               { time: "17:00 - 18:30", title: "[저녁-뷔페] Makino Seafood Buffet (스시/해산물 뷔페)", origin: "Trader Joe's San Francisco", dest: "Makino Seafood Buffet", cost: "$35", duration: "식사 1시간", safetyLevel: "green", safetyNote: "식당 내부 치안 양호", needsRide: false, done: false },
               { time: "18:30 - 19:30", title: "힐튼 호텔 복귀 및 짐 픽업", origin: "Makino Seafood Buffet", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "이동 20분", safetyLevel: "green", safetyNote: "가방 건사 주의", needsRide: false, done: false },
-              { time: "19:30 - 20:10", title: "샌프란시스코 암트랙 정류장 (SFC) 이동", origin: "Hilton San Francisco Financial District", dest: "Salesforce Transit Center", cost: "$0 (우버 $12)", duration: "도보 10분", safetyLevel: "yellow", safetyNote: "밤시간대 큰길 이동. 짐 많으면 우버 추천", needsRide: true, done: false },
+              { time: "19:30 - 20:10", title: "SF 암트랙 정류장 (SFC) 이동", origin: "Hilton San Francisco Financial District", dest: "Salesforce Transit Center", cost: "$0", duration: "도보 10분", safetyLevel: "yellow", safetyNote: "큰길 이동", needsRide: true, done: false },
               { time: "20:50 - 21:25", title: "Amtrak Thruway 버스 탑승 (SFC ➔ Emeryville)", origin: "Salesforce Transit Center", dest: "Emeryville Amtrak Station", cost: "암트랙 포함", duration: "버스 35분", safetyLevel: "green", safetyNote: "터미널 내부 매우 안전", needsRide: false, done: false },
               { time: "21:41 ~ ", title: "Coast Starlight 밤기차 환승! (포틀랜드 향해 출발)", origin: "Emeryville Amtrak Station", dest: "Portland Union Station", cost: "암트랙 탑승", duration: "열차 18시간", safetyLevel: "green", safetyNote: "승강장 내 즉시 탑승", needsRide: false, done: false }
             ]
@@ -198,43 +197,43 @@
           budget: [{ name: "롬바드 스트리트", desc: "세계에서 가장 꼬불꼬불한 언덕길 (무료)", dest: "Lombard Street SF" }],
           standard: [{ name: "보딘 베이커리 본점", desc: "사워도우 클램 차우더 수프 원조 ($18)", dest: "Boudin Bakery Pier 39" }],
           premium: [{ name: "하우스 오브 프라임 립", desc: "샌프란 최고 프리미엄 로스트비프 스테이크 ($90~$110)", dest: "House of Prime Rib SF" }],
-          shopping: [{ name: "San Francisco Premium Outlets (Livermore)", desc: "SF 베이에어리어 최대 규모 거대 Polo Factory Store 입점!", dest: "San Francisco Premium Outlets" }]
+          shopping: [{ name: "Ross Dress for Less Market St", desc: "다운타운 중심가 이월 할인 매장", dest: "Ross Dress for Less Market St San Francisco" }]
         }
       },
       {
         id: "route2",
         num: 2,
-        title: "포틀랜드 (폴로&데이브)",
+        title: "포틀랜드 (쇼핑1 - 세금0%)",
         dateRange: "12/19 ~ 12/21",
         hotel: "Holiday Inn Express Hotel & Suites Portland-NW Downtown",
-        safetyOverview: "유니언역 및 올드타운 부근 노숙자 밀집. Cascades Station 대형 쇼핑몰 구역은 치안이 우수하고 안전함.",
+        safetyOverview: "유니언역 및 올드타운 부근 노숙자 배회 유의. Cascades Station 및 NW 23rd Ave 구역은 치안 완벽.",
         transGuide: [
-          { title: "포틀랜드 세금 0% (NO TAX)", desc: "표기 가격만 결제! 미국 최저가 쇼핑 도시." },
-          { title: "호텔 무료 짐보관 활용", desc: "유니언역 짐보관 비싸므로 호텔 프런트에 무료 보관($0) 후 이동!" }
+          { title: "⭐ [쇼핑성지] 오리건 주 세금 0% (NO TAX)", desc: "표기 가격 그대로 결제! 미국 최저가 쇼핑 도시." },
+          { title: "Hop Fastpass (MAX 전철/버스)", desc: "애플페이/구글페이 신용카드 직태그! $2.80 (하루 최대 $5.60 자동 무제한 캡)", cost: "$2.80" }
         ],
         schedules: [
           {
             day: "12/19(금) 포틀랜드 도착 & Hana Sushi 저녁",
             summary: "15:40 도착 ➔ 호텔 체크인 ➔ 노스웨스트 23번가 감성 거리 ➔ Hana Sushi 무제한 스시 ➔ Voodoo Doughnut",
             items: [
-              { time: "15:40 - 16:20", title: "포틀랜드 유니언역 도착 ➔ Holiday Inn Express 이동", origin: "Portland Union Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "우버 $10", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "역 외부 노숙자 배회. 역사 나오자마자 우버 탑승 강추!", needsRide: true, done: false },
-              { time: "16:20 - 17:00", title: "호텔 체크인 및 짐 정리", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "$0", duration: "40분", safetyLevel: "green", safetyNote: "NW Downtown 거주지 기반 안심 구역", needsRide: false, done: false },
-              { time: "17:00 - 18:30", title: "노스웨스트 23번가 (NW 23rd Ave) 감성 도심 산책", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "NW 23rd Ave Portland", cost: "$0", duration: "도보 10분 + 산책 1시간", safetyLevel: "green", safetyNote: "포틀랜드에서 가장 안전하고 고급스러운 상권", needsRide: false, done: false },
-              { time: "18:30 - 20:00", title: "[저녁-뷔페] Hana Sushi & Izakaya (AYCE 무제한 스시 & 회전초밥)", origin: "NW 23rd Ave Portland", dest: "Hana Sushi Portland", cost: "$30", duration: "식사 1.5시간", safetyLevel: "green", safetyNote: "다운타운 중심가 일식당으로 매우 안전", needsRide: false, done: false },
-              { time: "20:00 - 20:45", title: "[디저트] 부두 도넛 (Voodoo Doughnut) 야식 픽업 후 숙소 복귀", origin: "Hana Sushi Portland", dest: "Voodoo Doughnut Portland", cost: "$6", duration: "도보 8분", safetyLevel: "yellow", safetyNote: "야간 주변 구걸자 유의. 도넛 픽업 후 우버/숙소 복귀", needsRide: true, done: false }
+              { time: "15:40 - 16:20", title: "포틀랜드 유니언역 도착 ➔ Holiday Inn Express 이동", origin: "Portland Union Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "우버 $10", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "역 외부 노숙자 배회. 우버 이용 강추", needsRide: true, done: false },
+              { time: "16:20 - 17:00", title: "호텔 체크인 및 짐 정리", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "$0", duration: "40분", safetyLevel: "green", safetyNote: "NW Downtown 안심 구역", needsRide: false, done: false },
+              { time: "17:00 - 18:30", title: "노스웨스트 23번가 (NW 23rd Ave) 감성 도심 산책", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "NW 23rd Ave Portland", cost: "$0", duration: "도보 10분", safetyLevel: "green", safetyNote: "고급스럽고 안전한 거리", needsRide: false, done: false },
+              { time: "18:30 - 20:00", title: "[저녁-뷔페] Hana Sushi & Izakaya (AYCE 무제한 스시 & 회전초밥)", origin: "NW 23rd Ave Portland", dest: "Hana Sushi Portland", cost: "$30", duration: "식사 1.5시간", safetyLevel: "green", safetyNote: "다운타운 중심가 매우 안전", needsRide: false, done: false },
+              { time: "20:00 - 20:45", title: "[디저트] 부두 도넛 (Voodoo Doughnut) 픽업 후 숙소 복귀", origin: "Hana Sushi Portland", dest: "Voodoo Doughnut Portland", cost: "$6", duration: "도보 8분", safetyLevel: "yellow", safetyNote: "도넛 픽업 후 우버/숙소 복귀", needsRide: true, done: false }
             ]
           },
           {
-            day: "12/20(토) Cascades Station 폴로 쇼핑 ➔ 데이브 바베큐 ➔ 호텔 짐픽업 ➔ 16:45 기차 탑승",
-            summary: "호텔 무료짐보관($0) ➔ MAX 전철 ➔ Cascades Station (Ross & TJ Maxx 쇼핑) ➔ Famous Dave's 바베큐 ➔ 호텔 짐픽업 ➔ 기차 탑승",
+            day: "12/20(토) Cascades Station 세금 0% 쇼핑 ➔ 데이브 바베큐 ➔ 16:45 기차 탑승",
+            summary: "호텔 무료짐보관($0) ➔ MAX 전철(35분) ➔ Cascades Station (Ross/TJ Maxx 세금0% 쇼핑) ➔ Famous Dave's 바베큐 ➔ 기차 탑승",
             items: [
-              { time: "09:30 - 10:00", title: "호텔 체크아웃 후 프런트에 짐 무료 보관 ($0)", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "$0 (무료)", duration: "30분", safetyLevel: "green", safetyNote: "짐보관 비용 $0 아끼기 최고!", needsRide: false, done: false },
-              { time: "10:00 - 10:45", title: "호텔 ➔ MAX Red Line 전철 탑승 ➔ Cascades Station 이동", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Cascades Station Portland", cost: "전철 $2.80", duration: "전철 40분", safetyLevel: "green", safetyNote: "전철 직행으로 편리하고 안전함", needsRide: false, done: false },
-              { time: "10:45 - 13:00", title: "[쇼핑-핵심] Ross Dress for Less & TJ Maxx (세금 0% 폴로/아우터 싹쓸이!)", origin: "Cascades Station Portland", dest: "Ross Dress for Less Cascade Station", cost: "쇼핑", duration: "쇼핑 2시간", safetyLevel: "green", safetyNote: "정상 영업 중인 거대 야외 쇼핑몰로 매우 안전", needsRide: false, done: false },
-              { time: "13:00 - 14:30", title: "[점심-명물] 데이브 바베큐 (Famous Dave's Bar-B-Que 쇼핑몰 바로 옆!)", origin: "Ross Dress for Less Cascade Station", dest: "Famous Dave's Cascade Station", cost: "$35", duration: "도보 3분 + 식사 1.5시간", safetyLevel: "green", safetyNote: "오리지널 훈제 바베큐 맛집!", needsRide: false, done: false },
-              { time: "14:30 - 15:15", title: "Cascades Station ➔ 호텔 복귀 (보관된 짐 픽업)", origin: "Famous Dave's Cascade Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "전철 $2.80", duration: "이동 45분", safetyLevel: "green", safetyNote: "호텔에서 보관해둔 가방/캐리어 픽업", needsRide: false, done: false },
-              { time: "15:30 - 15:45", title: "호텔 ➔ 포틀랜드 유니언역 이동 (우버 $8 또는 스트리트카)", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Portland Union Station", cost: "우버 $8", duration: "차량 8분", safetyLevel: "green", safetyNote: "탑승 1시간 전 여유롭게 역사 도착", needsRide: true, done: false },
-              { time: "16:45 ~ ", title: "Empire Builder 탑승 (48시간 시카고 횡단 대장정 시작!)", origin: "Portland Union Station", dest: "Chicago Union Station", cost: "암트랙 탑승", duration: "48시간 소요", safetyLevel: "green", safetyNote: "암트랙 열차 내 보안관 상주로 극도로 안전", needsRide: false, done: false }
+              { time: "09:30 - 10:00", title: "호텔 체크아웃 후 프런트에 짐 무료 보관 ($0)", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "$0 (무료)", duration: "30분", safetyLevel: "green", safetyNote: "짐보관 $0 절약", needsRide: false, done: false },
+              { time: "10:00 - 10:40", title: "호텔 ➔ MAX Red Line 전철 탑승 ➔ Cascades Station 이동", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Cascades Station Portland", cost: "전철 $2.80", duration: "MAX 전철 35분 (우버 대비 +15분, $22 절약!)", safetyLevel: "green", safetyNote: "MAX Red Line 직행으로 매우 안전", needsRide: false, done: false },
+              { time: "10:40 - 13:00", title: "[쇼핑-핵심] Ross & TJ Maxx (오리건주 세금 0% 폴로/아우터 대량 득템!)", origin: "Cascades Station Portland", dest: "Ross Dress for Less Cascade Station", cost: "쇼핑", duration: "쇼핑 2.2시간", safetyLevel: "green", safetyNote: "야외 거대 쇼핑몰 단지로 매우 안전함", needsRide: false, done: false },
+              { time: "13:00 - 14:30", title: "[점심-명물] 데이브 바베큐 (Famous Dave's Bar-B-Que 쇼핑몰 바로 옆!)", origin: "Ross Dress for Less Cascade Station", dest: "Famous Dave's Cascade Station", cost: "$35", duration: "도보 3분", safetyLevel: "green", safetyNote: "훈제 바베큐 맛집", needsRide: false, done: false },
+              { time: "14:30 - 15:15", title: "Cascades Station ➔ MAX 전철 ➔ 호텔 복귀 (보관된 짐 픽업)", origin: "Famous Dave's Cascade Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "패스(재탑승 무료)", duration: "전철 40분", safetyLevel: "green", safetyNote: "보관 가방 픽업", needsRide: false, done: false },
+              { time: "15:30 - 15:45", title: "호텔 ➔ 포틀랜드 유니언역 이동", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Portland Union Station", cost: "우버 $8", duration: "차량 8분", safetyLevel: "green", safetyNote: "탑승 1시간 전 여유롭게도착", needsRide: true, done: false },
+              { time: "16:45 ~ ", title: "Empire Builder 탑승 (48시간 시카고 횡단 대장정 시작!)", origin: "Portland Union Station", dest: "Chicago Union Station", cost: "암트랙 탑승", duration: "48시간 소요", safetyLevel: "green", safetyNote: "열차 내 보안관 상주 안심", needsRide: false, done: false }
             ]
           },
           {
@@ -249,27 +248,27 @@
           budget: [{ name: "파월스 북스", desc: "세계 최대 독립 서점 구경 (무료)", dest: "Powell's City of Books" }],
           standard: [{ name: "Hana Sushi & Izakaya", desc: "다운타운 중심가 무제한 AYCE 스시 ($30)", dest: "Hana Sushi Portland" }],
           premium: [{ name: "Ox Restaurant", desc: "숯불 우드파이어 아르헨티나 스테이크 ($90~$120)", dest: "Ox Restaurant Portland" }],
-          shopping: [{ name: "Ross & TJ Maxx (Cascades Station)", desc: "정상 영업 중인 세금 0% 폴로/브랜드 초특가 쇼핑몰!", dest: "Ross Dress for Less Cascade Station" }]
+          shopping: [{ name: "Ross & TJ Maxx (Cascades Station)", desc: "오리건주 세금 0% (NO TAX) 초특가 쇼핑몰!", dest: "Ross Dress for Less Cascade Station" }]
         }
       },
       {
         id: "route3",
         num: 3,
-        title: "시카고",
+        title: "시카고 (쇼핑2 - 블루라인35분)",
         dateRange: "12/22 ~ 12/25",
         hotel: "The Chicago Hotel Collection Magnificent Mile",
-        safetyOverview: "매그니피센트 마일 및 루프(Loop) 주요 관광지는 경찰 순찰이 잘 되어 치안이 훌륭함. 밤 9시 이후 남쪽(South Side) 방면 이동만 금지.",
+        safetyOverview: "매그니피센트 마일 및 루프 주요 관광지는 경찰 순찰이 잘 되어 치안 우수. 밤 9시 이후 남쪽 이동 금지.",
         transGuide: [
-          { title: "CTA 1-Day Ventra Pass", desc: "시카고 전철(L) 및 버스 24시간 무제한 패스.", cost: "$5.00" },
-          { title: "Fashion Outlets of Chicago (Rosemont)", desc: "CTA 블루라인 Rosemont역 위치. 대형 Polo Factory Store 입점!" }
+          { title: "CTA Ventra Pass", desc: "블루라인/레드라인 전철 1회 $2.50. 하루 2회 이상 탑승 시 1-Day Pass ($5.00) 추천!", cost: "$5.00" },
+          { title: "⭐ [쇼핑성지] Fashion Outlets of Chicago", desc: "CTA 블루라인 Rosemont역 35분 직행! 우버 비용/증체 피하고 전철로 폴로 팩토리 매장 직행." }
         ],
         schedules: [
           {
             day: "12/22(월) 시카고 도착 & 딥디쉬 피자",
             summary: "16:45 시카고 도착 ➔ 호텔 체크인 ➔ 루 말나티 딥디쉬 피자 ➔ 야경",
             items: [
-              { time: "16:45 - 17:30", title: "시카고 유니언역 도착 ➔ 호텔 이동", origin: "Chicago Union Station", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "버스 $2.25", duration: "버스 18분", safetyLevel: "green", safetyNote: "유니언역 내부 및 퇴근길 루프 지구 안전", needsRide: false, done: false },
-              { time: "18:30 - 20:00", title: "[저녁-명물] 루 말나티 시카고 딥디쉬 피자", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Lou Malnati's Pizzeria Magnificent Mile", cost: "$28", duration: "도보 8분", safetyLevel: "green", safetyNote: "매그니피센트 마일 치안 상급", needsRide: false, done: false },
+              { time: "16:45 - 17:30", title: "시카고 유니언역 도착 ➔ 호텔 이동", origin: "Chicago Union Station", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "버스 $2.25", duration: "버스 18분", safetyLevel: "green", safetyNote: "유니언역 내부 및 루프 지구 안전", needsRide: false, done: false },
+              { time: "18:30 - 20:00", title: "[저녁-명물] 루 말나티 시카고 딥디쉬 피자", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Lou Malnati's Pizzeria Magnificent Mile", cost: "$28", duration: "도보 8분", safetyLevel: "green", safetyNote: "치안 상급 구역", needsRide: false, done: false },
               { time: "20:00 - 21:00", title: "매그니피센트 마일 야경 산책 후 복귀", origin: "Lou Malnati's Pizzeria Magnificent Mile", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "$0", duration: "산책 1시간", safetyLevel: "green", safetyNote: "조명 밝고 안심", needsRide: false, done: false }
             ]
           },
@@ -277,8 +276,8 @@
             day: "12/23(화) 랜드마크 & 바비큐 뷔페",
             summary: "밀레니엄 파크 ➔ 이탈리안 비프 ➔ 360 시카고 ➔ 슈하스코 바비큐",
             items: [
-              { time: "10:00 - 11:30", title: "밀레니엄 파크 (The Bean 강낭콩 동상) 포토존", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Millennium Park Chicago", cost: "$2.50", duration: "전철 12분", safetyLevel: "green", safetyNote: "공원 경찰 상주", needsRide: false, done: false },
-              { time: "11:30 - 13:00", title: "[점심-명물] 포틸로스 (Portillo's) 이탈리안 비프 샌드위치", origin: "Millennium Park Chicago", dest: "Portillo's Ontario St Chicago", cost: "$15", duration: "도보 10분", safetyLevel: "green", safetyNote: "유동인구 많음", needsRide: false, done: false },
+              { time: "10:00 - 11:30", title: "밀레니엄 파크 (The Bean 강낭콩 동상)", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Millennium Park Chicago", cost: "$2.50", duration: "전철 12분", safetyLevel: "green", safetyNote: "공원 경찰 상주", needsRide: false, done: false },
+              { time: "11:30 - 13:00", title: "[점심-명물] 포틸로스 (Portillo's) 이탈리안 비프", origin: "Millennium Park Chicago", dest: "Portillo's Ontario St Chicago", cost: "$15", duration: "도보 10분", safetyLevel: "green", safetyNote: "유동인구 많음", needsRide: false, done: false },
               { time: "13:00 - 15:30", title: "시카고 리버워크 도보 산책", origin: "Portillo's Ontario St Chicago", dest: "Chicago Riverwalk", cost: "$0", duration: "산책 2시간", safetyLevel: "green", safetyNote: "강변 산책로 안전", needsRide: false, done: false },
               { time: "15:30 - 17:30", title: "360 시카고 전망대 (94층 초고층 조망)", origin: "Chicago Riverwalk", dest: "360 CHICAGO", cost: "$35", duration: "도보 15분", safetyLevel: "green", safetyNote: "건물 내 보안 철저", needsRide: false, done: false },
               { time: "17:30 - 19:30", title: "[저녁-뷔페] Fogo de Chão (슈하스코 바비큐 뷔페)", origin: "360 CHICAGO", dest: "Fogo de Chao Brazilian Steakhouse Chicago", cost: "$42", duration: "도보 8분", safetyLevel: "green", safetyNote: "고급 다이닝 구역 우수", needsRide: false, done: false }
@@ -291,14 +290,14 @@
               { time: "10:30 - 12:30", title: "네이비 피어 (Navy Pier) 미시간 호수 조망", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Navy Pier Chicago", cost: "$2.25", duration: "버스 15분", safetyLevel: "green", safetyNote: "보안 검색대 운용", needsRide: false, done: false },
               { time: "12:30 - 14:00", title: "[점심-명물] 지오다노스 피자/수제버거", origin: "Navy Pier Chicago", dest: "Giordano's Chicago", cost: "$22", duration: "도보 10분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
               { time: "14:00 - 17:00", title: "시카고 미술관 관람", origin: "Giordano's Chicago", dest: "Art Institute of Chicago", cost: "$32", duration: "관람 2.5시간", safetyLevel: "green", safetyNote: "내부 보안 우수", needsRide: false, done: false },
-              { time: "17:00 - 19:00", title: "[저녁-명물] 오 슈발 (Au Cheval) 미국 1위 치즈버거", origin: "Art Institute of Chicago", dest: "Au Cheval Chicago", cost: "$25", duration: "우버 15분 ($14)", safetyLevel: "green", safetyNote: "웨스트루프 힙스터 레스토랑가 안전", needsRide: true, done: false }
+              { time: "17:00 - 19:00", title: "[저녁-명물] 오 슈발 (Au Cheval) 미국 1위 치즈버거", origin: "Art Institute of Chicago", dest: "Au Cheval Chicago", cost: "$25", duration: "우버 15분 ($14)", safetyLevel: "green", safetyNote: "웨스트루프 안전 상권", needsRide: true, done: false }
             ]
           },
           {
-            day: "12/25(목) 크리스마스 & 폴로 아울렛 쇼핑 & 야간열차 탑승",
-            summary: "Fashion Outlets of Chicago (Polo Factory Store 폴로 아우터 대량 구매!) ➔ Trader Joe's ➔ 21:30 Lake Shore Limited",
+            day: "12/25(목) 크리스마스 & 폴로 팩토리 아울렛 ➔ 야간열차 탑승",
+            summary: "CTA 블루라인 전철(35분) ➔ Fashion Outlets (Polo Factory Store) ➔ Trader Joe's ➔ 21:30 Lake Shore Limited",
             items: [
-              { time: "11:00 - 14:30", title: "[쇼핑-강추] Fashion Outlets of Chicago (Polo Factory Store 대형 아울렛)", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Fashion Outlets of Chicago", cost: "전철 $2.50", duration: "CTA 블루라인 전철 35분", safetyLevel: "green", safetyNote: "실내 초대형 아울렛 단지로 매우 안전함. 아우터 물량 최고!", needsRide: false, done: false },
+              { time: "11:00 - 14:30", title: "[쇼핑-핵심] Fashion Outlets of Chicago (Polo Factory Store 거대 폴로 아울렛)", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Fashion Outlets of Chicago", cost: "전철 $2.50", duration: "CTA 블루라인 전철 35분 (우버 대비 소요시간 비슷, $40 절약!)", safetyLevel: "green", safetyNote: "실내 초대형 아울렛 단지. Rosemont역 하차 후 도보 10분", needsRide: false, done: false },
               { time: "15:00 - 16:30", title: "[필수-마트] Trader Joe's 야간 기차 식량 구매", origin: "Fashion Outlets of Chicago", dest: "Trader Joe's Chicago", cost: "$22", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "마트 내 안전", needsRide: false, done: false },
               { time: "19:30 - 20:30", title: "호텔 짐 픽업 ➔ 시카고 유니언역 이동 및 대기", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Chicago Union Station", cost: "우버 $12", duration: "차량 15분", safetyLevel: "yellow", safetyNote: "밤 9시 이후 역 외부 배회 금지! 역사 라운지 대기", needsRide: true, done: false },
               { time: "21:30 ~ ", title: "Lake Shore Limited 탑승 (버팔로 향해 출발)", origin: "Chicago Union Station", dest: "Buffalo-Depew Amtrak Station", cost: "암트랙 탑승", duration: "10시간23분", safetyLevel: "green", safetyNote: "기차 승차 안전", needsRide: false, done: false }
@@ -308,34 +307,33 @@
         tiers: {
           budget: [{ name: "밀레니엄 파크 강낭콩 (The Bean)", desc: "시카고 최고의 시그니처 무료 포토존", dest: "Millennium Park Chicago" }],
           standard: [{ name: "360 시카고 전망대", desc: "94층 초고층 스카이라인 ($35)", dest: "360 CHICAGO" }],
-          premium: [{ name: "Bavette's Bar & Boeuf", desc: "힙한 분위기의 프라임 스테이크하우스 ($100+)", dest: "Bavette's Bar & Boeuf Chicago" }],
-          shopping: [{ name: "Fashion Outlets of Chicago (Rosemont)", desc: "CTA 블루라인 35분 직행! 거대 Polo Factory Store 정상 영업 중!", dest: "Fashion Outlets of Chicago" }]
+          premium: [{ name: "Bavette's Bar & Boeuf", desc: "프라임 스테이크하우스 ($100+)", dest: "Bavette's Bar & Boeuf Chicago" }],
+          shopping: [{ name: "Fashion Outlets of Chicago (Rosemont)", desc: "CTA 블루라인 전철 35분 직행! 거대 Polo Factory Store 입점!", dest: "Fashion Outlets of Chicago" }]
         }
       },
       {
         id: "route4",
         num: 4,
-        title: "버팔로 (나이아가라)",
+        title: "버팔로 (나이아가라 폭포)",
         dateRange: "12/26 ~ 12/27",
         hotel: "Comfort Inn & Suites Buffalo Airport",
-        safetyOverview: "나이아가라 국립공원은 낮에 매우 안전함. 버팔로 드퓨(Depew)역 주변은 한적하고 외진 공업 지역이므로 우버/리프트 이동 필수!",
+        safetyOverview: "나이아가라 주립공원은 낮시간대 매우 안전함. 드퓨역 주변은 외진 공업 지역이므로 우버 이동 권장.",
         transGuide: [
           { title: "NFTA 40번 버스", desc: "버팔로 도심 ↔ 나이아가라 연결 버스 ($2.00)." },
-          { title: "우버/리프트 강추 구간", desc: "드퓨역 ↔ 폭포 이동 시 대중교통 1시간 40분 소요. 우버(35분) 강력 추천!" },
-          { title: "Fashion Outlets of Niagara Falls", desc: "폭포에서 우버 15분. 거대 Polo Factory Store 정상 영업 중!" }
+          { title: "우버 추천 구간", desc: "드퓨역 ➔ 폭포 이동 시 대중교통 1시간 40분 소요 vs 우버 35분. (1시간 차이 나므로 폭포 이동은 우버 추천!)" }
         ],
         schedules: [
           {
-            day: "12/26(금) 나이아가라 폭포 체험 & 폴로 팩토리 아울렛 쇼핑 & AYCE 뷔페",
-            summary: "08:53 드퓨역 ➔ 폭포 ➔ 바람의 동굴 ➔ Fashion Outlets (Polo Factory Store) ➔ Asian Buffet 뷔페 ➔ 마트 식량",
+            day: "12/26(금) 나이아가라 폭포 체험 & AYCE 뷔페",
+            summary: "08:53 드퓨역 ➔ 폭포 ➔ 바람의 동굴 ➔ 앵커바 윙 ➔ Asian Buffet 뷔페 ➔ 마트 식량",
             items: [
-              { time: "08:53 - 09:30", title: "드퓨역 ➔ Comfort Inn 짐보관", origin: "Buffalo-Depew Station", dest: "Comfort Inn & Suites Buffalo Airport", cost: "우버 $12", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "외진 역주변. 역사 내부에서 우버 대기", needsRide: true, done: false },
-              { time: "09:30 - 10:30", title: "호텔 ➔ 나이아가라 폭포 주립공원 (대중교통 1시간 40분 ➔ 우버 35분)", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Cave of the Winds Niagara Falls", cost: "우버 분담 $25", duration: "차량 35분", safetyLevel: "green", safetyNote: "대중교통 비추천! 우버 탑승 권장", needsRide: true, done: false },
-              { time: "10:30 - 12:30", title: "바람의 동굴 (Cave of the Winds) 관람", origin: "Cave of the Winds Niagara Falls", dest: "Goat Island Niagara Falls", cost: "$14", duration: "관람 1.5시간", safetyLevel: "green", safetyNote: "주립공원 내부 안전", needsRide: false, done: false },
-              { time: "12:30 - 13:30", title: "[점심-명물] 앵커 바 (원조 버팔로 윙)", origin: "Goat Island Niagara Falls", dest: "Anchor Bar Niagara Falls", cost: "$22", duration: "도보/차량 10분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
-              { time: "13:30 - 16:30", title: "[쇼핑-강추] Fashion Outlets of Niagara Falls (Polo Factory Store 폴로 아우터 대량 득템!)", origin: "Anchor Bar Niagara Falls", dest: "Fashion Outlets of Niagara Falls USA", cost: "우버 $15", duration: "차량 15분 + 쇼핑 2.5시간", safetyLevel: "green", safetyNote: "폭포 근처 대형 아울렛! 폴로 아우터/재킷 할인가 대박", needsRide: true, done: false },
-              { time: "17:00 - 18:30", title: "[저녁-뷔페] Asian Buffet Buffalo (올유캔잇 뷔페)", origin: "Fashion Outlets of Niagara Falls USA", dest: "Asian Buffet Buffalo", cost: "$28", duration: "우버 $18", safetyLevel: "green", safetyNote: "가족 단위 식당 안심", needsRide: true, done: false },
-              { time: "18:30 - 19:30", title: "[필수-마트] Walmart 11시간 보스턴 기차 식량 구매", origin: "Asian Buffet Buffalo", dest: "Walmart Supercenter Buffalo", cost: "$15", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "마트 매장 안심", needsRide: false, done: false }
+              { time: "08:53 - 09:30", title: "드퓨역 ➔ Comfort Inn 짐보관", origin: "Buffalo-Depew Station", dest: "Comfort Inn & Suites Buffalo Airport", cost: "우버 $12", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "역사 내부에서 우버 대기", needsRide: true, done: false },
+              { time: "09:30 - 10:30", title: "호텔 ➔ 나이아가라 폭포 주립공원 이동", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Cave of the Winds Niagara Falls", cost: "우버 분담 $25", duration: "차량 35분 (대중교통 1.5시간 이상 소요되어 우버 추천)", safetyLevel: "green", safetyNote: "우버 이동 안심", needsRide: true, done: false },
+              { time: "10:30 - 13:00", title: "바람의 동굴 (Cave of the Winds) & 고트 아일랜드 관람", origin: "Cave of the Winds Niagara Falls", dest: "Goat Island Niagara Falls", cost: "$14", duration: "관람 2.5시간", safetyLevel: "green", safetyNote: "주립공원 내부 안전", needsRide: false, done: false },
+              { time: "13:00 - 14:30", title: "[점심-명물] 앵커 바 (원조 버팔로 윙)", origin: "Goat Island Niagara Falls", dest: "Anchor Bar Niagara Falls", cost: "$22", duration: "도보/차량 10분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
+              { time: "14:30 - 17:00", title: "폭포 수변 산책로 및 일몰 관람", origin: "Anchor Bar Niagara Falls", dest: "Niagara Falls State Park", cost: "$0", duration: "산책 2.5시간", safetyLevel: "green", safetyNote: "일몰 후 17시 이전 산책 종료", needsRide: false, done: false },
+              { time: "17:30 - 19:00", title: "[저녁-뷔페] Asian Buffet Buffalo (올유캔잇 뷔페)", origin: "Niagara Falls State Park", dest: "Asian Buffet Buffalo", cost: "$28", duration: "우버 $18", safetyLevel: "green", safetyNote: "가족 단위 식당 안심", needsRide: true, done: false },
+              { time: "19:00 - 20:30", title: "[필수-마트] Walmart 11시간 보스턴 기차 식량 구매", origin: "Asian Buffet Buffalo", dest: "Walmart Supercenter Buffalo", cost: "$15", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "마트 매장 안심", needsRide: false, done: false }
             ]
           },
           {
@@ -343,7 +341,7 @@
             summary: "드퓨역 이동 ➔ 09:05 기차 탑승 ➔ 20:32 도착",
             items: [
               { time: "08:00 - 08:30", title: "체크아웃 ➔ 버팔로 드퓨역 이동", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Buffalo-Depew Station", cost: "우버 $10", duration: "차량 10분", safetyLevel: "green", safetyNote: "아침 시간대 안심", needsRide: true, done: false },
-              { time: "09:05 ~ 20:32", title: "Lake Shore Limited 탑승 (보스턴 사우스역 도착)", origin: "Buffalo-Depew Station", dest: "Boston South Station", cost: "암트랙 탑승", duration: "11시간27분", safetyLevel: "green", safetyNote: "기차 내 승무원 관리 안전", needsRide: false, done: false }
+              { time: "09:05 ~ 20:32", title: "Lake Shore Limited 탑승 (보스턴 사우스역 도착)", origin: "Buffalo-Depew Station", dest: "Boston South Station", cost: "암트랙 탑승", duration: "11시간27분", safetyLevel: "green", safetyNote: "기차 승무원 상주 안전", needsRide: false, done: false }
             ]
           }
         ],
@@ -351,38 +349,38 @@
           budget: [{ name: "나이아가라 협곡 트레일", desc: "폭포 하류 트레킹 코스 (무료)", dest: "Niagara Gorge Trail" }],
           standard: [{ name: "앵커 바 (Anchor Bar)", desc: "1964년 버팔로 윙 원조 성지 ($22)", dest: "Anchor Bar Niagara Falls" }],
           premium: [{ name: "나이아가라 헬기 투어", desc: "상공에서 바라보는 폭포 ($160+)", dest: "Niagara Helicopters" }],
-          shopping: [{ name: "Fashion Outlets of Niagara Falls USA", desc: "폭포 근처 거대 아울렛. 거대 Polo Factory Store 입점!", dest: "Fashion Outlets of Niagara Falls USA" }]
+          shopping: [{ name: "Walmart Supercenter", desc: "기차 식량 및 가성비 마트 쇼핑", dest: "Walmart Supercenter Buffalo" }]
         }
       },
       {
         id: "route5",
         num: 5,
-        title: "보스턴",
+        title: "보스턴 (순수 관광&맛집)",
         dateRange: "12/27 ~ 12/29",
         hotel: "Cambria Hotel Boston Downtown Seaport",
-        safetyOverview: "미국 최고 수준의 안전 도시. 대학가, 씨포트, 다운타운 모두 야간에도 비교적 안전함.",
+        safetyOverview: "미국 최고 수준의 치안 정청 도시. 대학가, 씨포트, 다운타운 모두 밤에도 매우 안전함.",
         transGuide: [
-          { title: "MBTA 1-Day LinkPass", desc: "보스턴 지하철 및 버스 24시간 무제한 ($11.00)." },
-          { title: "Assembly Row (Somerville)", desc: "MBTA 오렌지라인 지하철 15분! Polo Factory Store 입점." }
+          { title: "MBTA LinkPass (지하철/버스)", desc: "애플페이/구글페이 신용카드 직태그 탑승 가능! 1회 $2.40 / 1일 패스 $11.00", cost: "$11.00" },
+          { title: "💡 쇼핑 삭제 보스턴 투어", desc: "보스턴은 쇼핑을 삭제하고 하버드/프리덤트레일/랍스터롤에 전념!" }
         ],
         schedules: [
           {
             day: "12/27(일) 보스턴 밤 도착",
             summary: "20:32 사우스역 도착 ➔ 호텔 체크인 및 휴식",
             items: [
-              { time: "20:32 - 21:00", title: "보스턴 사우스역 ➔ Cambria Hotel 체크인", origin: "Boston South Station", dest: "Cambria Hotel Boston Downtown Seaport", cost: "$2.40", duration: "전철/도보 12분", safetyLevel: "green", safetyNote: "보스턴 지하철 및 씨포트 구역 매우 안전", needsRide: false, done: false }
+              { time: "20:32 - 21:00", title: "보스턴 사우스역 ➔ Cambria Hotel 체크인", origin: "Boston South Station", dest: "Cambria Hotel Boston Downtown Seaport", cost: "$2.40", duration: "전철/도보 12분", safetyLevel: "green", safetyNote: "보스턴 지하철 및 씨포트 구역 완벽 안전", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/28(월) 랍스터롤 & 하버드 대학 & Assembly Row 폴로 쇼핑 & 스시 뷔페",
-            summary: "프리덤 트레일 ➔ 넵튠 오이스터 ➔ 하버드 ➔ Assembly Row (Polo Factory Store) ➔ Yamato 스시 뷔페",
+            day: "12/28(월) 랍스터롤 & 하버드 대학 & 씨포트 수변 산책 & 스시 뷔페",
+            summary: "프리덤 트레일 ➔ 넵튠 오이스터 ➔ 하버드 ➔ 씨포트 야경 ➔ Yamato 스시 뷔페",
             items: [
-              { time: "09:30 - 11:30", title: "프리덤 트레일 도보 산책 (보스턴 커먼 ~ 퀸시 마켓)", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Quincy Market Boston", cost: "패스", duration: "도보 산책 2시간", safetyLevel: "green", safetyNote: "역사 탐방길 치안 완벽", needsRide: false, done: false },
-              { time: "11:30 - 13:00", title: "[점심-명물] 넵튠 오이스터 (버터 랍스터롤)", origin: "Quincy Market Boston", dest: "Neptune Oyster Boston", cost: "$42", duration: "도보 8분", safetyLevel: "green", safetyNote: "리틀 이탈리아 안심", needsRide: false, done: false },
-              { time: "13:00 - 15:00", title: "하버드 대학교 (존 하버드 동상)", origin: "Neptune Oyster Boston", dest: "Harvard Yard Cambridge", cost: "패스", duration: "전철 20분", safetyLevel: "green", safetyNote: "세계 최고 대학가 치안 청정 구역", needsRide: false, done: false },
-              { time: "15:00 - 17:30", title: "[쇼핑-강추] Assembly Row (Polo Factory Store 폴로 아우터 지하철 15분 쇼핑!)", origin: "Harvard Yard Cambridge", dest: "Polo Ralph Lauren Factory Store Assembly Row", cost: "패스", duration: "오렌지라인 전철 15분 + 쇼핑 2시간", safetyLevel: "green", safetyNote: "지하철역 바로 앞 야외 아울렛! 폴로 아우터 물량 우수", needsRide: false, done: false },
-              { time: "17:30 - 19:00", title: "[저녁-뷔페] Yamato / Minado Seafood AYCE 스시 뷔페", origin: "Polo Ralph Lauren Factory Store Assembly Row", dest: "Minado Seafood Buffet Boston", cost: "$32", duration: "식사 1.5시간", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
-              { time: "19:00 - 19:40", title: "[필수-마트] Trader Joe's 뉴욕행 기차 간식 구매", origin: "Minado Seafood Buffet Boston", dest: "Trader Joe's Boston", cost: "$12", duration: "쇼핑 40분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false }
+              { time: "09:30 - 11:30", title: "프리덤 트레일 도보 산책 (보스턴 커먼 ~ 퀸시 마켓)", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Quincy Market Boston", cost: "패스", duration: "도보 산책 2시간", safetyLevel: "green", safetyNote: "독립 역사 탐방길 완벽 안전", needsRide: false, done: false },
+              { time: "11:30 - 13:00", title: "[점심-명물] 넵튠 오이스터 (버터 랍스터롤의 정석)", origin: "Quincy Market Boston", dest: "Neptune Oyster Boston", cost: "$42", duration: "도보 8분", safetyLevel: "green", safetyNote: "리틀 이탈리아 안심 구역", needsRide: false, done: false },
+              { time: "13:00 - 16:00", title: "하버드 대학교 (존 하버드 동상 & 교정 투어)", origin: "Neptune Oyster Boston", dest: "Harvard Yard Cambridge", cost: "패스", duration: "MBTA Red Line 전철 20분", safetyLevel: "green", safetyNote: "세계 최고 대학가 치안 청정 구역", needsRide: false, done: false },
+              { time: "16:00 - 18:00", title: "씨포트 디스트릭트 (Seaport) 현대적 수변 야경 산책", origin: "Harvard Yard Cambridge", dest: "Seaport District Boston", cost: "패스", duration: "전철 20분 + 산책 1.5시간", safetyLevel: "green", safetyNote: "보스턴에서 가장 핫하고 트렌디한 안전 구역", needsRide: false, done: false },
+              { time: "18:00 - 19:30", title: "[저녁-뷔페] Yamato / Minado Seafood AYCE 스시 뷔페", origin: "Seaport District Boston", dest: "Minado Seafood Buffet Boston", cost: "$32", duration: "식사 1.5시간", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
+              { time: "19:30 - 20:00", title: "[필수-마트] Trader Joe's 뉴욕행 기차 간식 구매", origin: "Minado Seafood Buffet Boston", dest: "Trader Joe's Boston", cost: "$12", duration: "쇼핑 30분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false }
             ]
           },
           {
@@ -398,19 +396,19 @@
           budget: [{ name: "프리덤 트레일", desc: "미국 독립 역사 투어 (무료)", dest: "Freedom Trail Boston" }],
           standard: [{ name: "넵튠 오이스터", desc: "버터 포획 랍스터롤의 정석 ($42)", dest: "Neptune Oyster Boston" }],
           premium: [{ name: "그릴 23 & 바", desc: "보스턴 최고 등급 스테이크 ($110~$140)", dest: "Grill 23 & Bar Boston" }],
-          shopping: [{ name: "Assembly Row (Somerville)", desc: "보스턴 지하철 오렌지라인 15분! 거대 Polo Factory Store 정상 영업 중!", dest: "Polo Ralph Lauren Factory Store Assembly Row" }]
+          shopping: [{ name: "Quincy Market / Newbury St", desc: "보스턴 시내 중심가 스트릿 브랜드 구경", dest: "Quincy Market Boston" }]
         }
       },
       {
         id: "route6",
         num: 6,
-        title: "뉴욕",
+        title: "뉴욕 (쇼핑3 - NJ 세금0%)",
         dateRange: "12/29 ~ 1/2",
         hotel: "Romana Hotel NYC (Manhattan)",
-        safetyOverview: "타임스스퀘어/미드타운은 24시간 경찰 배치로 안전함. 단, 캐릭터 탈 쓴 사람들의 강제 사진/돈 요구 및 소매치기 사기꾼 주의.",
+        safetyOverview: "타임스스퀘어/미드타운은 24시간 경찰 배치로 안전함. 캐릭터 탈 쓴 사람들의 강제 사진/돈 요구 및 소매치기 사기 주의.",
         transGuide: [
-          { title: "MTA OMNY (컨택리스)", desc: "신용카드 바로 찍기. 1회 $2.90. 주 12회 탑승 후 무제한 무료!" },
-          { title: "The Mills at Jersey Gardens (NJ)", desc: "맨해튼 버스터미널 111번 버스 35분! 뉴저지 의류 세금 0% (NO TAX)!" }
+          { title: "MTA OMNY (뉴욕 지하철)", desc: "애플페이/구글페이 신용카드 직태그! 1회 $2.90. 주 12회 이상 탑승 시 무제한 무료 전환.", cost: "$2.90" },
+          { title: "⭐ [쇼핑성지] The Mills at Jersey Gardens", desc: "뉴저지 의류 세금 0% (NO TAX)! Port Authority 버스터미널 111번 버스 35분 직행 ($14)." }
         ],
         schedules: [
           {
@@ -418,7 +416,7 @@
             summary: "13:47 펜역 도착 ➔ 호텔 ➔ 타임스 스퀘어 ➔ K-BBQ 뷔페",
             items: [
               { time: "13:47 - 14:30", title: "모이니핸 펜역 ➔ Romana Hotel 짐보관", origin: "Moynihan Train Hall at Penn Station", dest: "Romana Hotel NYC", cost: "$0", duration: "도보 8분", safetyLevel: "green", safetyNote: "신축 Moynihan Train Hall 및 미드타운 대로변 매우 안전", needsRide: false, done: false },
-              { time: "14:30 - 17:30", title: "타임스 스퀘어 & 록펠러 센터 야경 산책", origin: "Romana Hotel NYC", dest: "Times Square NYC", cost: "$0", duration: "산책 3시간", safetyLevel: "yellow", safetyNote: "캐릭터 인형탈/CD 강매꾼 거절. 지갑/폰 호주머니 관리", needsRide: false, done: false },
+              { time: "14:30 - 17:30", title: "타임스 스퀘어 & 록펠러 센터 야경 산책", origin: "Romana Hotel NYC", dest: "Times Square NYC", cost: "$0", duration: "산책 3시간", safetyLevel: "yellow", safetyNote: "캐릭터 탈 강매꾼 거절. 소지품 관리", needsRide: false, done: false },
               { time: "17:30 - 19:30", title: "[저녁-뷔페] Picnic Garden / K-BBQ & 해산물 뷔페", origin: "Times Square NYC", dest: "Picnic Garden BBQ Buffet NYC", cost: "$40", duration: "식사 2시간", safetyLevel: "green", safetyNote: "식당 내부 안전", needsRide: false, done: false },
               { time: "19:30 - 20:30", title: "호텔 체크인 및 휴식", origin: "Picnic Garden BBQ Buffet NYC", dest: "Romana Hotel NYC", cost: "$0", duration: "도보 10분", safetyLevel: "green", safetyNote: "대로변 안전", needsRide: false, done: false }
             ]
@@ -430,14 +428,14 @@
               { time: "09:00 - 10:30", title: "[아침-명물] 에싸 베이글 (Ess-a-Bagel)", origin: "Romana Hotel NYC", dest: "Ess-a-Bagel NYC", cost: "$15", duration: "도보 12분", safetyLevel: "green", safetyNote: "아침 출근길 안전", needsRide: false, done: false },
               { time: "10:30 - 13:00", title: "서밋 원 밴더빌트 거울 전망대", origin: "Ess-a-Bagel NYC", dest: "Summit One Vanderbilt", cost: "$45", duration: "관람 2시간", safetyLevel: "green", safetyNote: "빌딩 내부 보안 철저", needsRide: false, done: false },
               { time: "13:00 - 16:30", title: "MTA F선 ➔ 브루클린 덤보 (DUMBO) & 브릿지 도보", origin: "Summit One Vanderbilt", dest: "DUMBO Brooklyn", cost: "$2.90", duration: "전철 20분", safetyLevel: "green", safetyNote: "덤보 포토존 및 브루클린 브릿지 도보길 치안 우수", needsRide: false, done: false },
-              { time: "16:30 - 18:30", title: "[저녁-명물] 카츠 델리 (Katz's 파스트라미)", origin: "DUMBO Brooklyn", dest: "Katz's Delicatessen NYC", cost: "$30", duration: "전철 15분", safetyLevel: "green", safetyNote: "식당 줄 서는 인파 많아 안전", needsRide: false, done: false }
+              { time: "16:30 - 18:30", title: "[저녁-명물] 카츠 델리 (Katz's 파스트라미)", origin: "DUMBO Brooklyn", dest: "Katz's Delicatessen NYC", cost: "$30", duration: "전철 15분", safetyLevel: "green", safetyNote: "식당 인파 많아 안전", needsRide: false, done: false }
             ]
           },
           {
             day: "12/31(수) 뉴저지 세금 0% 폴로 팩토리 아울렛 쇼핑 & 연말 뉴욕",
-            summary: "The Mills at Jersey Gardens (Polo Factory Store 세금 0% 대량 구매!) ➔ 센트럴파크 ➔ 할랄가이즈",
+            summary: "Port Authority 111번 버스(35분) ➔ The Mills at Jersey Gardens (Polo Factory Store 세금0%) ➔ 센트럴파크 ➔ 할랄가이즈",
             items: [
-              { time: "10:00 - 14:30", title: "[쇼핑-초강추] The Mills at Jersey Gardens (뉴저지 의류 세금 0% 거대 Polo Factory Store!)", origin: "Port Authority Bus Terminal", dest: "The Mills at Jersey Gardens", cost: "버스 $14", duration: "111번 버스 35분 + 쇼핑 3.5시간", safetyLevel: "green", safetyNote: "뉴저지주 세금 0%! 뉴욕주 세금(8.875%) 절약 최고의 폴로 아우터 쇼핑 성지", needsRide: false, done: false },
+              { time: "10:00 - 14:30", title: "[쇼핑-핵심] The Mills at Jersey Gardens (뉴저지 의류 세금 0% 거대 Polo Factory Store!)", origin: "Port Authority Bus Terminal", dest: "The Mills at Jersey Gardens", cost: "왕복 버스 $14", duration: "NJ Transit 111번 버스 35분 (우버비 $80 폭탄 절약!)", safetyLevel: "green", safetyNote: "뉴저지주 세금 0%! 뉴욕주 세금(8.875%) 아끼는 최고 쇼핑성지. NJ Transit 앱/터미널 자판기 티켓 구매", needsRide: false, done: false },
               { time: "15:30 - 18:00", title: "센트럴파크 겨울 산책 & 조스 피자 / 할랄가이즈", origin: "The Mills at Jersey Gardens", dest: "Central Park NYC", cost: "$12", duration: "산책 2.5시간", safetyLevel: "green", safetyNote: "공원 산책 치안 안심", needsRide: false, done: false }
             ]
           },
@@ -445,7 +443,7 @@
             day: "1/2(금) 워싱턴 D.C. 이동",
             summary: "10:00 마트 ➔ 11:05 기차 탑승",
             items: [
-              { time: "10:00 - 10:30", title: "[필수-마트] 기차 간식 구매 및 펜역 이동", origin: "Romana Hotel NYC", dest: "Moynihan Train Hall at Penn Station", cost: "$15", duration: "도보 8분", safetyLevel: "green", safetyNote: "펜역 신관 모이니핸 홀 내부 안전", needsRide: false, done: false },
+              { time: "10:00 - 10:30", title: "[필수-마트] 기차 간식 구매 및 펜역 이동", origin: "Romana Hotel NYC", dest: "Moynihan Train Hall at Penn Station", cost: "$15", duration: "도보 8분", safetyLevel: "green", safetyNote: "펜역 모이니핸 홀 내부 안전", needsRide: false, done: false },
               { time: "11:05 ~ 14:25", title: "Northeast Regional 탑승", origin: "Moynihan Train Hall at Penn Station", dest: "Washington Union Station", cost: "암트랙 탑승", duration: "열차 3.3시간", safetyLevel: "green", safetyNote: "열차 승무원 상주 안심", needsRide: false, done: false }
             ]
           }
@@ -453,8 +451,8 @@
         tiers: {
           budget: [{ name: "할랄 가이즈", desc: "스트리트 푸드 근본 치킨 오버 라이스 ($12)", dest: "The Halal Guys 53rd and 6th" }],
           standard: [{ name: "카츠 델리", desc: "소고기 파스트라미 폭탄 샌드위치 ($30)", dest: "Katz's Delicatessen NYC" }],
-          premium: [{ name: "피터 루거 스테이크", desc: "130년 전통 브루클린 드라이에이징 포터하우스 ($120+)", dest: "Peter Luger Steak House Brooklyn" }],
-          shopping: [{ name: "The Mills at Jersey Gardens (NJ)", desc: "뉴저지 의류 세금 0% (NO TAX)! 거대 Polo Factory Store 입점!", dest: "The Mills at Jersey Gardens" }, { name: "Century 21 NYC (Cortlandt St)", desc: "WTC 앞 재개장 명품/폴로 할인가 백화점.", dest: "Century 21 NYC" }]
+          premium: [{ name: "피터 루거 스테이크", desc: "130년 전통 브루클린 포터하우스 ($120+)", dest: "Peter Luger Steak House Brooklyn" }],
+          shopping: [{ name: "The Mills at Jersey Gardens (NJ)", desc: "뉴저지 의류 세금 0% (NO TAX)! 버스 35분! 거대 Polo Factory Store 입점!", dest: "The Mills at Jersey Gardens" }, { name: "Century 21 NYC (Cortlandt St)", desc: "WTC 앞 명품/폴로 할인가 백화점.", dest: "Century 21 NYC" }]
         }
       },
       {
@@ -463,11 +461,10 @@
         title: "워싱턴 D.C. & 귀국",
         dateRange: "1/2 ~ 1/6",
         hotel: "Kellogg Conference Hotel Capitol Hill",
-        safetyOverview: "국회의사당, 내셔널 몰, 박물관 구역은 미국 최고 치안 구역. 밤 9시 이후 유니언역 동쪽 골목은 어두우므로 우버 권장.",
+        safetyOverview: "국회의사당, 내셔널 몰, 박물관 구역은 미국 최고 치안 구역. 밤 9시 이후 유니언역 동쪽 골목 우버 이용.",
         transGuide: [
-          { title: "WMATA 메트로", desc: "거리별 $2.25 ~ $3.85." },
-          { title: "박물관 무료", desc: "스미스소니언 박물관 전부 입장료 $0!" },
-          { title: "Tanger Outlets National Harbor", desc: "DC 근교 대형 아울렛. Polo Factory Store 정상 영업 중!" }
+          { title: "WMATA 메트로", desc: "애플/안드로이드 스마트폰에 SmarTrip 카드 등록 가능. 거리별 $2.25 ~ $3.85." },
+          { title: "스미스소니언 박물관 전부 무료", desc: "입장료 $0!" }
         ],
         schedules: [
           {
@@ -475,18 +472,18 @@
             summary: "14:25 D.C. 도착 ➔ 호텔 ➔ 항공우주 ➔ Hibachi 스시 뷔페",
             items: [
               { time: "14:25 - 15:30", title: "유니언역 도착 ➔ Kellogg Hotel 짐보관", origin: "Washington Union Station", dest: "Kellogg Conference Hotel Capitol Hill", cost: "우버 $8", duration: "차량 10분", safetyLevel: "green", safetyNote: "낮시간대 안전", needsRide: true, done: false },
-              { time: "16:00 - 18:00", title: "스미스소니언 국립 항공우주 박물관 관람", origin: "Kellogg Conference Hotel Capitol Hill", dest: "National Air and Space Museum", cost: "무료 ($0)", duration: "관람 2시간", safetyLevel: "green", safetyNote: "국립 박물관 내부 연방 경비원 상주 극도로 안전", needsRide: false, done: false },
+              { time: "16:00 - 18:00", title: "스미스소니언 국립 항공우주 박물관 관람", origin: "Kellogg Conference Hotel Capitol Hill", dest: "National Air and Space Museum", cost: "무료 ($0)", duration: "관람 2시간", safetyLevel: "green", safetyNote: "국립 박물관 내부 극도로 안전", needsRide: false, done: false },
               { time: "18:00 - 19:30", title: "[저녁-뷔페] Hibachi / Todai DC AYCE 스시 뷔페", origin: "National Air and Space Museum", dest: "Hibachi Buffet Washington DC", cost: "$32", duration: "도보/버스 15분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false }
             ]
           },
           {
-            day: "1/3(토) D.C. 주요 랜드마크 & 폴로 아울렛 쇼핑",
-            summary: "링컨 기념관 ➔ 백악관 ➔ Tanger Outlets (Polo Factory Store) ➔ 올드 에빗 그릴",
+            day: "1/3(토) D.C. 주요 랜드마크",
+            summary: "링컨 기념관 ➔ 벤스 칠리 보울 ➔ 백악관 ➔ 올드 에빗 그릴",
             items: [
               { time: "10:00 - 12:30", title: "링컨 기념관 & 워싱턴 기념탑 산책", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Lincoln Memorial", cost: "무료 ($0)", duration: "산책 2시간", safetyLevel: "green", safetyNote: "내셔널 몰 전체 치안 우수", needsRide: false, done: false },
               { time: "12:30 - 14:00", title: "[점심-명물] 벤스 칠리 보울 (오바마 단골)", origin: "Lincoln Memorial", dest: "Ben's Chili Bowl DC", cost: "$14", duration: "전철 15분", safetyLevel: "green", safetyNote: "낮시간대 안전", needsRide: false, done: false },
-              { time: "14:00 - 17:00", title: "[쇼핑-추천] Tanger Outlets National Harbor (Polo Factory Store 폴로 아우터 쇼핑)", origin: "Ben's Chili Bowl DC", dest: "Tanger Outlets National Harbor", cost: "우버 $18", duration: "우버 20분 + 쇼핑 2.5시간", safetyLevel: "green", safetyNote: "DC 근교 대형 아울렛 단지로 매우 안전함", needsRide: true, done: false },
-              { time: "17:30 - 19:30", title: "[저녁-명물] 올드 에빗 그릴 (Old Ebbitt Grill 굴 & 다이닝)", origin: "Tanger Outlets National Harbor", dest: "Old Ebbitt Grill Washington DC", cost: "$35", duration: "우버 20분", safetyLevel: "green", safetyNote: "정재계 인사 단골 완벽 안전", needsRide: true, done: false }
+              { time: "14:00 - 17:00", title: "백악관 외부 관람 & 국회도서관 내부 투어", origin: "Ben's Chili Bowl DC", dest: "The White House", cost: "무료 ($0)", duration: "투어 2.5시간", safetyLevel: "green", safetyNote: "백악관 주변 비밀경호국 상주 치안 극상", needsRide: false, done: false },
+              { time: "17:00 - 19:00", title: "[저녁-명물] 올드 에빗 그릴 (Old Ebbitt Grill 굴 & 다이닝)", origin: "The White House", dest: "Old Ebbitt Grill Washington DC", cost: "$35", duration: "도보 5분", safetyLevel: "green", safetyNote: "정재계 인사 단골 완벽 안전", needsRide: false, done: false }
             ]
           },
           {
@@ -504,7 +501,7 @@
           budget: [{ name: "벤스 칠리 보울", desc: "오바마 대통령 단골 수제 소시지 ($12~$15)", dest: "Ben's Chili Bowl DC" }],
           standard: [{ name: "올드 에빗 그릴", desc: "1856년 설립된 DC 최고의 굴 & 다이닝 ($35~$50)", dest: "Old Ebbitt Grill Washington DC" }],
           premium: [{ name: "조스 시푸드", desc: "정재계 인사들의 프라임 스톤크랩 & 스테이크 ($110+)", dest: "Joe's Seafood Prime Steak Washington DC" }],
-          shopping: [{ name: "Tanger Outlets National Harbor", desc: "DC 근교 대형 아울렛. Polo Factory Store 입점!", dest: "Tanger Outlets National Harbor" }]
+          shopping: [{ name: "TJ Maxx Metro Center", desc: "백악관 근처 가성비 잡화 매장", dest: "TJ Maxx Metro Center DC" }]
         }
       }
     ];
@@ -632,7 +629,7 @@
             <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">
               <i class="fa-solid fa-bus"></i>
             </div>
-            <h3 class="text-xs font-black text-slate-900">교통 패스 & 쇼핑 꿀팁</h3>
+            <h3 class="text-xs font-black text-slate-900">교통 패스 & 대중교통 팁</h3>
           </div>
           <div class="space-y-1.5">
             ${(r.transGuide || []).map(t => `
@@ -841,7 +838,7 @@
           <div class="border border-amber-200 bg-amber-50/40 rounded-2xl p-3">
             <div class="flex items-center gap-1.5 mb-2">
               <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-              <h4 class="text-[11px] font-black text-amber-900">4. 폴로/브랜드 초특가 팩토리 아울렛 (Shopping)</h4>
+              <h4 class="text-[11px] font-black text-amber-900">4. 핵심 폴로/브랜드 초특가 아울렛 (Shopping)</h4>
             </div>
             <div class="space-y-1.5">
               ${(r.tiers.shopping || []).map(item => `
