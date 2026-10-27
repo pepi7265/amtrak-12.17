@@ -3,135 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>미국 암트랙 대횡단 마스터 플래너 V10 (3대 쇼핑&대중교통 완벽판)</title>
+  <title>미국 암트랙 대횡단 프로 마스터 플래너 V11</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap');
-    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f1f5f9; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .nav-tab-active {
       border: 2px solid #4f46e5 !important;
       background-color: #ffffff !important;
       color: #4f46e5 !important;
-      box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.18);
+      box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.22);
+      transform: translateY(-1px);
+    }
+    .tier-tab-active {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
     }
   </style>
 </head>
-<body class="text-slate-800 antialiased pb-28 select-none">
+<body class="text-slate-800 antialiased pb-32 select-none">
 
-  <!-- Mobile Top App Bar -->
-  <header class="bg-white sticky top-0 z-50 border-b border-slate-200 shadow-sm">
-    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+  <!-- Top Sticky Header -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200 shadow-sm">
+    <div class="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
-        <div class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-200 shrink-0">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-200 shrink-0">
           <i class="fa-solid fa-train-subway text-lg"></i>
         </div>
         <div>
           <div class="flex items-center gap-1.5">
-            <h1 class="text-base font-black text-slate-900 tracking-tight">미국 횡단 플래너</h1>
-            <span class="text-[10px] font-black bg-indigo-600 text-white px-1.5 py-0.5 rounded">V10 알짜쇼핑</span>
+            <h1 class="text-base font-black text-slate-900 tracking-tight">US AMTRAK PRO</h1>
+            <span class="text-[10px] font-black bg-indigo-600 text-white px-2 py-0.5 rounded-full">V11 EXPERT</span>
           </div>
-          <p class="text-[10px] text-slate-400 font-medium">쇼핑 3곳 슬림화 & 애플/안드로이드 패스 안내</p>
+          <p class="text-[10px] text-slate-500 font-medium">12/17~1/6 대횡단 • 원클릭 대안 삽입 • 치안/교통 완비</p>
         </div>
       </div>
-      <div class="flex items-center gap-1">
-        <button onclick="shareLink()" class="text-[10px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-2.5 py-1.5 rounded-xl shadow transition flex items-center gap-1">
+      <div class="flex items-center gap-1.5">
+        <button onclick="shareLink()" class="text-[11px] font-extrabold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-xl shadow-sm transition flex items-center gap-1">
           <i class="fa-solid fa-share-nodes"></i> 공유
         </button>
-        <button onclick="resetToDefault()" class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1.5 rounded-xl border hover:bg-slate-200">
+        <button onclick="resetToDefault()" title="원본 초기화" class="text-[11px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-xl border border-slate-200 transition">
           <i class="fa-solid fa-rotate-left"></i>
         </button>
       </div>
     </div>
 
-    <!-- Alert Bar -->
-    <div class="bg-indigo-950 text-indigo-200 px-4 py-2">
-      <div class="max-w-md mx-auto flex items-center justify-between text-[10px] font-medium">
-        <span><i class="fa-solid fa-mobile-screen-button text-amber-400 mr-1"></i> <strong>알짜 3대 쇼핑 도시</strong> & <strong>애플/안드로이드 대중교통 팁</strong> 반영!</span>
+    <!-- Sub Status Bar -->
+    <div class="bg-slate-900 text-slate-200 px-4 py-1.5">
+      <div class="max-w-lg mx-auto flex items-center justify-between text-[10px] font-medium">
+        <span><i class="fa-solid fa-wand-magic-sparkles text-amber-400 mr-1"></i> 하단 <strong>[대안 카탈로그]</strong>에서 <strong>[+ 일정 넣기]</strong>로 즉시 추가/교체 가능!</span>
+        <span class="text-emerald-400 font-bold shrink-0 ml-2">● 자동저장 ON</span>
       </div>
     </div>
 
-    <!-- Horizontal Section Nav -->
-    <div class="max-w-md mx-auto px-4 py-2 bg-white border-b border-slate-100">
-      <div id="routeTabs" class="flex gap-2 overflow-x-auto no-scrollbar py-1">
-        <!-- JS rendered -->
-      </div>
+    <!-- Horizontal City Tabs -->
+    <div class="max-w-lg mx-auto px-4 py-2 bg-white">
+      <div id="routeTabs" class="flex gap-2 overflow-x-auto no-scrollbar py-0.5"></div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="max-w-md mx-auto px-4 mt-3 space-y-4" id="mainContent">
-    <div class="text-center py-20 text-slate-400">
-      <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-indigo-600"></i>
-      <p class="text-xs font-bold">일정을 불러오는 중입니다...</p>
-    </div>
-  </main>
+  <!-- Main Content -->
+  <main class="max-w-lg mx-auto px-4 mt-3 space-y-4" id="mainContent"></main>
 
-  <!-- Edit Item Modal -->
+  <!-- Modal 1: Edit Existing Schedule Item -->
   <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl w-full max-w-sm p-5 space-y-3 shadow-2xl max-h-[90vh] overflow-y-auto">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="text-sm font-black text-slate-900">일정 & 이동 정보 세부 수정</h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-pen-to-square text-indigo-600 mr-1"></i> 일정 세부 편집</h3>
+        <button onclick="closeEditModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="editSchIdx">
       <input type="hidden" id="editItemIdx">
-      <div>
-        <label class="text-[10px] font-extrabold text-slate-500">시간대 (예: 17:00 - 18:30)</label>
-        <input type="text" id="editTime" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
-      </div>
-      <div>
-        <label class="text-[10px] font-extrabold text-slate-500">일정 / 장소명</label>
-        <input type="text" id="editItemTitle" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
-      </div>
+      
       <div class="grid grid-cols-2 gap-2">
         <div>
-          <label class="text-[10px] font-extrabold text-slate-500">이동/소요 시간</label>
-          <input type="text" id="editDuration" placeholder="예: 이동 15분" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <label class="text-[10px] font-extrabold text-slate-500">시간대</label>
+          <input type="text" id="editTime" placeholder="13:00 - 14:30" class="w-full text-xs p-2 border border-slate-200 rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
         </div>
         <div>
-          <label class="text-[10px] font-extrabold text-slate-500">비용 (예: 식비 $35)</label>
-          <input type="text" id="editCost" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <label class="text-[10px] font-extrabold text-slate-500">치안 등급</label>
+          <select id="editSafetyLevel" class="w-full text-xs p-2 border border-slate-200 rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+            <option value="green">🟢 치안 양호</option>
+            <option value="yellow">🟡 주의 필요</option>
+            <option value="red">🔴 야간/위험 주의</option>
+          </select>
         </div>
       </div>
+
       <div>
-        <label class="text-[10px] font-extrabold text-slate-500">치안 메모</label>
-        <input type="text" id="editSafety" class="w-full text-xs p-2 border rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
+        <label class="text-[10px] font-extrabold text-slate-500">일정 제목 / 장소명</label>
+        <input type="text" id="editItemTitle" class="w-full text-xs p-2 border border-slate-200 rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
       </div>
-      
-      <!-- Uber/Lyft Shortcut Toggle -->
-      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
-        <div class="flex items-center justify-between">
-          <label class="text-[10px] font-black text-slate-800"><i class="fa-solid fa-taxi text-amber-500"></i> 우버/리프트 호출 버튼 활성화</label>
-          <input type="checkbox" id="editNeedsRide" class="w-4 h-4 text-indigo-600 rounded">
+
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[10px] font-extrabold text-slate-500">이동 수단 & 소요시간</label>
+          <input type="text" id="editDuration" placeholder="전철 20분 + 관람" class="w-full text-xs p-2 border border-slate-200 rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
+        </div>
+        <div>
+          <label class="text-[10px] font-extrabold text-slate-500">예상 비용</label>
+          <input type="text" id="editCost" placeholder="식비 $35" class="w-full text-xs p-2 border border-slate-200 rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
         </div>
       </div>
 
-      <!-- Map Location Inputs -->
+      <div>
+        <label class="text-[10px] font-extrabold text-slate-500">치안 & 실전 꿀팁 메모</label>
+        <input type="text" id="editSafety" class="w-full text-xs p-2 border border-slate-200 rounded-xl mt-1 focus:ring-2 focus:ring-indigo-500 outline-none">
+      </div>
+
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between">
+        <div>
+          <div class="text-[11px] font-black text-slate-800"><i class="fa-solid fa-taxi text-amber-500 mr-1"></i> Uber / Lyft 원클릭 호출 버튼</div>
+          <div class="text-[9px] text-slate-400">체크 시 카드 하단에 우버/리프트 앱 직행 버튼이 표시됩니다.</div>
+        </div>
+        <input type="checkbox" id="editNeedsRide" class="w-4 h-4 accent-indigo-600 rounded">
+      </div>
+
       <div class="bg-indigo-50/60 p-3 rounded-2xl border border-indigo-100 space-y-2">
-        <div class="text-[10px] font-black text-indigo-900 flex items-center gap-1">
-          <i class="fa-solid fa-map-pin text-indigo-600"></i> 구글 지도 연동
+        <div class="text-[10px] font-black text-indigo-900"><i class="fa-solid fa-map-location-dot text-indigo-600 mr-1"></i> 구글 지도 실시간 연동</div>
+        <div>
+          <label class="text-[9px] font-bold text-slate-500">도착지 검색어 (필수)</label>
+          <input type="text" id="editDest" class="w-full text-xs p-2 border border-slate-200 rounded-xl bg-white mt-0.5 outline-none">
         </div>
         <div>
-          <label class="text-[9px] font-bold text-slate-500">도착 장소명 (필수)</label>
-          <input type="text" id="editDest" class="w-full text-xs p-2 border rounded-xl bg-white mt-0.5 focus:ring-2 focus:ring-indigo-500 outline-none">
-        </div>
-        <div>
-          <label class="text-[9px] font-bold text-slate-500">출발 장소명 (선택)</label>
-          <input type="text" id="editOrigin" class="w-full text-xs p-2 border rounded-xl bg-white mt-0.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <label class="text-[9px] font-bold text-slate-500">출발지 검색어 (입력 시 A➔B 길찾기로 작동)</label>
+          <input type="text" id="editOrigin" class="w-full text-xs p-2 border border-slate-200 rounded-xl bg-white mt-0.5 outline-none">
         </div>
       </div>
 
-      <div class="pt-2">
-        <button onclick="saveModalChanges()" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-indigo-700 shadow-md">수정 완료 및 반영</button>
+      <button onclick="saveModalChanges()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-2xl text-xs shadow-md transition">
+        수정 완료 및 즉시 반영
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal 2: Quick Insert / Swap Alternative Item into Schedule -->
+  <div id="insertModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 space-y-3.5 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+        <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-calendar-plus text-indigo-600 mr-1"></i> 내 일정에 넣기 / 교체</h3>
+        <button onclick="closeInsertModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
+
+      <input type="hidden" id="insTierKey">
+      <input type="hidden" id="insAltIdx">
+
+      <!-- Selected Alternative Preview -->
+      <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-2xl">
+        <div class="flex justify-between items-start">
+          <div class="text-xs font-black text-indigo-950" id="insPreviewName">장소명</div>
+          <span class="text-[10px] font-extrabold bg-indigo-600 text-white px-2 py-0.5 rounded-md" id="insPreviewCost">$0</span>
+        </div>
+        <p class="text-[10px] text-indigo-700 mt-1" id="insPreviewDesc">설명</p>
+      </div>
+
+      <!-- Step 1: Select Day -->
+      <div>
+        <label class="text-[10px] font-extrabold text-slate-600 block mb-1">1. 어느 날짜에 넣을까요?</label>
+        <select id="insDaySelect" onchange="updateReplaceDropdown()" class="w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-slate-50 font-bold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500"></select>
+      </div>
+
+      <!-- Step 2: Mode Selection (Add New vs Replace Existing) -->
+      <div>
+        <label class="text-[10px] font-extrabold text-slate-600 block mb-1">2. 추가 방식 선택</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" id="modeAddBtn" onclick="setInsertMode('add')" class="py-2 px-3 rounded-xl text-xs font-black border-2 border-indigo-600 bg-indigo-50 text-indigo-700">
+            + 새 시간대에 추가
+          </button>
+          <button type="button" id="modeReplaceBtn" onclick="setInsertMode('replace')" class="py-2 px-3 rounded-xl text-xs font-bold border border-slate-200 bg-white text-slate-600">
+            🔄 기존 일정과 교체
+          </button>
+        </div>
+      </div>
+
+      <!-- Mode A: New Time Input -->
+      <div id="insAddBox" class="space-y-2">
+        <div>
+          <label class="text-[10px] font-extrabold text-slate-500">희망 시간대 입력</label>
+          <input type="text" id="insNewTime" value="18:00 - 19:30" class="w-full text-xs p-2.5 border border-slate-200 rounded-xl mt-1 font-bold outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+      </div>
+
+      <!-- Mode B: Replace Existing Dropdown -->
+      <div id="insReplaceBox" class="hidden space-y-2">
+        <div>
+          <label class="text-[10px] font-extrabold text-slate-500">교체할 기존 일정을 선택하세요</label>
+          <select id="insReplaceTarget" class="w-full text-xs p-2.5 border border-slate-200 rounded-xl mt-1 bg-white font-semibold outline-none focus:ring-2 focus:ring-indigo-500"></select>
+          <p class="text-[9px] text-slate-400 mt-1">* 선택한 일정의 시간대는 그대로 유지되고 장소와 정보만 교체됩니다.</p>
+        </div>
+      </div>
+
+      <button onclick="confirmInsertAlternative()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-2xl text-xs shadow-md transition flex items-center justify-center gap-1.5">
+        <i class="fa-solid fa-check"></i> 일정표에 즉시 반영하기
+      </button>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = 'amtrak_master_planner_v10_slim';
+    const STORAGE_KEY = 'amtrak_master_planner_v11_expert';
+    let currentRouteIndex = 0;
+    let currentTierTab = 'all'; // 'all', 'budget', 'standard', 'premium', 'shopping'
+    let currentInsertMode = 'add'; // 'add' | 'replace'
 
     const makeUberUrl = (dest) => `https://m.uber.com/ul/?action=setPickup&dropoff[formatted_address]=${encodeURIComponent(dest || '')}`;
     const makeLyftUrl = (dest) => `https://lyft.com/ride?id=lyft&destination[address]=${encodeURIComponent(dest || '')}`;
@@ -144,378 +219,582 @@
     };
 
     const getSafetyBadge = (level) => {
-      if (level === 'green') return '<span class="text-[9px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded shrink-0">🟢 치안 양호</span>';
-      if (level === 'yellow') return '<span class="text-[9px] font-black bg-amber-100 text-amber-800 border border-amber-200 px-1.5 py-0.5 rounded shrink-0">🟡 주의 필요</span>';
-      if (level === 'red') return '<span class="text-[9px] font-black bg-rose-100 text-rose-800 border border-rose-200 px-1.5 py-0.5 rounded shrink-0">🔴 야간/위험</span>';
+      if (level === 'green') return '<span class="text-[9px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded-md shrink-0">🟢 치안양호</span>';
+      if (level === 'yellow') return '<span class="text-[9px] font-black bg-amber-100 text-amber-800 border border-amber-200 px-1.5 py-0.5 rounded-md shrink-0">🟡 주의필요</span>';
+      if (level === 'red') return '<span class="text-[9px] font-black bg-rose-100 text-rose-800 border border-rose-200 px-1.5 py-0.5 rounded-md shrink-0">🔴 위험주의</span>';
       return '';
     };
 
+    // =========================================================================
+    // MASTER ITINERARY DATASET (7 Routes, 21 Days, 110+ Curated Alternatives)
+    // =========================================================================
     const defaultRoutesData = [
+      // -----------------------------------------------------------------------
+      // ROUTE 1: SAN FRANCISCO (12/17 ~ 12/18)
+      // -----------------------------------------------------------------------
       {
         id: "route1",
         num: 1,
         title: "샌프란시스코",
+        badge: "입국 & SFC 버스",
         dateRange: "12/17 ~ 12/18",
-        hotel: "Hilton San Francisco Financial District",
-        safetyOverview: "텐더로인 및 시빅센터 구역 진입 금지. 힐튼 호텔 중심 상권 및 주요 관광지는 낮 시간대 매우 안전함.",
+        hotel: "Hilton San Francisco Financial District (750 Kearny St)",
+        proBriefing: "힐튼 숙소는 차이나타운/금융지구 경계에 있어 도보 관광에 최적입니다. 단, 유니언스퀘어 서쪽 텐더로인(Tenderloin)과 마켓스트리트 6~8가 부근은 절대 도보 진입을 피하세요. 12/18 밤 기차는 에머리빌까지 직접 갈 필요 없이 숙소 근처 SFC(Salesforce Transit Center)에서 20:50 암트랙 전용 연계 버스를 타면 기차 앞까지 바로 데려다줍니다.",
+        safetyOverview: "🟢 피어39·페리빌딩·차이나타운·노스비치(낮) 안전 | 🔴 텐더로인(Tenderloin)·시빅센터 절대 진입 금지",
         transGuide: [
-          { title: "BART (공항↔도심)", desc: "SFO 공항 ➔ Montgomery St역 (전철 30분 / $10.55). 애플페이/구글페이 Clipper 결제 가능.", cost: "$10.55" },
-          { title: "Muni 1-Day Passport", desc: "케이블카 + F-전차 + 뮤니 전철/버스 24시간 무제한.", cost: "$15.00" }
+          { title: "BART (공항 ↔ 시내)", desc: "SFO 공항 ➔ Montgomery St역 (30분, $10.55). 역 하차 후 힐튼까지 Kearny St 따라 도보 8분.", cost: "$10.55", apple: "Apple 지갑 앱 ➔ '+' ➔ 교통카드 ➔ 'Clipper' 검색 후 즉시 발급/충전 태그", android: "Google 지갑 앱에서 Clipper 카드 발급 후 NFC 태그 탑승" },
+          { title: "Muni 1-Day Visitor Passport", desc: "케이블카(1회 $8) + F-전차 + Muni 버스 하루 무제한. 케이블카 2번만 타도 무조건 이득!", cost: "$15.00", apple: "MuniMobile 앱 설치 후 Apple Pay로 $15 패스 구매 (탑승 시 화면 제시)", android: "MuniMobile 앱 설치 후 카드 결제로 $15 패스 구매" }
         ],
         schedules: [
           {
-            day: "12/17(수) SF 입성 & 도심 탐방",
-            summary: "BART 이동 ➔ 호텔 짐보관 ➔ 차이나타운 딤섬/해산물 뷔페 ➔ 피어39 ➔ 케이블카 야경",
+            day: "12/17(수) Day 1 — SF 입성 & 해산물 뷔페 & 케이블카 야경",
+            summary: "SFO 입국 ➔ BART 도심 이동 ➔ 힐튼 무료 짐보관 ➔ 차이나타운 뷔페 ➔ 페리빌딩 ➔ 피어39 ➔ 케이블카",
             items: [
-              { time: "11:40 - 12:40", title: "SFO 공항 입국 ➔ BART 탑승", origin: "San Francisco International Airport", dest: "Montgomery St Station SF", cost: "$10.55", duration: "전철 30분", safetyLevel: "yellow", safetyNote: "BART 내부 소지품 밀착 관리", needsRide: false, done: false },
-              { time: "12:40 - 13:00", title: "Montgomery St역 ➔ 힐튼 SF 디스트릭트 짐 보관", origin: "Montgomery St Station SF", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "도보 8분", safetyLevel: "green", safetyNote: "금융지구 대로변 안전", needsRide: false, done: false },
-              { time: "13:00 - 14:30", title: "[점심-뷔페] Daly Buffet / Dragon Beaux (해산물&딤섬 뷔페)", origin: "Hilton San Francisco Financial District", dest: "Daly Buffet San Francisco", cost: "$35", duration: "도보 5분", safetyLevel: "green", safetyNote: "유동인구 많아 안전", needsRide: false, done: false },
-              { time: "14:30 - 16:00", title: "페리 빌딩 산책 & 블루보틀 본점 커피", origin: "Daly Buffet San Francisco", dest: "Ferry Building San Francisco", cost: "$6", duration: "도보 12분", safetyLevel: "green", safetyNote: "수변 산책로 치안 우수", needsRide: false, done: false },
-              { time: "16:00 - 18:00", title: "F-Market 전차 ➔ 피어39 바다사자 관람", origin: "Ferry Building San Francisco", dest: "PIER 39", cost: "패스", duration: "전차 15분", safetyLevel: "green", safetyNote: "관광객 인파 많음", needsRide: false, done: false },
-              { time: "18:00 - 19:20", title: "[저녁-명물] 보딘 베이커리 (사워도우 클램 차우더 수프)", origin: "PIER 39", dest: "Boudin Bakery Pier 39", cost: "$18", duration: "도보 5분", safetyLevel: "green", safetyNote: "피셔맨스워프 밤에도 안전", needsRide: false, done: false },
-              { time: "19:20 - 20:30", title: "Powell-Mason 케이블카 ➔ 유니언 스퀘어 야경", origin: "Boudin Bakery Pier 39", dest: "Union Square San Francisco", cost: "패스", duration: "케이블카 20분", safetyLevel: "yellow", safetyNote: "유니언스퀘어 야간 구걸자 유의", needsRide: false, done: false },
-              { time: "20:30 - 21:00", title: "유니언 스퀘어 ➔ 힐튼 호텔 복귀 후 휴식", origin: "Union Square San Francisco", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "도보 12분", safetyLevel: "green", safetyNote: "대로변 도보 이동 안전", needsRide: false, done: false }
+              { time: "11:40 - 12:45", title: "SFO 공항 입국 심사 ➔ BART 탑승 (Montgomery St역 하차)", origin: "San Francisco International Airport", dest: "Montgomery St Station SF", cost: "교통 $10.55", duration: "BART 전철 30분", safetyLevel: "yellow", safetyNote: "전철 내 출입문 근처에서 스마트폰/캐리어 소매치기 주의", needsRide: false, done: false },
+              { time: "12:45 - 13:05", title: "Montgomery St역 ➔ 힐튼 SF 파이낸셜 디스트릭트 (짐 무료 보관)", origin: "Montgomery St Station SF", dest: "Hilton San Francisco Financial District", cost: "보관 $0", duration: "도보 8분", safetyLevel: "green", safetyNote: "금융지구 대로변(Kearny St)이라 낮 시간대 매우 안전", needsRide: false, done: false },
+              { time: "13:10 - 14:30", title: "[점심-AYCE] 차이나타운 딤섬 & 해산물 뷔페 (Daly Buffet / Osmanthus)", origin: "Hilton San Francisco Financial District", dest: "Osmanthus Dim Sum Lounge SF", cost: "식비 $32", duration: "도보 5분 + 식사", safetyLevel: "green", safetyNote: "호텔 바로 앞 차이나타운 중심가, 관광객 많아 안전", needsRide: false, done: false },
+              { time: "14:30 - 16:00", title: "페리 빌딩 마켓플레이스 & 블루보틀 커피 산책", origin: "Chinatown San Francisco", dest: "Ferry Building San Francisco", cost: "커피 $6", duration: "도보 12분 + 구경", safetyLevel: "green", safetyNote: "베이브릿지가 보이는 탁 트인 수변 산책로", needsRide: false, done: false },
+              { time: "16:00 - 18:00", title: "F-Market 클래식 전차 ➔ 피어 39 (바다사자 관람 & 부두 산책)", origin: "Ferry Building San Francisco", dest: "PIER 39", cost: "Muni 패스", duration: "전차 15분 + 관람", safetyLevel: "green", safetyNote: "SF 최고 인기 관광지, 치안 매우 양호", needsRide: false, done: false },
+              { time: "18:00 - 19:15", title: "[저녁-명물] 보딘 베이커리 본점 (사워도우 클램차우더 수프 & 그릴드치즈)", origin: "PIER 39", dest: "Boudin Bakery Pier 39", cost: "식비 $19", duration: "도보 5분 + 식사", safetyLevel: "green", safetyNote: "피셔맨스워프 메인 스트리트 야간 조명 밝음", needsRide: false, done: false },
+              { time: "19:15 - 20:15", title: "Powell-Mason 케이블카 탑승 ➔ 유니언 스퀘어 야경 감상", origin: "Boudin Bakery Pier 39", dest: "Union Square San Francisco", cost: "Muni 패스", duration: "케이블카 20분", safetyLevel: "yellow", safetyNote: "유니언스퀘어 서쪽(텐더로인 방향)으로는 절대 걸어가지 말 것!", needsRide: false, done: false },
+              { time: "20:15 - 20:40", title: "유니언 스퀘어 ➔ 힐튼 숙소 복귀 및 체크인 휴식", origin: "Union Square San Francisco", dest: "Hilton San Francisco Financial District", cost: "도보 $0", duration: "도보 12분", safetyLevel: "green", safetyNote: "Kearny St 또는 Grant Ave 큰길로 이동", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/18(목) 수제버거 & 금문교 & SFC 버스 탑승",
-            summary: "북비치 ➔ 인앤아웃 ➔ 금문교 ➔ 마트 식량 ➔ SFC 버스(20:50)",
+            day: "12/18(목) Day 2 — 인앤아웃 & 금문교 조망 & SFC 밤기차 출발",
+            summary: "체크아웃(호텔 무료짐보관) ➔ 노스비치 ➔ 인앤아웃 ➔ 금문교 ➔ 기차식량 마트 ➔ AYCE 뷔페 ➔ 20:50 SFC 버스",
             items: [
-              { time: "09:30 - 11:00", title: "힐튼 출발 ➔ 북비치 산책 ➔ 워싱턴 스퀘어 파크", origin: "Hilton San Francisco Financial District", dest: "Washington Square San Francisco", cost: "$0", duration: "도보 10분", safetyLevel: "green", safetyNote: "이탈리안 거리 평화로움", needsRide: false, done: false },
-              { time: "11:00 - 12:30", title: "[점심-명물] 인앤아웃 버거 (피셔맨스워프점)", origin: "Washington Square San Francisco", dest: "In-N-Out Burger Fisherman's Wharf", cost: "$11", duration: "도보 12분", safetyLevel: "green", safetyNote: "낮시간 안전", needsRide: false, done: false },
-              { time: "12:30 - 15:00", title: "Muni 28번 버스 ➔ 크리시 필드 (금문교 조망)", origin: "In-N-Out Burger Fisherman's Wharf", dest: "Crissy Field San Francisco", cost: "패스", duration: "버스 20분", safetyLevel: "green", safetyNote: "태평양 조망로 치안 우수", needsRide: false, done: false },
-              { time: "15:00 - 17:00", title: "[필수-마트] Trader Joe's 24시간 기차 식량 구매", origin: "Crissy Field San Francisco", dest: "Trader Joe's San Francisco", cost: "$25", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "안심 상권", needsRide: false, done: false },
-              { time: "17:00 - 18:30", title: "[저녁-뷔페] Makino Seafood Buffet (스시/해산물 뷔페)", origin: "Trader Joe's San Francisco", dest: "Makino Seafood Buffet", cost: "$35", duration: "식사 1시간", safetyLevel: "green", safetyNote: "식당 내부 치안 양호", needsRide: false, done: false },
-              { time: "18:30 - 19:30", title: "힐튼 호텔 복귀 및 짐 픽업", origin: "Makino Seafood Buffet", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "이동 20분", safetyLevel: "green", safetyNote: "가방 건사 주의", needsRide: false, done: false },
-              { time: "19:30 - 20:10", title: "SF 암트랙 정류장 (SFC) 이동", origin: "Hilton San Francisco Financial District", dest: "Salesforce Transit Center", cost: "$0", duration: "도보 10분", safetyLevel: "yellow", safetyNote: "큰길 이동", needsRide: true, done: false },
-              { time: "20:50 - 21:25", title: "Amtrak Thruway 버스 탑승 (SFC ➔ Emeryville)", origin: "Salesforce Transit Center", dest: "Emeryville Amtrak Station", cost: "암트랙 포함", duration: "버스 35분", safetyLevel: "green", safetyNote: "터미널 내부 매우 안전", needsRide: false, done: false },
-              { time: "21:41 ~ ", title: "Coast Starlight 밤기차 환승! (포틀랜드 향해 출발)", origin: "Emeryville Amtrak Station", dest: "Portland Union Station", cost: "암트랙 탑승", duration: "열차 18시간", safetyLevel: "green", safetyNote: "승강장 내 즉시 탑승", needsRide: false, done: false }
+              { time: "09:30 - 11:00", title: "호텔 체크아웃 & 짐 무료보관($0) ➔ 노스비치 & 워싱턴 스퀘어 산책", origin: "Hilton San Francisco Financial District", dest: "Washington Square San Francisco", cost: "보관 $0", duration: "도보 10분", safetyLevel: "green", safetyNote: "이탈리안 타운 노스비치는 SF에서 가장 평화롭고 안전한 동네", needsRide: false, done: false },
+              { time: "11:00 - 12:20", title: "[점심-명물] 인앤아웃 버거 (더블더블 + 애니멀 스타일 감자튀김)", origin: "Washington Square San Francisco", dest: "In-N-Out Burger Fisherman's Wharf", cost: "식비 $13", duration: "도보 12분 + 식사", safetyLevel: "green", safetyNote: "오픈 직후 방문하면 대기시간 단축", needsRide: false, done: false },
+              { time: "12:20 - 15:00", title: "Muni 28번 버스 ➔ 금문교 웰컴센터 & 크리시 필드 해변 산책", origin: "In-N-Out Burger Fisherman's Wharf", dest: "Golden Gate Bridge Welcome Center", cost: "Muni 패스", duration: "버스 20분 + 관람 2시간", safetyLevel: "green", safetyNote: "국립공원 구역으로 치안 완벽", needsRide: false, done: false },
+              { time: "15:00 - 16:30", title: "[필수-마트] Trader Joe's (Bay St점) 18시간 밤기차 식량/생수 구매", origin: "Golden Gate Bridge Welcome Center", dest: "Trader Joe's 401 Bay St San Francisco", cost: "식량 $25", duration: "버스 15분 + 쇼핑", safetyLevel: "green", safetyNote: "기차 안에서 먹을 랩 샌드위치, 프로틴바, 과일, 생수 넉넉히 구매", needsRide: false, done: false },
+              { time: "16:45 - 18:30", title: "[저녁-AYCE] K-Elements BBQ 또는 가성비 스시/핫팟 무제한 (든든한 단백질 보충)", origin: "Trader Joe's 401 Bay St San Francisco", dest: "Chinatown San Francisco", cost: "식비 $36", duration: "버스 12분 + 식사", safetyLevel: "green", safetyNote: "장거리 야간 열차 탑승 전 든든하게 고기/뷔페 섭취", needsRide: false, done: false },
+              { time: "18:30 - 19:30", title: "힐튼 호텔 복귀 ➔ 화장실/재정비 및 보관한 캐리어 픽업", origin: "Chinatown San Francisco", dest: "Hilton San Francisco Financial District", cost: "$0", duration: "도보 5분 + 휴식", safetyLevel: "green", safetyNote: "보조배터리 충전 상태 최종 점검", needsRide: false, done: false },
+              { time: "19:30 - 20:00", title: "힐튼 호텔 ➔ Salesforce Transit Center (SFC 암트랙 정류장) 이동", origin: "Hilton San Francisco Financial District", dest: "Salesforce Transit Center", cost: "우버 $10 (도보 $0)", duration: "차량 6분 / 도보 12분", safetyLevel: "yellow", safetyNote: "밤 시간이므로 캐리어가 무거우면 우버($10) 호출 강력 추천!", needsRide: true, done: false },
+              { time: "20:50 - 21:25", title: "🚍 Amtrak Thruway 버스 #5014 탑승 (SFC ➔ 에머리빌역 직행)", origin: "Salesforce Transit Center", dest: "Emeryville Amtrak Station", cost: "레일패스 포함", duration: "전용버스 35분", safetyLevel: "green", safetyNote: "eTicket QR코드 제시 후 탑승. 베이브릿지 야경 건너 에머리빌역 도착", needsRide: false, done: false },
+              { time: "21:41 ~ ", title: "🚆 Coast Starlight #14 탑승! (에머리빌 출발 ➔ 포틀랜드행 18시간)", origin: "Emeryville Amtrak Station", dest: "Portland Union Station", cost: "레일패스 포함", duration: "야간열차 18시간", safetyLevel: "green", safetyNote: "버스 하차 후 바로 앞 플랫폼에서 기차 환승. 목베개·안대 챙기기!", needsRide: false, done: false }
             ]
           }
         ],
         tiers: {
-          budget: [{ name: "롬바드 스트리트", desc: "세계에서 가장 꼬불꼬불한 언덕길 (무료)", dest: "Lombard Street SF" }],
-          standard: [{ name: "보딘 베이커리 본점", desc: "사워도우 클램 차우더 수프 원조 ($18)", dest: "Boudin Bakery Pier 39" }],
-          premium: [{ name: "하우스 오브 프라임 립", desc: "샌프란 최고 프리미엄 로스트비프 스테이크 ($90~$110)", dest: "House of Prime Rib SF" }],
-          shopping: [{ name: "Ross Dress for Less Market St", desc: "다운타운 중심가 이월 할인 매장", dest: "Ross Dress for Less Market St San Francisco" }]
+          budget: [
+            { name: "롬바드 스트리트 (Lombard St)", desc: "세계에서 가장 꼬불꼬불한 꽃길 언덕 포토존", cost: "무료 ($0)", duration: "도보/케이블카 15분", dest: "Lombard Street SF", safetyLevel: "green", safetyNote: "언덕길 소매치기만 유의", needsRide: false },
+            { name: "케이블카 박물관 (Cable Car Museum)", desc: "실제 케이블카를 움직이는 거대 도르래 엔진 무료 관람 (힐튼 도보 8분)", cost: "무료 ($0)", duration: "도보 8분 + 관람 40분", dest: "Cable Car Museum SF", safetyLevel: "green", safetyNote: "노스비치/차이나타운 인접 안전", needsRide: false },
+            { name: "코잇 타워 (Coit Tower 언덕)", desc: "노스비치 언덕 위에서 내려다보는 금문교와 시내 파노라마 뷰", cost: "외부 무료", duration: "도보 15분", dest: "Coit Tower", safetyLevel: "green", safetyNote: "낮 시간대 산책 최적", needsRide: false },
+            { name: "골든 보이 피자 (Golden Boy Pizza)", desc: "노스비치 명물! 두툼하고 바삭한 시칠리아식 포카치아 조각 피자", cost: "식비 $10", duration: "도보 10분", dest: "Golden Boy Pizza SF", safetyLevel: "green", safetyNote: "가성비 최고 로컬 맛집", needsRide: false },
+            { name: "팰리스 오브 파인 아츠 (Palace of Fine Arts)", desc: "고대 그리스·로마 신전 스타일의 압도적인 건축물과 호수", cost: "무료 ($0)", duration: "버스 15분", dest: "Palace of Fine Arts", safetyLevel: "green", safetyNote: "크리시 필드 바로 옆 코스", needsRide: false }
+          ],
+          standard: [
+            { name: "슈퍼두퍼 버거 (Super Duper Burgers)", desc: "샌프란시스코 로컬들이 인앤아웃보다 극찬하는 육즙 가득 수제버거", cost: "식비 $16", duration: "도보 10분", dest: "Super Duper Burgers Kearny St", safetyLevel: "green", safetyNote: "마늘 감자튀김(Garlic Fries) 필수 추가", needsRide: false },
+            { name: "고츠 로드사이드 (Gott's Roadside)", desc: "페리빌딩 내부 위치! 참치 타코와 클래식 캘리포니아 버거 맛집", cost: "식비 $22", duration: "도보 12분", dest: "Gott's Roadside Ferry Building", safetyLevel: "green", safetyNote: "페리빌딩 내부 안전", needsRide: false },
+            { name: "Fogo de Chão SF (런치 가우초 테이블)", desc: "점심 특선 샐러드바 + 슈하스코 고기 선택 가성비 코스", cost: "식비 $42", duration: "도보 15분", dest: "Fogo de Chao San Francisco", safetyLevel: "green", safetyNote: "고단백 식단으로 최고", needsRide: false },
+            { name: "알카트라즈 섬 크루즈 투어", desc: "전설적인 탈옥 영화 '더 록'의 배경인 바다 위 연방 교도소 투어", cost: "티켓 $45", duration: "왕복 2.5시간", dest: "Alcatraz Landing Pier 33", safetyLevel: "green", safetyNote: "사전 온라인 예약 필수", needsRide: false }
+          ],
+          premium: [
+            { name: "하우스 오브 프라임 립 (House of Prime Rib)", desc: "눈앞에서 카트로 썰어주는 샌프란시스코 최고의 정통 로스트비프 스테이크", cost: "식비 $95", duration: "차량 12분", dest: "House of Prime Rib SF", safetyLevel: "green", safetyNote: "고기 리필 슬라이스 제공!", needsRide: true },
+            { name: "스코마스 (Scoma's Restaurant)", desc: "피셔맨스워프 부두 직송 통 던지니스 크랩(게 요리) & 씨푸드", cost: "식비 $85", duration: "도보 8분", dest: "Scoma's Restaurant SF", safetyLevel: "green", safetyNote: "부두 안쪽 전용 레스토랑", needsRide: false },
+            { name: "워터바 (Waterbar)", desc: "베이브릿지 바로 아래에서 즐기는 최고급 오이스터 & 해산물 스테이크", cost: "식비 $90", duration: "도보 15분", dest: "Waterbar San Francisco", safetyLevel: "green", safetyNote: "야경 뷰 SF 원탑", needsRide: false }
+          ],
+          shopping: [
+            { name: "Macy's Union Square (남성관)", desc: "유니언스퀘어 대형 백화점 내 폴로 랄프로렌·타미힐피거·리바이스 코너", cost: "쇼핑", duration: "도보 12분", dest: "Macy's Union Square San Francisco", safetyLevel: "green", safetyNote: "여권 지참 시 방문객 10% 할인 문의", needsRide: false },
+            { name: "Ross Dress for Less (Market St)", desc: "타미·캘빈클라인·아디다스 운동복/속옷 초저가 보물찾기", cost: "쇼핑", duration: "도보 14분", dest: "Ross Dress for Less 799 Market St SF", safetyLevel: "yellow", safetyNote: "반드시 낮 시간대에만 방문하고 쇼핑 후 큰길로 이동", needsRide: false },
+            { name: "Levi's Plaza (리바이스 본사 박물관 & 스토어)", desc: "청바지의 발상지 샌프란시스코 리바이스 본사 스토어", cost: "무료/쇼핑", duration: "도보 15분", dest: "Levi Strauss Plaza SF", safetyLevel: "green", safetyNote: "피어39 가는 길에 위치", needsRide: false }
+          ]
         }
       },
+
+      // -----------------------------------------------------------------------
+      // ROUTE 2: PORTLAND & EMPIRE BUILDER (12/19 ~ 12/21) [★핵심 쇼핑 1: 세금 0%]
+      // -----------------------------------------------------------------------
       {
         id: "route2",
         num: 2,
-        title: "포틀랜드 (쇼핑1 - 세금0%)",
+        title: "포틀랜드",
+        badge: "★쇼핑1 (Tax 0%)",
         dateRange: "12/19 ~ 12/21",
-        hotel: "Holiday Inn Express Hotel & Suites Portland-NW Downtown",
-        safetyOverview: "유니언역 및 올드타운 부근 노숙자 배회 유의. Cascades Station 및 NW 23rd Ave 구역은 치안 완벽.",
+        hotel: "Holiday Inn Express & Suites Portland-NW Downtown (2333 NW Vaughn St)",
+        proBriefing: "오리건주는 미국에서 몇 안 되는 소비세 0%(No Sales Tax) 주입니다! 첫날(12/19)은 기차 피로를 풀며 안전한 NW 23번가 산책과 Hana Sushi AYCE로 에너지를 채우고, 둘째 날(12/20) 체크아웃 후 호텔에 무료로 짐을 맡긴 뒤 공항 근처 대형 쇼핑 단지 'Cascades Station'으로 가서 폴로·브랜드 의류 쇼핑 + Famous Dave's 바베큐 + Target 48시간 기차 식량 구매를 한 번에 끝내는 완벽한 동선입니다.",
+        safetyOverview: "🟢 숙소 주변(NW Downtown)·NW 23번가·Cascades Station 매우 안전 | 🟡 유니언역·올드타운 노숙자 밀집 주의",
         transGuide: [
-          { title: "⭐ [쇼핑성지] 오리건 주 세금 0% (NO TAX)", desc: "표기 가격 그대로 결제! 미국 최저가 쇼핑 도시." },
-          { title: "Hop Fastpass (MAX 전철/버스)", desc: "애플페이/구글페이 신용카드 직태그! $2.80 (하루 최대 $5.60 자동 무제한 캡)", cost: "$2.80" }
+          { title: "Hop Fastpass (MAX 전철 / 스트리트카 / 버스)", desc: "1회 $2.80 (2시간 30분 무제한 환승). 하루 2번 이상 타면 $5.60에서 요금이 멈추고 자동으로 1일 무제한 패스로 전환됩니다!", cost: "$2.80 (일 최대 $5.60)", apple: "티켓 구매 불필요! 개찰구 초록색 단말기에 Apple Pay(아이폰/애플워치) 바로 태그", android: "Google Pay(NFC 컨택리스 카드) 단말기에 바로 태그" },
+          { title: "호텔 프런트 무료 짐보관 ($0 전략)", desc: "유니언역 유료 보관($10×개수) 대신 호텔 체크아웃 시 프런트에 무료로 맡기고 쇼핑 후 찾아서 역으로 이동 (유니언역↔호텔 우버 8분)." }
         ],
         schedules: [
           {
-            day: "12/19(금) 포틀랜드 도착 & Hana Sushi 저녁",
-            summary: "15:40 도착 ➔ 호텔 체크인 ➔ 노스웨스트 23번가 감성 거리 ➔ Hana Sushi 무제한 스시 ➔ Voodoo Doughnut",
+            day: "12/19(금) Day 3 — 포틀랜드 도착 & NW 23번가 & Hana Sushi 무제한",
+            summary: "15:40 유니언역 도착 ➔ 호텔 체크인 ➔ 노스웨스트 23번가 산책 ➔ Hana Sushi AYCE ➔ 부두 도넛",
             items: [
-              { time: "15:40 - 16:20", title: "포틀랜드 유니언역 도착 ➔ Holiday Inn Express 이동", origin: "Portland Union Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "우버 $10", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "역 외부 노숙자 배회. 우버 이용 강추", needsRide: true, done: false },
-              { time: "16:20 - 17:00", title: "호텔 체크인 및 짐 정리", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "$0", duration: "40분", safetyLevel: "green", safetyNote: "NW Downtown 안심 구역", needsRide: false, done: false },
-              { time: "17:00 - 18:30", title: "노스웨스트 23번가 (NW 23rd Ave) 감성 도심 산책", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "NW 23rd Ave Portland", cost: "$0", duration: "도보 10분", safetyLevel: "green", safetyNote: "고급스럽고 안전한 거리", needsRide: false, done: false },
-              { time: "18:30 - 20:00", title: "[저녁-뷔페] Hana Sushi & Izakaya (AYCE 무제한 스시 & 회전초밥)", origin: "NW 23rd Ave Portland", dest: "Hana Sushi Portland", cost: "$30", duration: "식사 1.5시간", safetyLevel: "green", safetyNote: "다운타운 중심가 매우 안전", needsRide: false, done: false },
-              { time: "20:00 - 20:45", title: "[디저트] 부두 도넛 (Voodoo Doughnut) 픽업 후 숙소 복귀", origin: "Hana Sushi Portland", dest: "Voodoo Doughnut Portland", cost: "$6", duration: "도보 8분", safetyLevel: "yellow", safetyNote: "도넛 픽업 후 우버/숙소 복귀", needsRide: true, done: false }
+              { time: "15:40 - 16:15", title: "포틀랜드 유니언역 도착 ➔ Holiday Inn Express 이동 및 체크인", origin: "Portland Union Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "우버 $10", duration: "차량 8분", safetyLevel: "yellow", safetyNote: "유니언역 밖 올드타운 쪽으로 걷지 말고 역 정문에서 바로 우버 탑승!", needsRide: true, done: false },
+              { time: "16:15 - 17:00", title: "호텔 체크인 & 샤워 및 기차 피로 회복", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "$0", duration: "휴식 45분", safetyLevel: "green", safetyNote: "숙소가 위치한 NW 지구(Nob Hill 인근)는 조용하고 안전함", needsRide: false, done: false },
+              { time: "17:00 - 18:15", title: "노스웨스트 23번가 (NW 23rd Ave) 부티크 거리 산책", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "NW 23rd Ave Portland", cost: "$0", duration: "도보 8분 + 산책", safetyLevel: "green", safetyNote: "포틀랜드에서 가장 안전하고 분위기 좋은 로컬 쇼핑 스트리트", needsRide: false, done: false },
+              { time: "18:15 - 19:45", title: "[저녁-AYCE] Hana Sushi & Izakaya 또는 KKoki K-BBQ (무제한 스시/고기)", origin: "NW 23rd Ave Portland", dest: "Hana Sushi Portland", cost: "식비 $32", duration: "이동 10분 + 식사", safetyLevel: "green", safetyNote: "기차 여행 후 푸짐한 단백질 및 스시 보충", needsRide: false, done: false },
+              { time: "19:45 - 20:30", title: "[디저트-명물] 솔트 앤 스트로우(NW 23번가점) 또는 부두 도넛 픽업 후 복귀", origin: "Hana Sushi Portland", dest: "Salt & Straw NW 23rd Ave Portland", cost: "간식 $7", duration: "이동 10분", safetyLevel: "green", safetyNote: "NW 23번가 Salt & Straw는 숙소 도보권이라 밤에도 매우 안전!", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/20(토) Cascades Station 세금 0% 쇼핑 ➔ 데이브 바베큐 ➔ 16:45 기차 탑승",
-            summary: "호텔 무료짐보관($0) ➔ MAX 전철(35분) ➔ Cascades Station (Ross/TJ Maxx 세금0% 쇼핑) ➔ Famous Dave's 바베큐 ➔ 기차 탑승",
+            day: "12/20(토) Day 4 — Cascades Station 노택스 쇼핑 & 데이브 바베큐 & 48시간 기차 출발",
+            summary: "호텔 무료짐보관($0) ➔ Cascades Station (Ross/Rack/TJMaxx 폴로 쇼핑) ➔ Famous Dave's 바베큐 ➔ Target 식량 ➔ 16:45 기차",
             items: [
-              { time: "09:30 - 10:00", title: "호텔 체크아웃 후 프런트에 짐 무료 보관 ($0)", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "$0 (무료)", duration: "30분", safetyLevel: "green", safetyNote: "짐보관 $0 절약", needsRide: false, done: false },
-              { time: "10:00 - 10:40", title: "호텔 ➔ MAX Red Line 전철 탑승 ➔ Cascades Station 이동", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Cascades Station Portland", cost: "전철 $2.80", duration: "MAX 전철 35분 (우버 대비 +15분, $22 절약!)", safetyLevel: "green", safetyNote: "MAX Red Line 직행으로 매우 안전", needsRide: false, done: false },
-              { time: "10:40 - 13:00", title: "[쇼핑-핵심] Ross & TJ Maxx (오리건주 세금 0% 폴로/아우터 대량 득템!)", origin: "Cascades Station Portland", dest: "Ross Dress for Less Cascade Station", cost: "쇼핑", duration: "쇼핑 2.2시간", safetyLevel: "green", safetyNote: "야외 거대 쇼핑몰 단지로 매우 안전함", needsRide: false, done: false },
-              { time: "13:00 - 14:30", title: "[점심-명물] 데이브 바베큐 (Famous Dave's Bar-B-Que 쇼핑몰 바로 옆!)", origin: "Ross Dress for Less Cascade Station", dest: "Famous Dave's Cascade Station", cost: "$35", duration: "도보 3분", safetyLevel: "green", safetyNote: "훈제 바베큐 맛집", needsRide: false, done: false },
-              { time: "14:30 - 15:15", title: "Cascades Station ➔ MAX 전철 ➔ 호텔 복귀 (보관된 짐 픽업)", origin: "Famous Dave's Cascade Station", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "패스(재탑승 무료)", duration: "전철 40분", safetyLevel: "green", safetyNote: "보관 가방 픽업", needsRide: false, done: false },
-              { time: "15:30 - 15:45", title: "호텔 ➔ 포틀랜드 유니언역 이동", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Portland Union Station", cost: "우버 $8", duration: "차량 8분", safetyLevel: "green", safetyNote: "탑승 1시간 전 여유롭게도착", needsRide: true, done: false },
-              { time: "16:45 ~ ", title: "Empire Builder 탑승 (48시간 시카고 횡단 대장정 시작!)", origin: "Portland Union Station", dest: "Chicago Union Station", cost: "암트랙 탑승", duration: "48시간 소요", safetyLevel: "green", safetyNote: "열차 내 보안관 상주 안심", needsRide: false, done: false }
+              { time: "09:15 - 09:40", title: "호텔 체크아웃 & 프런트에 캐리어+가방 무료 보관 ($0)", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "보관 $0", duration: "25분", safetyLevel: "green", safetyNote: "유니언역 보관료($20+) 완벽 절약!", needsRide: false, done: false },
+              { time: "09:40 - 10:25", title: "호텔 ➔ MAX Red Line 전철 (또는 우버) ➔ Cascades Station 쇼핑몰 이동", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Cascade Station Portland", cost: "전철 $2.80", duration: "전철 40분 (우버 시 20분)", safetyLevel: "green", safetyNote: "애플페이/구글페이 단말기 태그로 간편 탑승", needsRide: false, done: false },
+              { time: "10:25 - 12:45", title: "🛒 [쇼핑-핵심1] Cascades Station (Ross + Nordstrom Rack + TJ Maxx 노택스 털이!)", origin: "Cascade Station Portland", dest: "Nordstrom Rack Cascade Station", cost: "세금 0%", duration: "쇼핑 2시간 20분", safetyLevel: "green", safetyNote: "한 단지에 Ross, Nordstrom Rack, TJ Maxx가 모두 모여 있고 정상 영업 중! 폴로·타미·카하트·아디다스 싹쓸이", needsRide: false, done: false },
+              { time: "12:45 - 14:00", title: "🍖 [점심-명물] Famous Dave's Bar-B-Que (쇼핑몰 단지 내 도보 3분!)", origin: "Nordstrom Rack Cascade Station", dest: "Famous Dave's Bar-B-Que Portland", cost: "식비 $32", duration: "도보 3분 + 식사", safetyLevel: "green", safetyNote: "미국 정통 훈제 바베큐 플래터(브리스킷, 폭립, 치킨)로 든든한 고단백 식사", needsRide: false, done: false },
+              { time: "14:00 - 14:40", title: "[필수-마트] Target (Cascade Station 내) 48시간 시카고행 기차 식량 대량 구매", origin: "Famous Dave's Bar-B-Que Portland", dest: "Target Cascade Station Portland", cost: "식량 $35", duration: "도보 3분 + 쇼핑", safetyLevel: "green", safetyNote: "베이글, 피넛버터, 참치캔/크래커, 프로틴 쉐이크, 생수 1갤런 구매", needsRide: false, done: false },
+              { time: "14:40 - 15:25", title: "Cascades Station ➔ 호텔 복귀 후 보관한 캐리어/가방 픽업", origin: "Target Cascade Station Portland", dest: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", cost: "전철 $2.80", duration: "이동 40분", safetyLevel: "green", safetyNote: "1일 상한($5.60) 적용으로 이후 대중교통 무료", needsRide: false, done: false },
+              { time: "15:25 - 15:45", title: "호텔 ➔ 포틀랜드 유니언역 직행 (우버 호출)", origin: "Holiday Inn Express Hotel & Suites Portland-Northwest Downtown", dest: "Portland Union Station", cost: "우버 $9", duration: "차량 8분", safetyLevel: "green", safetyNote: "쇼핑백과 캐리어가 있으므로 호텔에서 역까지는 우버가 압도적으로 편함", needsRide: true, done: false },
+              { time: "16:45 ~ ", title: "🚆 Empire Builder #28 출발! (포틀랜드 ➔ 시카고 48시간 대륙횡단)", origin: "Portland Union Station", dest: "Chicago Union Station", cost: "레일패스 포함", duration: "대륙횡단 48시간", safetyLevel: "green", safetyNote: "출발 5분 전 게이트 마감! 컬럼비아강 협곡과 몬태나 로키산맥 설경 감상", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/21(일) 암트랙 기차 안 (몬태나 설경 & 로키산맥)",
-            summary: "기차 안에서 전망칸 감상 & 마트 식량 소비",
+            day: "12/21(일) Day 5 — Empire Builder 기차 위 (글레이셔 국립공원 & 로키산맥 설경)",
+            summary: "몬태나주 글레이셔 국립공원 통과 ➔ 전망칸(Sightseer Lounge) 설경 감상 ➔ 정차역 공기 마시기",
             items: [
-              { time: "하루종일", title: "설경 감상, 마트 식량 소비, 휴식", origin: "Empire Builder Train", dest: "Montana Rockies", cost: "마트식량", duration: "온종일", safetyLevel: "green", safetyNote: "열차 승객 전용 공간 (100% 안전)", needsRide: false, done: false }
+              { time: "07:00 - 12:00", title: "몬태나 로키산맥 & 글레이셔 국립공원(Glacier National Park) 설경 통과", origin: "Whitefish Amtrak Station", dest: "East Glacier Park Station", cost: "$0", duration: "전망칸 감상", safetyLevel: "green", safetyNote: "Whitefish역, Shelby역 등 장시간 정차역(Fresh Air Stop)에서 내려 사진 촬영 가능", needsRide: false, done: false },
+              { time: "12:00 - 21:00", title: "노스다코타 대평원 일몰 감상 & 라운지카/식량 휴식", origin: "Havre Station", dest: "Minot Station", cost: "기차식량", duration: "열차 내 휴식", safetyLevel: "green", safetyNote: "카페카 전자레인지/뜨거운 물 활용 가능", needsRide: false, done: false }
             ]
           }
         ],
         tiers: {
-          budget: [{ name: "파월스 북스", desc: "세계 최대 독립 서점 구경 (무료)", dest: "Powell's City of Books" }],
-          standard: [{ name: "Hana Sushi & Izakaya", desc: "다운타운 중심가 무제한 AYCE 스시 ($30)", dest: "Hana Sushi Portland" }],
-          premium: [{ name: "Ox Restaurant", desc: "숯불 우드파이어 아르헨티나 스테이크 ($90~$120)", dest: "Ox Restaurant Portland" }],
-          shopping: [{ name: "Ross & TJ Maxx (Cascades Station)", desc: "오리건주 세금 0% (NO TAX) 초특가 쇼핑몰!", dest: "Ross Dress for Less Cascade Station" }]
+          budget: [
+            { name: "파월스 시티 오브 북스 (Powell's Books)", desc: "한 블록 전체가 서점인 세계 최대 규모의 독립 서점", cost: "무료 ($0)", duration: "트램 10분", dest: "Powell's City of Books", safetyLevel: "green", safetyNote: "펄 디스트릭트 중심가 안전", needsRide: false },
+            { name: "파이오니어 스퀘어 푸드카트 팟", desc: "포틀랜드 명물 길거리 푸드트럭 단지에서 가성비 식사", cost: "식비 $12", duration: "전철 12분", dest: "Pioneer Courthouse Square", safetyLevel: "green", safetyNote: "낮 시간대 유동인구 많음", needsRide: false },
+            { name: "워싱턴 파크 & 국제 장미 정원", desc: "포틀랜드 시내와 후드산(Mt. Hood)이 한눈에 보이는 언덕 공원", cost: "무료 ($0)", duration: "버스 15분", dest: "International Rose Test Garden", safetyLevel: "green", safetyNote: "숙소에서 가까움", needsRide: false },
+            { name: "스텀프타운 커피 로스터스", desc: "미국 3대 스페셜티 커피의 발상지 포틀랜드 본점", cost: "커피 $6", duration: "전철 12분", dest: "Stumptown Coffee Roasters Downtown Portland", safetyLevel: "green", safetyNote: "원두 구매도 노택스!", needsRide: false }
+          ],
+          standard: [
+            { name: "농스 카오만가이 (Nong's Khao Man Gai)", desc: "포틀랜드 푸드트럭 신화! 촉촉한 수비드 치킨라이스 & 진한 닭육수", cost: "식비 $16", duration: "트램 12분", dest: "Nong's Khao Man Gai Downtown Portland", safetyLevel: "green", safetyNote: "단백질 보충용 최고 가성비 맛집", needsRide: false },
+            { name: "KKoki Korean BBQ (꼬기 무제한 K-BBQ)", desc: "포틀랜드 현지인들에게 인기 폭발인 올유캔잇(AYCE) 삼겹살·차돌박이·갈비", cost: "식비 $35", duration: "차량 15분", dest: "KKoki Korean BBQ Portland", safetyLevel: "green", safetyNote: "고기 무제한 리필", needsRide: true },
+            { name: "데슈츠 브루어리 (Deschutes Brewery)", desc: "펄 디스트릭트 위치! 오리건 수제 맥주 샘플러와 두툼한 엘크/비프 버거", cost: "식비 $28", duration: "트램 10분", dest: "Deschutes Brewery Portland Public House", safetyLevel: "green", safetyNote: "숙소와 가까운 펄 디스트릭트", needsRide: false },
+            { name: "스크린 도어 (Screen Door Pearl District)", desc: "포틀랜드 웨이팅 1위! 바삭한 남부식 프라이드 치킨 & 와플", cost: "식비 $25", duration: "트램 8분", dest: "Screen Door Pearl District", safetyLevel: "green", safetyNote: "양 매우 푸짐함", needsRide: false }
+          ],
+          premium: [
+            { name: "Fogo de Chão Portland (슈하스코 무제한)", desc: "포틀랜드 다운타운 중심! 15가지 부위 스테이크 무제한 카빙 서비스", cost: "식비 $45~$65", duration: "전철 12분", dest: "Fogo de Chao Brazilian Steakhouse Portland", safetyLevel: "green", safetyNote: "가우초 런치 특선 가성비 극강", needsRide: false },
+            { name: "링사이드 스테이크하우스 (RingSide Steakhouse)", desc: "80년 전통 포틀랜드 원탑 정통 드라이에이징 스테이크 & 어니언링", cost: "식비 $95", duration: "도보/트램 10분", dest: "RingSide Steakhouse Portland", safetyLevel: "green", safetyNote: "NW 23번가 근처라 숙소에서 매우 가까움!", needsRide: false },
+            { name: "옥스 레스토랑 (Ox Restaurant)", desc: "참나무 장작불에 구워내는 아르헨티나식 우드파이어 스테이크", cost: "식비 $85", duration: "차량 12분", dest: "Ox Restaurant Portland", safetyLevel: "green", safetyNote: "미식가 극찬 스테이크", needsRide: true }
+          ],
+          shopping: [
+            { name: "Cascades Station (Ross + Rack + TJ Maxx)", desc: "★일정 반영됨: 한 곳에서 3대 할인매장 노택스(세금 0%) 쇼핑!", cost: "세금 0%", duration: "MAX 전철 40분", dest: "Cascade Station Portland", safetyLevel: "green", safetyNote: "100% 정상 영업 중", needsRide: false },
+            { name: "Woodburn Premium Outlets (폴로 팩토리)", desc: "오리건 최대 아울렛! 대형 Polo Ralph Lauren Factory Store 입점 (Tax 0%)", cost: "세금 0%", duration: "우버 35분", dest: "Woodburn Premium Outlets", safetyLevel: "green", safetyNote: "아우터 대량 구매 시 우버비 뽑고도 남음", needsRide: true },
+            { name: "Pioneer Place (다운타운 쇼핑몰)", desc: "애플스토어, 자라, 명품 매장이 입점한 다운타운 실내 몰 (세금 0%)", cost: "세금 0%", duration: "전철 12분", dest: "Pioneer Place Portland", safetyLevel: "green", safetyNote: "전자기기/향수 노택스 구매 최적", needsRide: false },
+            { name: "Nike Clearance Store Portland", desc: "나이키 본사 도시 포틀랜드의 나이키 클리어런스 초특가 매장", cost: "세금 0%", duration: "전철/버스 30분", dest: "Nike Clearance Store MLK Blvd Portland", safetyLevel: "green", safetyNote: "운동화·트레이닝복 초특가", needsRide: false }
+          ]
         }
       },
+
+      // -----------------------------------------------------------------------
+      // ROUTE 3: CHICAGO (12/22 ~ 12/25) [★핵심 쇼핑 2: 블루라인 폴로 아울렛]
+      // -----------------------------------------------------------------------
       {
         id: "route3",
         num: 3,
-        title: "시카고 (쇼핑2 - 블루라인35분)",
+        title: "시카고",
+        badge: "★쇼핑2 (폴로아울렛)",
         dateRange: "12/22 ~ 12/25",
-        hotel: "The Chicago Hotel Collection Magnificent Mile",
-        safetyOverview: "매그니피센트 마일 및 루프 주요 관광지는 경찰 순찰이 잘 되어 치안 우수. 밤 9시 이후 남쪽 이동 금지.",
+        hotel: "The Chicago Hotel Collection Magnificent Mile (166 E Superior St)",
+        proBriefing: "⚡전문가 핵심 교정: 12/25(크리스마스 당일)에는 미국 모든 아울렛과 일반 마트(Trader Joe's 등)가 문을 닫습니다! 따라서 12/24(수) 오전에 블루라인 전철로 'Fashion Outlets of Chicago(폴로 팩토리 스토어)'를 다녀오고 기차 식량까지 미리 사둔 뒤, 12/25(목) 크리스마스 당일에는 연중무휴 개방되는 밀레니엄 파크·리버워크·360 시카고 전망대와 크리스마스에도 100% 정상 영업하는 '시카고 차이나타운 무제한 훠궈/고기뷔페(AYCE)'로 완벽하게 일정을 설계했습니다.",
+        safetyOverview: "🟢 매그니피센트 마일(숙소)·밀레니엄 파크·리버워크·아울렛 안전 | 🔴 밤 9시 이후 시카고 남부(South Side) 진입 금지",
         transGuide: [
-          { title: "CTA Ventra Pass", desc: "블루라인/레드라인 전철 1회 $2.50. 하루 2회 이상 탑승 시 1-Day Pass ($5.00) 추천!", cost: "$5.00" },
-          { title: "⭐ [쇼핑성지] Fashion Outlets of Chicago", desc: "CTA 블루라인 Rosemont역 35분 직행! 우버 비용/증체 피하고 전철로 폴로 팩토리 매장 직행." }
+          { title: "CTA 1-Day / 3-Day Ventra Pass", desc: "시카고 전철(L) & 버스 무제한 패스! 1회권이 $2.50인데 1일 무제한 패스가 단 $5.00, 3일 무제한 패스가 $15.00로 가성비가 미쳤습니다.", cost: "1일권 $5 / 3일권 $15", apple: "역 자판기에서 Ventra 티켓 발권 또는 Ventra 앱 ➔ Apple 지갑에 패스 추가", android: "Ventra 앱 설치 후 Google 지갑에 1일/3일 패스 등록 후 태그" },
+          { title: "Fashion Outlets of Chicago 가는 법", desc: "시카고 다운타운(Grand 또는 Clark/Lake역) ➔ CTA Blue Line (O'Hare 공항 방면) 탑승 ➔ Rosemont역 하차 (35분 소요, $2.50) ➔ 도보 8분 또는 무료 셔틀." }
         ],
         schedules: [
           {
-            day: "12/22(월) 시카고 도착 & 딥디쉬 피자",
-            summary: "16:45 시카고 도착 ➔ 호텔 체크인 ➔ 루 말나티 딥디쉬 피자 ➔ 야경",
+            day: "12/22(월) Day 6 — 48시간 횡단 완주 & 시카고 딥디쉬 피자",
+            summary: "16:45 시카고 유니언역 도착 ➔ 호텔 체크인 ➔ Lou Malnati's 딥디쉬 피자 ➔ 매그니피센트 마일 야경",
             items: [
-              { time: "16:45 - 17:30", title: "시카고 유니언역 도착 ➔ 호텔 이동", origin: "Chicago Union Station", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "버스 $2.25", duration: "버스 18분", safetyLevel: "green", safetyNote: "유니언역 내부 및 루프 지구 안전", needsRide: false, done: false },
-              { time: "18:30 - 20:00", title: "[저녁-명물] 루 말나티 시카고 딥디쉬 피자", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Lou Malnati's Pizzeria Magnificent Mile", cost: "$28", duration: "도보 8분", safetyLevel: "green", safetyNote: "치안 상급 구역", needsRide: false, done: false },
-              { time: "20:00 - 21:00", title: "매그니피센트 마일 야경 산책 후 복귀", origin: "Lou Malnati's Pizzeria Magnificent Mile", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "$0", duration: "산책 1시간", safetyLevel: "green", safetyNote: "조명 밝고 안심", needsRide: false, done: false }
+              { time: "16:45 - 17:30", title: "시카고 유니언역 도착 ➔ 호텔 이동 및 체크인", origin: "Chicago Union Station", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "버스 $2.25 / 우버 $12", duration: "버스 18분 / 차량 10분", safetyLevel: "green", safetyNote: "호텔이 최고 부촌 상권인 미시간 애비뉴 바로 옆에 위치", needsRide: true, done: false },
+              { time: "17:30 - 18:30", title: "호텔 체크인 & 샤워 및 휴식", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "$0", duration: "1시간", safetyLevel: "green", safetyNote: "48시간 기차 여정 피로 풀기", needsRide: false, done: false },
+              { time: "18:30 - 20:15", title: "🍕 [저녁-명물] 루 말나티 (Lou Malnati's) 시카고 정통 딥디쉬 피자 & 버팔로 윙", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Lou Malnati's Pizzeria Rush St Chicago", cost: "식비 $28", duration: "도보 6분 + 식사", safetyLevel: "green", safetyNote: "도우 굽는 데 40분 걸리므로 착석 즉시 피자부터 주문할 것!", needsRide: false, done: false },
+              { time: "20:15 - 21:15", title: "매그니피센트 마일 (Magnificent Mile) 크리스마스 조명 야경 산책", origin: "Lou Malnati's Pizzeria Rush St Chicago", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "$0", duration: "도보 산책", safetyLevel: "green", safetyNote: "상점가 조명 밝고 경찰 순찰 상주", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/23(화) 랜드마크 & 바비큐 뷔페",
-            summary: "밀레니엄 파크 ➔ 이탈리안 비프 ➔ 360 시카고 ➔ 슈하스코 바비큐",
+            day: "12/23(화) Day 7 — 시카고 미술관 & Au Cheval 버거 & 브라질 슈하스코 AYCE",
+            summary: "시카고 미술관 ➔ 포틸로스 이탈리안 비프 ➔ 네이비 피어 ➔ Fogo de Chão 무제한 스테이크",
             items: [
-              { time: "10:00 - 11:30", title: "밀레니엄 파크 (The Bean 강낭콩 동상)", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Millennium Park Chicago", cost: "$2.50", duration: "전철 12분", safetyLevel: "green", safetyNote: "공원 경찰 상주", needsRide: false, done: false },
-              { time: "11:30 - 13:00", title: "[점심-명물] 포틸로스 (Portillo's) 이탈리안 비프", origin: "Millennium Park Chicago", dest: "Portillo's Ontario St Chicago", cost: "$15", duration: "도보 10분", safetyLevel: "green", safetyNote: "유동인구 많음", needsRide: false, done: false },
-              { time: "13:00 - 15:30", title: "시카고 리버워크 도보 산책", origin: "Portillo's Ontario St Chicago", dest: "Chicago Riverwalk", cost: "$0", duration: "산책 2시간", safetyLevel: "green", safetyNote: "강변 산책로 안전", needsRide: false, done: false },
-              { time: "15:30 - 17:30", title: "360 시카고 전망대 (94층 초고층 조망)", origin: "Chicago Riverwalk", dest: "360 CHICAGO", cost: "$35", duration: "도보 15분", safetyLevel: "green", safetyNote: "건물 내 보안 철저", needsRide: false, done: false },
-              { time: "17:30 - 19:30", title: "[저녁-뷔페] Fogo de Chão (슈하스코 바비큐 뷔페)", origin: "360 CHICAGO", dest: "Fogo de Chao Brazilian Steakhouse Chicago", cost: "$42", duration: "도보 8분", safetyLevel: "green", safetyNote: "고급 다이닝 구역 우수", needsRide: false, done: false }
+              { time: "10:00 - 12:30", title: "네이비 피어 (Navy Pier) 미시간 호수 & 시카고 스카이라인 조망", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Navy Pier Chicago", cost: "입장 $0", duration: "버스 12분 + 산책", safetyLevel: "green", safetyNote: "실내 가든 및 호수 전망대 치안 완벽", needsRide: false, done: false },
+              { time: "12:30 - 14:00", title: "🌭 [점심-명물] 포틸로스 (Portillo's) 이탈리안 비프 샌드위치 & 시카고 핫도그", origin: "Navy Pier Chicago", dest: "Portillo's & Barnelli's Chicago", cost: "식비 $16", duration: "버스 10분 + 식사", safetyLevel: "green", safetyNote: "이탈리안 비프 주문 시 'Dipped with Sweet/Hot Peppers'로 주문!", needsRide: false, done: false },
+              { time: "14:00 - 17:00", title: "시카고 미술관 (Art Institute of Chicago) 세계 3대 미술관 관람", origin: "Portillo's & Barnelli's Chicago", dest: "Art Institute of Chicago", cost: "티켓 $32", duration: "전철 10분 + 관람 2.5시간", safetyLevel: "green", safetyNote: "쇠라의 '그랑드 자트 섬의 일요일 오후', 고흐 자화상 등 필수 관람", needsRide: false, done: false },
+              { time: "17:30 - 19:30", title: "🥩 [저녁-AYCE] Fogo de Chão Chicago (브라질 슈하스코 스테이크 무제한) 또는 Au Cheval", origin: "Art Institute of Chicago", dest: "Fogo de Chao Brazilian Steakhouse Chicago", cost: "식비 $45", duration: "전철 12분 + 식사", safetyLevel: "green", safetyNote: "호텔에서 도보 8분 거리라 식사 후 바로 숙소 복귀 가능!", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/24(수) 크리스마스 이브 시카고",
-            summary: "네이비 피어 ➔ 시카고 미술관 ➔ Au Cheval 버거 ➔ 야경",
+            day: "12/24(수) Day 8 — Fashion Outlets 폴로 아울렛 싹쓸이 & 기차 식량 사전 확보",
+            summary: "CTA 블루라인(35분) ➔ Fashion Outlets (대형 Polo Factory Store) ➔ Trader Joe's 식량 구매 ➔ 저녁 치즈버거",
             items: [
-              { time: "10:30 - 12:30", title: "네이비 피어 (Navy Pier) 미시간 호수 조망", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Navy Pier Chicago", cost: "$2.25", duration: "버스 15분", safetyLevel: "green", safetyNote: "보안 검색대 운용", needsRide: false, done: false },
-              { time: "12:30 - 14:00", title: "[점심-명물] 지오다노스 피자/수제버거", origin: "Navy Pier Chicago", dest: "Giordano's Chicago", cost: "$22", duration: "도보 10분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
-              { time: "14:00 - 17:00", title: "시카고 미술관 관람", origin: "Giordano's Chicago", dest: "Art Institute of Chicago", cost: "$32", duration: "관람 2.5시간", safetyLevel: "green", safetyNote: "내부 보안 우수", needsRide: false, done: false },
-              { time: "17:00 - 19:00", title: "[저녁-명물] 오 슈발 (Au Cheval) 미국 1위 치즈버거", origin: "Art Institute of Chicago", dest: "Au Cheval Chicago", cost: "$25", duration: "우버 15분 ($14)", safetyLevel: "green", safetyNote: "웨스트루프 안전 상권", needsRide: true, done: false }
+              { time: "09:30 - 10:15", title: "호텔 출발 ➔ CTA Blue Line 전철 탑승 ➔ Rosemont역 하차", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Fashion Outlets of Chicago", cost: "패스 ($2.50)", duration: "전철 35분", safetyLevel: "green", safetyNote: "12/25 크리스마스 당일은 휴무이므로 반드시 12/24 오전에 아울렛 방문!", needsRide: false, done: false },
+              { time: "10:15 - 14:30", title: "🧥 [쇼핑-핵심2] Fashion Outlets of Chicago (2층 대형 Polo Ralph Lauren Factory Store!)", origin: "Fashion Outlets of Chicago", dest: "Fashion Outlets of Chicago", cost: "쇼핑", duration: "쇼핑 4시간", safetyLevel: "green", safetyNote: "쾌적한 최신 실내 아울렛! 폴로 겨울 패딩·바시티 재킷·플리스·니트·모자 물량 미국 최상급 (타미, 칼하트, 아디다스 동시 입점)", needsRide: false, done: false },
+              { time: "14:30 - 15:15", title: "Fashion Outlets ➔ CTA Blue Line ➔ 호텔 복귀 후 쇼핑백 보관", origin: "Fashion Outlets of Chicago", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "패스", duration: "전철 35분", safetyLevel: "green", safetyNote: "무거운 아우터 쇼핑백을 호텔 방에 두고 가볍게 외출", needsRide: false, done: false },
+              { time: "15:30 - 16:30", title: "🛒 [필수-마트] Trader Joe's (44 E Ontario St, 호텔 도보 4분) 내일 밤기차 식량 미리 구매!", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Trader Joe's 44 E Ontario St Chicago", cost: "식량 $22", duration: "도보 4분 + 쇼핑", safetyLevel: "green", safetyNote: "크리스마스 당일(12/25) 마트 휴무 대비 12/24 오후에 미리 기차 간식 확보!", needsRide: false, done: false },
+              { time: "17:00 - 19:00", title: "🍔 [저녁-명물] Au Cheval (미국 1위 수제 치즈버거 & 두툼한 통베이컨)", origin: "Trader Joe's 44 E Ontario St Chicago", dest: "Au Cheval Chicago", cost: "식비 $26", duration: "전철/우버 12분 + 식사", safetyLevel: "green", safetyNote: "웨이팅 등록 후 바로 옆 바에서 대기 가능, 패티 육즙 끝판왕", needsRide: true, done: false }
             ]
           },
           {
-            day: "12/25(목) 크리스마스 & 폴로 팩토리 아울렛 ➔ 야간열차 탑승",
-            summary: "CTA 블루라인 전철(35분) ➔ Fashion Outlets (Polo Factory Store) ➔ Trader Joe's ➔ 21:30 Lake Shore Limited",
+            day: "12/25(목) Day 9 — 크리스마스 시카고 랜드마크 & 360 전망대 & AYCE 만찬 후 밤기차",
+            summary: "호텔 무료짐보관 ➔ 밀레니엄 파크 ➔ 리버워크 ➔ 360 시카고 전망대 ➔ 차이나타운 AYCE 훠궈/고기 ➔ 21:30 기차",
             items: [
-              { time: "11:00 - 14:30", title: "[쇼핑-핵심] Fashion Outlets of Chicago (Polo Factory Store 거대 폴로 아울렛)", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Fashion Outlets of Chicago", cost: "전철 $2.50", duration: "CTA 블루라인 전철 35분 (우버 대비 소요시간 비슷, $40 절약!)", safetyLevel: "green", safetyNote: "실내 초대형 아울렛 단지. Rosemont역 하차 후 도보 10분", needsRide: false, done: false },
-              { time: "15:00 - 16:30", title: "[필수-마트] Trader Joe's 야간 기차 식량 구매", origin: "Fashion Outlets of Chicago", dest: "Trader Joe's Chicago", cost: "$22", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "마트 내 안전", needsRide: false, done: false },
-              { time: "19:30 - 20:30", title: "호텔 짐 픽업 ➔ 시카고 유니언역 이동 및 대기", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Chicago Union Station", cost: "우버 $12", duration: "차량 15분", safetyLevel: "yellow", safetyNote: "밤 9시 이후 역 외부 배회 금지! 역사 라운지 대기", needsRide: true, done: false },
-              { time: "21:30 ~ ", title: "Lake Shore Limited 탑승 (버팔로 향해 출발)", origin: "Chicago Union Station", dest: "Buffalo-Depew Amtrak Station", cost: "암트랙 탑승", duration: "10시간23분", safetyLevel: "green", safetyNote: "기차 승차 안전", needsRide: false, done: false }
+              { time: "10:30 - 11:00", title: "호텔 체크아웃 & 프런트 무료 짐보관 ($0)", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "The Chicago Hotel Collection Magnificent Mile", cost: "보관 $0", duration: "30분", safetyLevel: "green", safetyNote: "밤 19:30까지 호텔에 안전하게 짐 보관", needsRide: false, done: false },
+              { time: "11:00 - 13:00", title: "밀레니엄 파크 (The Bean 강낭콩) & 시카고 리버워크 산책 (365일 연중무휴)", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Millennium Park Chicago", cost: "무료 ($0)", duration: "도보 15분 + 산책", safetyLevel: "green", safetyNote: "크리스마스 당일 한산하고 여유로운 강낭콩 인생샷 촬영!", needsRide: false, done: false },
+              { time: "13:00 - 15:30", title: "🌆 [크리스마스 영업] 360 CHICAGO 전망대 (존 핸콕 센터 94층 파노라마 뷰)", origin: "Millennium Park Chicago", dest: "360 CHICAGO", cost: "티켓 $35", duration: "버스 10분 + 관람", safetyLevel: "green", safetyNote: "호텔에서 도보 5분 거리! 12/25 크리스마스 당일 정상 영업 명소", needsRide: false, done: false },
+              { time: "16:00 - 18:30", title: "🍲 [저녁-AYCE] 시카고 차이나타운 무제한 훠궈/양꼬치/K-BBQ (Happy Lamb Hot Pot / Jiang Niu)", origin: "360 CHICAGO", dest: "Happy Lamb Hot Pot Chicago Chinatown", cost: "식비 $34", duration: "Red Line 전철 15분 + 식사", safetyLevel: "green", safetyNote: "크리스마스 당일 일반 식당은 쉬지만 차이나타운 AYCE 식당들은 100% 성업 중! 추운 겨울 뜨끈한 무제한 양고기·소고기 샤브샤브", needsRide: false, done: false },
+              { time: "18:30 - 19:30", title: "호텔 복귀 후 보관한 짐 픽업 ➔ 시카고 유니언역 이동", origin: "The Chicago Hotel Collection Magnificent Mile", dest: "Chicago Union Station", cost: "우버 $12", duration: "차량 12분", safetyLevel: "yellow", safetyNote: "야간 유니언역 주변은 한산하므로 우버로 역 정문 하차 후 즉시 실내 대기실 입장", needsRide: true, done: false },
+              { time: "21:30 ~ ", title: "🚆 Lake Shore Limited #48 탑승! (시카고 ➔ 버팔로 10시간 야간열차)", origin: "Chicago Union Station", dest: "Buffalo-Depew Amtrak Station", cost: "레일패스 포함", duration: "야간열차 10.5시간", safetyLevel: "green", safetyNote: "오대호 연안을 따라 달리는 야간 열차, 내일 아침 08:53 버팔로 도착", needsRide: false, done: false }
             ]
           }
         ],
         tiers: {
-          budget: [{ name: "밀레니엄 파크 강낭콩 (The Bean)", desc: "시카고 최고의 시그니처 무료 포토존", dest: "Millennium Park Chicago" }],
-          standard: [{ name: "360 시카고 전망대", desc: "94층 초고층 스카이라인 ($35)", dest: "360 CHICAGO" }],
-          premium: [{ name: "Bavette's Bar & Boeuf", desc: "프라임 스테이크하우스 ($100+)", dest: "Bavette's Bar & Boeuf Chicago" }],
-          shopping: [{ name: "Fashion Outlets of Chicago (Rosemont)", desc: "CTA 블루라인 전철 35분 직행! 거대 Polo Factory Store 입점!", dest: "Fashion Outlets of Chicago" }]
+          budget: [
+            { name: "링컨 파크 동물원 (Lincoln Park Zoo)", desc: "도심 한가운데 위치한 365일 무료 개방 대규모 동물원 & 스카이라인 포토존", cost: "무료 ($0)", duration: "버스 15분", dest: "Lincoln Park Zoo Chicago", safetyLevel: "green", safetyNote: "크리스마스 당일에도 개방!", needsRide: false },
+            { name: "가렛 팝콘 (Garrett Popcorn 본점)", desc: "시카고 명물! 단짠단짠 치즈+카라멜 믹스(Garrett Mix) 팝콘", cost: "간식 $9", duration: "도보 5분", dest: "Garrett Popcorn Shops Michigan Ave", safetyLevel: "green", safetyNote: "기차 간식으로도 최고", needsRide: false },
+            { name: "시카고 문화센터 (Chicago Cultural Center)", desc: "세계 최대 규모의 티파니 스테인드글라스 돔 천장 무료 관람", cost: "무료 ($0)", duration: "도보 12분", dest: "Chicago Cultural Center", safetyLevel: "green", safetyNote: "밀레니엄 파크 바로 맞은편", needsRide: false },
+            { name: "빌리 고트 태번 (Billy Goat Tavern)", desc: "미시간 애비뉴 지하에 숨겨진 1934년 노포 더블 치즈버거", cost: "식비 $12", duration: "도보 6분", dest: "Billy Goat Tavern Michigan Ave", safetyLevel: "green", safetyNote: "숙소 근처 가성비 노포", needsRide: false }
+          ],
+          standard: [
+            { name: "지오다노스 (Giordano's Pizzeria)", desc: "치즈가 폭포처럼 늘어나는 스터프드(Stuffed) 시카고 딥디쉬 피자", cost: "식비 $26", duration: "도보 7분", dest: "Giordano's Rush St Chicago", safetyLevel: "green", safetyNote: "루 말나티와 양대 산맥", needsRide: false },
+            { name: "규카쿠 일식 야키니쿠 (Gyu-Kaku BBQ)", desc: "숙소 도보 5분! 고품질 소갈비살·우설·삼겹살 화로구이 런치/디너 세트", cost: "식비 $35", duration: "도보 5분", dest: "Gyu-Kaku Japanese BBQ Chicago Ohio St", safetyLevel: "green", safetyNote: "숙소 바로 근처 고단백 맛집", needsRide: false },
+            { name: "스카이덱 시카고 (Willis Tower Skydeck)", desc: "103층 높이 투명 유리 바닥(The Ledge) 위에 서보는 아찔한 전망대", cost: "티켓 $38", duration: "전철 12분", dest: "Skydeck Chicago", safetyLevel: "green", safetyNote: "유니언역에서 도보 5분 거리", needsRide: false },
+            { name: "시카고 건축 리버 크루즈", desc: "유람선을 타고 시카고강을 따라 마천루 건축 역사를 듣는 NO.1 투어", cost: "티켓 $48", duration: "크루즈 90분", dest: "Chicago Architecture Center", safetyLevel: "green", safetyNote: "리버워크 선착장 탑승", needsRide: false }
+          ],
+          premium: [
+            { name: "깁슨스 바 & 스테이크하우스 (Gibsons)", desc: "시카고 마피아 스타일의 거대한 본-인 립아이 스테이크 명가", cost: "식비 $110", duration: "도보 10분", dest: "Gibsons Bar & Steakhouse Chicago", safetyLevel: "green", safetyNote: "골드코스트 부촌 위치", needsRide: false },
+            { name: "바베트 바 & 부프 (Bavette's Bar & Boeuf)", desc: "시카고에서 가장 예약하기 힘든 힙하고 클래식한 프라임 스테이크하우스", cost: "식비 $105", duration: "도보 12분", dest: "Bavette's Bar & Boeuf Chicago", safetyLevel: "green", safetyNote: "바 좌석은 워크인 가능", needsRide: false },
+            { name: "더 퍼플 피그 (The Purple Pig)", desc: "미시간 애비뉴 미슐랭 빕구르망 지중해식 포크 촙 & 수제 샤퀴테리", cost: "식비 $55", duration: "도보 5분", dest: "The Purple Pig Chicago", safetyLevel: "green", safetyNote: "숙소 바로 옆 위치", needsRide: false }
+          ],
+          shopping: [
+            { name: "Fashion Outlets of Chicago (Rosemont)", desc: "★일정 반영됨: 대형 Polo Ralph Lauren Factory Store 입점 실내 아울렛", cost: "전철 $2.50", duration: "블루라인 35분", dest: "Fashion Outlets of Chicago", safetyLevel: "green", safetyNote: "폴로 아우터 물량 최다", needsRide: false },
+            { name: "Nordstrom Rack & TJ Maxx (State St)", desc: "밀레니엄 파크 바로 옆 다운타운 대형 이월 할인 매장 2곳 연속 털기", cost: "쇼핑", duration: "전철 10분", dest: "Nordstrom Rack State St Chicago", safetyLevel: "green", safetyNote: "도심 관광 중 들르기 최고", needsRide: false },
+            { name: "Ralph Lauren Flagship & Cafe (Michigan Ave)", desc: "숙소 바로 앞! 미국 최대 규모 랄프로렌 플래그십 스토어 & 랄프스 커피", cost: "구경/커피 $7", duration: "도보 2분", dest: "Ralph Lauren 750 N Michigan Ave Chicago", safetyLevel: "green", safetyNote: "폴로 매니아라면 성지순례 필수!", needsRide: false }
+          ]
         }
       },
+
+      // -----------------------------------------------------------------------
+      // ROUTE 4: BUFFALO & NIAGARA FALLS (12/26 ~ 12/27)
+      // -----------------------------------------------------------------------
       {
         id: "route4",
         num: 4,
-        title: "버팔로 (나이아가라 폭포)",
+        title: "나이아가라/버팔로",
+        badge: "폭포 & 원조윙",
         dateRange: "12/26 ~ 12/27",
-        hotel: "Comfort Inn & Suites Buffalo Airport",
-        safetyOverview: "나이아가라 주립공원은 낮시간대 매우 안전함. 드퓨역 주변은 외진 공업 지역이므로 우버 이동 권장.",
+        hotel: "Comfort Inn & Suites Buffalo Airport (4630 Genesee St)",
+        proBriefing: "버팔로 드퓨(Depew)역과 숙소는 공항 인근이라 서로 우버 8분 거리로 매우 가깝습니다. 단, 숙소에서 나이아가라 폭포까지는 대중교통 이용 시 환승 포함 1시간 40분이 걸리므로, 2인이 우버/리프트를 분담(편도 약 $30~35, 30분 소요)하는 것이 시간과 체력을 아끼는 최고의 선택입니다.",
+        safetyOverview: "🟢 나이아가라 폭포 주립공원(낮)·월마트/아울렛 상권 안전 | 🟡 폭포 주변 외곽 골목은 해 진 후 한산하므로 우버 이동 권장",
         transGuide: [
-          { title: "NFTA 40번 버스", desc: "버팔로 도심 ↔ 나이아가라 연결 버스 ($2.00)." },
-          { title: "우버 추천 구간", desc: "드퓨역 ➔ 폭포 이동 시 대중교통 1시간 40분 소요 vs 우버 35분. (1시간 차이 나므로 폭포 이동은 우버 추천!)" }
+          { title: "우버 / 리프트 2인 분담 (강력 추천)", desc: "드퓨역 ↔ 호텔 (차량 8분, 약 $12) / 호텔 ↔ 나이아가라 폭포 (차량 30분, 약 $35 / 1인당 $17.5).", cost: "우버 분담" },
+          { title: "NFTA Metro Bus (대중교통 대안)", desc: "버팔로 도심 정류장에서 40번 버스 탑승 시 나이아가라 폭포 직행 ($2.00, 약 55분 소요). Token Transit 앱으로 모바일 티켓 구매 가능.", cost: "$2.00" }
         ],
         schedules: [
           {
-            day: "12/26(금) 나이아가라 폭포 체험 & AYCE 뷔페",
-            summary: "08:53 드퓨역 ➔ 폭포 ➔ 바람의 동굴 ➔ 앵커바 윙 ➔ Asian Buffet 뷔페 ➔ 마트 식량",
+            day: "12/26(금) Day 10 — 나이아가라 폭포 웅장함 체험 & 원조 버팔로 윙 & AYCE 뷔페",
+            summary: "08:53 드퓨역 도착 ➔ 호텔 짐보관 ➔ 나이아가라 폭포(바람의 동굴) ➔ 앵커바 윙 ➔ Amherst Buffet(AYCE) ➔ 마트 식량",
             items: [
-              { time: "08:53 - 09:30", title: "드퓨역 ➔ Comfort Inn 짐보관", origin: "Buffalo-Depew Station", dest: "Comfort Inn & Suites Buffalo Airport", cost: "우버 $12", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "역사 내부에서 우버 대기", needsRide: true, done: false },
-              { time: "09:30 - 10:30", title: "호텔 ➔ 나이아가라 폭포 주립공원 이동", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Cave of the Winds Niagara Falls", cost: "우버 분담 $25", duration: "차량 35분 (대중교통 1.5시간 이상 소요되어 우버 추천)", safetyLevel: "green", safetyNote: "우버 이동 안심", needsRide: true, done: false },
-              { time: "10:30 - 13:00", title: "바람의 동굴 (Cave of the Winds) & 고트 아일랜드 관람", origin: "Cave of the Winds Niagara Falls", dest: "Goat Island Niagara Falls", cost: "$14", duration: "관람 2.5시간", safetyLevel: "green", safetyNote: "주립공원 내부 안전", needsRide: false, done: false },
-              { time: "13:00 - 14:30", title: "[점심-명물] 앵커 바 (원조 버팔로 윙)", origin: "Goat Island Niagara Falls", dest: "Anchor Bar Niagara Falls", cost: "$22", duration: "도보/차량 10분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
-              { time: "14:30 - 17:00", title: "폭포 수변 산책로 및 일몰 관람", origin: "Anchor Bar Niagara Falls", dest: "Niagara Falls State Park", cost: "$0", duration: "산책 2.5시간", safetyLevel: "green", safetyNote: "일몰 후 17시 이전 산책 종료", needsRide: false, done: false },
-              { time: "17:30 - 19:00", title: "[저녁-뷔페] Asian Buffet Buffalo (올유캔잇 뷔페)", origin: "Niagara Falls State Park", dest: "Asian Buffet Buffalo", cost: "$28", duration: "우버 $18", safetyLevel: "green", safetyNote: "가족 단위 식당 안심", needsRide: true, done: false },
-              { time: "19:00 - 20:30", title: "[필수-마트] Walmart 11시간 보스턴 기차 식량 구매", origin: "Asian Buffet Buffalo", dest: "Walmart Supercenter Buffalo", cost: "$15", duration: "쇼핑 1시간", safetyLevel: "green", safetyNote: "마트 매장 안심", needsRide: false, done: false }
+              { time: "08:53 - 09:30", title: "버팔로 드퓨역(BUF) 도착 ➔ Comfort Inn 호텔 이동 후 무료 짐보관 ($0)", origin: "Buffalo-Depew Amtrak Station", dest: "Comfort Inn & Suites Buffalo Airport", cost: "우버 $12", duration: "차량 8분", safetyLevel: "green", safetyNote: "역 대합실 안에서 우버 호출 후 차량 도착 시 탑승", needsRide: true, done: false },
+              { time: "09:30 - 10:15", title: "호텔 ➔ 나이아가라 폭포 주립공원 (우버 직행)", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Niagara Falls State Park Visitor Center", cost: "우버 분담 $18", duration: "차량 30분", safetyLevel: "green", safetyNote: "대중교통(1시간 40분) 대비 1시간 이상 절약!", needsRide: true, done: false },
+              { time: "10:15 - 12:30", title: "🌊 바람의 동굴 (Cave of the Winds) & 고트 아일랜드(Goat Island) 폭포 근접 체험", origin: "Niagara Falls State Park Visitor Center", dest: "Cave of the Winds Niagara Falls", cost: "입장 $14", duration: "관람 2시간", safetyLevel: "green", safetyNote: "엘리베이터를 타고 폭포 협곡 아래로 내려가 물보라와 얼음 장관 직관!", needsRide: false, done: false },
+              { time: "12:30 - 14:00", title: "🍗 [점심-명물] Anchor Bar Niagara Falls (1964년 버팔로 윙 원조 맛집!)", origin: "Cave of the Winds Niagara Falls", dest: "Anchor Bar Niagara Falls", cost: "식비 $24", duration: "도보 10분 + 식사", safetyLevel: "green", safetyNote: "Medium 또는 Hot 소스 오리지널 버팔로 윙 + 비프 온 웩(Beef on Weck) 샌드위치 조합 추천", needsRide: false, done: false },
+              { time: "14:00 - 16:30", title: "프راس펙트 포인트(Prospect Point) & 아메리칸 폴스 전망대 산책", origin: "Anchor Bar Niagara Falls", dest: "Prospect Point Niagara Falls", cost: "무료 ($0)", duration: "도보 산책 2시간", safetyLevel: "green", safetyNote: "캐나다 측 말발굽 폭포(Horseshoe Falls)까지 한눈에 조망", needsRide: false, done: false },
+              { time: "17:00 - 18:45", title: "🍣 [저녁-AYCE] Amherst Buffet 또는 Friendly's / Asian Buffet (해산물·그릴·스시 무제한 뷔페)", origin: "Prospect Point Niagara Falls", dest: "Amherst Buffet Buffalo", cost: "식비 $26", duration: "차량 25분 + 식사", safetyLevel: "green", safetyNote: "숙소로 돌아오는 길목에 위치한 대형 올유캔잇(AYCE) 가성비 뷔페!", needsRide: true, done: false },
+              { time: "18:45 - 20:00", title: "🛒 [필수-마트] Walmart Supercenter 또는 Wegmans (내일 11시간 보스턴행 기차 식량 구매)", origin: "Amherst Buffet Buffalo", dest: "Walmart Supercenter Cheektowaga", cost: "식량 $18", duration: "차량 8분 + 쇼핑", safetyLevel: "green", safetyNote: "버팔로 명물 마트 Wegmans 또는 월마트에서 프로틴 음료·델리 도시락 구매 후 호텔 복귀", needsRide: true, done: false }
             ]
           },
           {
-            day: "12/27(토) 보스턴행 주간 열차",
-            summary: "드퓨역 이동 ➔ 09:05 기차 탑승 ➔ 20:32 도착",
+            day: "12/27(토) Day 11 — 뉴욕주 업스테이트 & 버크셔 산맥 11시간 주간 열차 횡단",
+            summary: "호텔 조식 & 체크아웃 ➔ 09:05 Lake Shore Limited 탑승 ➔ 주간 설경 감상 ➔ 20:32 보스턴 도착",
             items: [
-              { time: "08:00 - 08:30", title: "체크아웃 ➔ 버팔로 드퓨역 이동", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Buffalo-Depew Station", cost: "우버 $10", duration: "차량 10분", safetyLevel: "green", safetyNote: "아침 시간대 안심", needsRide: true, done: false },
-              { time: "09:05 ~ 20:32", title: "Lake Shore Limited 탑승 (보스턴 사우스역 도착)", origin: "Buffalo-Depew Station", dest: "Boston South Station", cost: "암트랙 탑승", duration: "11시간27분", safetyLevel: "green", safetyNote: "기차 승무원 상주 안전", needsRide: false, done: false }
+              { time: "07:30 - 08:15", title: "호텔 무료 조식 든든히 섭취 후 체크아웃 ➔ 버팔로 드퓨역 이동", origin: "Comfort Inn & Suites Buffalo Airport", dest: "Buffalo-Depew Amtrak Station", cost: "우버 $10", duration: "차량 8분", safetyLevel: "green", safetyNote: "컴포트 인 무료 따뜻한 조식(와플/계란/소시지) 챙겨 먹기!", needsRide: true, done: false },
+              { time: "09:05 - 20:32", title: "🚆 Lake Shore Limited #448 탑승 (버팔로 ➔ 로체스터 ➔ 올버니 ➔ 보스턴 사우스역)", origin: "Buffalo-Depew Amtrak Station", dest: "Boston South Station", cost: "레일패스 포함", duration: "주간열차 11시간 27분", safetyLevel: "green", safetyNote: "낮 시간대 기차라 창밖으로 뉴욕주 운하와 매사추세츠 버크셔 산맥 풍경 감상 가능", needsRide: false, done: false }
             ]
           }
         ],
         tiers: {
-          budget: [{ name: "나이아가라 협곡 트레일", desc: "폭포 하류 트레킹 코스 (무료)", dest: "Niagara Gorge Trail" }],
-          standard: [{ name: "앵커 바 (Anchor Bar)", desc: "1964년 버팔로 윙 원조 성지 ($22)", dest: "Anchor Bar Niagara Falls" }],
-          premium: [{ name: "나이아가라 헬기 투어", desc: "상공에서 바라보는 폭포 ($160+)", dest: "Niagara Helicopters" }],
-          shopping: [{ name: "Walmart Supercenter", desc: "기차 식량 및 가성비 마트 쇼핑", dest: "Walmart Supercenter Buffalo" }]
+          budget: [
+            { name: "더프스 페이머스 윙스 (Duff's Famous Wings)", desc: "버팔로 현지인들이 앵커바보다 더 매콤하고 바삭하다고 꼽는 로컬 1위 윙 맛집", cost: "식비 $20", duration: "숙소에서 차량 8분", dest: "Duff's Famous Wings Dick Rd Cheektowaga", safetyLevel: "green", safetyNote: "숙소(Comfort Inn)에서 차로 5~8분 거리라 저녁 포장/식사로 최고!", needsRide: true },
+            { name: "나이아가라 협곡 트레일 (Niagara Gorge Trail)", desc: "거센 폭포 급류가 흐르는 에메랄드빛 하류 협곡 전망 트레일", cost: "무료 ($0)", duration: "도보 20분", dest: "Niagara Gorge Trailhead Center", safetyLevel: "green", safetyNote: "주립공원 내 위치", needsRide: false },
+            { name: "웨그먼스 (Wegmans 대형 수퍼마켓)", desc: "미국 동부 소비자 만족도 1위 프리미엄 마트! 즉석 델리·수제버거·스시 코너 최고", cost: "식량 $15", duration: "숙소 인근 8분", dest: "Wegmans Dick Rd Depew", safetyLevel: "green", safetyNote: "숙소 근처 위치", needsRide: true }
+          ],
+          standard: [
+            { name: "윈드 재패니즈 & 타이 (Wind Japanese & Thai AYCE)", desc: "나이아가라/버팔로 평점 최상위! 무제한 프리미엄 스시 & 롤 & 데판야끼 AYCE", cost: "식비 $34", duration: "차량 12분", dest: "Wind Japanese and Thai Buffalo", safetyLevel: "green", safetyNote: "스시 퀄리티가 일반 중국식 뷔페보다 훨씬 높음", needsRide: true },
+            { name: "하드락 카페 나이아가라 (Hard Rock Cafe)", desc: "폭포 바로 입구! 록 음악 분위기에서 즐기는 클래식 아메리칸 버거 & 립", cost: "식비 $28", duration: "도보 5분", dest: "Hard Rock Cafe Niagara Falls USA", safetyLevel: "green", safetyNote: "폭포 공원 바로 앞", needsRide: false },
+            { name: "파워 비스타 전망대 (NYPA Niagara Power Vista)", desc: "나이아가라 수력발전소 절벽 위 전망대 & 인터랙티브 과학관 (무료 입장)", cost: "무료 ($0)", duration: "차량 10분", dest: "Niagara Power Vista", safetyLevel: "green", safetyNote: "실내 관람 시설로 따뜻함", needsRide: true }
+          ],
+          premium: [
+            { name: "더 레드 코치 인 (The Red Coach Inn)", desc: "나이아가라 폭포 급류 바로 앞에서 즐기는 1923년 전통 프라임 립 스테이크", cost: "식비 $75", duration: "도보 5분", dest: "The Red Coach Inn Niagara Falls", safetyLevel: "green", safetyNote: "분위기 최고 클래식 인", needsRide: false },
+            { name: "텍사스 드 브라질 버팔로 (Texas de Brazil)", desc: "숙소 인근(Walden Galleria) 정통 브라질리언 슈하스코 스테이크 무제한!", cost: "식비 $52", duration: "숙소에서 차량 7분", dest: "Texas de Brazil Buffalo", safetyLevel: "green", safetyNote: "숙소 바로 근처 대형 몰에 위치!", needsRide: true }
+          ],
+          shopping: [
+            { name: "Fashion Outlets of Niagara Falls USA", desc: "폭포에서 차로 15분! 대형 Polo Ralph Lauren Factory Store 입점 아울렛 (12/26 박싱데이 세일!)", cost: "쇼핑", duration: "차량 15분", dest: "Fashion Outlets of Niagara Falls USA", safetyLevel: "green", safetyNote: "12/26 애프터 크리스마스 폭탄 세일 기간!", needsRide: true },
+            { name: "Walden Galleria (숙소 7분 거리 대형 쇼핑몰)", desc: "버팔로 최대 실내 쇼핑몰 (폴로 입점 Macy's, 나이키, 아디다스, 애플스토어)", cost: "쇼핑", duration: "차량 7분", dest: "Walden Galleria Buffalo", safetyLevel: "green", safetyNote: "숙소 바로 옆이라 저녁 시간 활용 최적", needsRide: true }
+          ]
         }
       },
+
+      // -----------------------------------------------------------------------
+      // ROUTE 5: BOSTON (12/27 ~ 12/29) [순수 관광 & 아이비리그 & 미식]
+      // -----------------------------------------------------------------------
       {
         id: "route5",
         num: 5,
-        title: "보스턴 (순수 관광&맛집)",
+        title: "보스턴",
+        badge: "하버드 & 랍스터롤",
         dateRange: "12/27 ~ 12/29",
-        hotel: "Cambria Hotel Boston Downtown Seaport",
-        safetyOverview: "미국 최고 수준의 치안 정청 도시. 대학가, 씨포트, 다운타운 모두 밤에도 매우 안전함.",
+        hotel: "Cambria Hotel Boston Downtown - Seaport (6 W Broadway)",
+        proBriefing: "Cambria 호텔은 보스턴 사우스역(South Station)에서 지하철 Red Line으로 딱 1정거장(Broadway역 하차 후 도보 1분!) 거리에 있어 입지가 환상적입니다. 보스턴에서는 쇼핑에 시간을 뺏기지 않고 미국 독립 역사길(프리덤 트레일), 넵튠 오이스터 랍스터롤, 하버드&MIT 명문대 투어, 그리고 야마토 무제한 스시 뷔페에만 알차게 집중합니다.",
+        safetyOverview: "🟢 미국 대도시 중 치안 최상위권! 숙소(Broadway역)·하버드·노스엔드·씨포트 야간에도 안전",
         transGuide: [
-          { title: "MBTA LinkPass (지하철/버스)", desc: "애플페이/구글페이 신용카드 직태그 탑승 가능! 1회 $2.40 / 1일 패스 $11.00", cost: "$11.00" },
-          { title: "💡 쇼핑 삭제 보스턴 투어", desc: "보스턴은 쇼핑을 삭제하고 하버드/프리덤트레일/랍스터롤에 전념!" }
+          { title: "MBTA 지하철 (T) 컨택리스 탑승", desc: "2024~2026년 최신 개편으로 보스턴 지하철도 별도 교통카드 없이 Apple Pay / Google Pay 신용카드를 개찰구에 바로 찍고(Tap to Ride) 탑승할 수 있습니다! (1회 $2.40)", cost: "1회 $2.40", apple: "개찰구 단말기에 Apple Pay(아이폰/워치) 바로 태그", android: "개찰구 단말기에 Google Pay(컨택리스 카드) 바로 태그" },
+          { title: "MBTA 1-Day LinkPass", desc: "지하철·버스를 하루 5번 이상 탈 계획이라면 역 자판기에서 1일 무제한 패스($11.00) 구매 가능.", cost: "$11.00" }
         ],
         schedules: [
           {
-            day: "12/27(일) 보스턴 밤 도착",
-            summary: "20:32 사우스역 도착 ➔ 호텔 체크인 및 휴식",
+            day: "12/27(토) Day 11 밤 — 보스턴 사우스역 도착 & 호텔 초고속 체크인",
+            summary: "20:32 보스턴 사우스역 도착 ➔ Red Line 1정거장(Broadway역) ➔ 도보 1분 Cambria 호텔 체크인",
             items: [
-              { time: "20:32 - 21:00", title: "보스턴 사우스역 ➔ Cambria Hotel 체크인", origin: "Boston South Station", dest: "Cambria Hotel Boston Downtown Seaport", cost: "$2.40", duration: "전철/도보 12분", safetyLevel: "green", safetyNote: "보스턴 지하철 및 씨포트 구역 완벽 안전", needsRide: false, done: false }
+              { time: "20:32 - 21:00", title: "보스턴 사우스역 도착 ➔ Red Line 1정거장(Broadway역) ➔ Cambria Hotel 체크인", origin: "Boston South Station", dest: "Cambria Hotel Boston Downtown Seaport", cost: "전철 $2.40", duration: "전철 3분 + 도보 1분", safetyLevel: "green", safetyNote: "Broadway역 출구 바로 맞은편이 호텔이라 밤 도착이어도 100% 안전하고 편함!", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/28(월) 랍스터롤 & 하버드 대학 & 씨포트 수변 산책 & 스시 뷔페",
-            summary: "프리덤 트레일 ➔ 넵튠 오이스터 ➔ 하버드 ➔ 씨포트 야경 ➔ Yamato 스시 뷔페",
+            day: "12/28(일) Day 12 — 프리덤 트레일 & 넵튠 랍스터롤 & 하버드 대학 & 스시 AYCE",
+            summary: "프리덤 트레일 ➔ 퀸시마켓 ➔ 넵튠 오이스터 랍스터롤 ➔ 하버드 대학교 ➔ Yamato II 스시 뷔페",
             items: [
-              { time: "09:30 - 11:30", title: "프리덤 트레일 도보 산책 (보스턴 커먼 ~ 퀸시 마켓)", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Quincy Market Boston", cost: "패스", duration: "도보 산책 2시간", safetyLevel: "green", safetyNote: "독립 역사 탐방길 완벽 안전", needsRide: false, done: false },
-              { time: "11:30 - 13:00", title: "[점심-명물] 넵튠 오이스터 (버터 랍스터롤의 정석)", origin: "Quincy Market Boston", dest: "Neptune Oyster Boston", cost: "$42", duration: "도보 8분", safetyLevel: "green", safetyNote: "리틀 이탈리아 안심 구역", needsRide: false, done: false },
-              { time: "13:00 - 16:00", title: "하버드 대학교 (존 하버드 동상 & 교정 투어)", origin: "Neptune Oyster Boston", dest: "Harvard Yard Cambridge", cost: "패스", duration: "MBTA Red Line 전철 20분", safetyLevel: "green", safetyNote: "세계 최고 대학가 치안 청정 구역", needsRide: false, done: false },
-              { time: "16:00 - 18:00", title: "씨포트 디스트릭트 (Seaport) 현대적 수변 야경 산책", origin: "Harvard Yard Cambridge", dest: "Seaport District Boston", cost: "패스", duration: "전철 20분 + 산책 1.5시간", safetyLevel: "green", safetyNote: "보스턴에서 가장 핫하고 트렌디한 안전 구역", needsRide: false, done: false },
-              { time: "18:00 - 19:30", title: "[저녁-뷔페] Yamato / Minado Seafood AYCE 스시 뷔페", origin: "Seaport District Boston", dest: "Minado Seafood Buffet Boston", cost: "$32", duration: "식사 1.5시간", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false },
-              { time: "19:30 - 20:00", title: "[필수-마트] Trader Joe's 뉴욕행 기차 간식 구매", origin: "Minado Seafood Buffet Boston", dest: "Trader Joe's Boston", cost: "$12", duration: "쇼핑 30분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false }
+              { time: "09:15 - 11:15", title: "프리덤 트레일(Freedom Trail) 도보 탐방 (보스턴 커먼 ➔ 주 의사당 ➔ 퀸시 마켓)", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Quincy Market Boston", cost: "전철 $2.40", duration: "Red Line Park St역 하차 + 산책", safetyLevel: "green", safetyNote: "바닥에 깔린 붉은 벽돌 선만 따라 걸으면 미국 독립 역사 명소 16곳이 자동 연결됨", needsRide: false, done: false },
+              { time: "11:15 - 13:00", title: "🦞 [점심-명물] 넵튠 오이스터 (Neptune Oyster 따뜻한 버터 랍스터롤) & Mike's Pastry 카놀리", origin: "Quincy Market Boston", dest: "Neptune Oyster Boston", cost: "식비 $44", duration: "도보 7분 + 식사", safetyLevel: "green", safetyNote: "11:30 오픈 15분 전에 도착하면 1회전 입장 가능! 만약 줄이 너무 길면 바로 옆 Pauli's($28 가성비 랍스터롤)로 대체", needsRide: false, done: false },
+              { time: "13:00 - 15:45", title: "🎓 하버드 대학교 (Harvard Yard, 존 하버드 동상, 와이드너 도서관) & 하버드 쿱(Coop) 구경", origin: "Neptune Oyster Boston", dest: "Harvard Yard Cambridge", cost: "전철 $2.40", duration: "Red Line 18분 + 캠퍼스 투어", safetyLevel: "green", safetyNote: "Harvard Square의 공식 기념품점(The Coop)에서 하버드 후드티/모자 구경", needsRide: false, done: false },
+              { time: "15:45 - 17:30", title: "보스턴 공립 도서관 (Boston Public Library) & 뉴베리 스트리트(Newbury St) 산책", origin: "Harvard Yard Cambridge", dest: "Boston Public Library", cost: "무료 ($0)", duration: "전철 15분 + 관람", safetyLevel: "green", safetyNote: "미국에서 가장 아름다운 궁전형 도서관 내부 Bates Hall 열람실 무료 입장", needsRide: false, done: false },
+              { time: "17:30 - 19:15", title: "🍣 [저녁-AYCE] Yamato II (Back Bay점 — 보스턴 최고 인기 올유캔잇 스시 & 사시미 & 데판야끼 무제한!)", origin: "Boston Public Library", dest: "Yamato II Boylston St Boston", cost: "식비 $38", duration: "도보 6분 + 식사", safetyLevel: "green", safetyNote: "보스턴 공립도서관 바로 옆! 연어·참치·새우튀김·우동·데판야끼 무제한 주문식 뷔페", needsRide: false, done: false },
+              { time: "19:15 - 20:00", title: "[필수-마트] Trader Joe's (Back Bay점, 식당 바로 옆!) 내일 뉴욕행 기차 간식 구매 후 복귀", origin: "Yamato II Boylston St Boston", dest: "Trader Joe's Boylston St Boston", cost: "간식 $12", duration: "도보 3분 + 쇼핑", safetyLevel: "green", safetyNote: "식당에서 도보 3분 거리에 트레이더 조 위치, 동선 완벽!", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/29(화) 뉴욕행 열차 출발",
-            summary: "08:30 사우스역 이동 ➔ 09:20 기차 탑승 ➔ 13:47 뉴욕",
+            day: "12/29(월) Day 13 오전 — 보스턴 출발 & 뉴욕 맨해튼 입성",
+            summary: "08:30 체크아웃 ➔ 보스턴 사우스역 ➔ 09:20 Northeast Regional 탑승 ➔ 13:47 뉴욕 펜역 도착",
             items: [
-              { time: "08:30 - 09:00", title: "호텔 출발 ➔ 보스턴 사우스역 이동", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Boston South Station", cost: "$0", duration: "도보 10분", safetyLevel: "green", safetyNote: "출근길 유동인구 우수", needsRide: false, done: false },
-              { time: "09:20 ~ 13:47", title: "Northeast Regional 171 탑승", origin: "Boston South Station", dest: "New York Moynihan Train Hall", cost: "암트랙 탑승", duration: "열차 4.5시간", safetyLevel: "green", safetyNote: "열차 내부 안전", needsRide: false, done: false }
+              { time: "08:30 - 08:50", title: "호텔 체크아웃 ➔ 보스턴 사우스역(South Station) 이동", origin: "Cambria Hotel Boston Downtown Seaport", dest: "Boston South Station", cost: "전철 $2.40 (도보 $0)", duration: "전철 3분 / 도보 12분", safetyLevel: "green", safetyNote: "1정거장 거리라 여유롭게 이동", needsRide: false, done: false },
+              { time: "09:20 - 13:47", title: "🚆 Northeast Regional #171 탑승 (보스턴 ➔ 뉴욕 모이니핸 펜역)", origin: "Boston South Station", dest: "Moynihan Train Hall at Penn Station", cost: "레일패스 포함", duration: "고속열차 4시간 27분", safetyLevel: "green", safetyNote: "진행 방향 오른쪽 좌석에 앉으면 코네티컷 해안선 뷰 감상 가능", needsRide: false, done: false }
             ]
           }
         ],
         tiers: {
-          budget: [{ name: "프리덤 트레일", desc: "미국 독립 역사 투어 (무료)", dest: "Freedom Trail Boston" }],
-          standard: [{ name: "넵튠 오이스터", desc: "버터 포획 랍스터롤의 정석 ($42)", dest: "Neptune Oyster Boston" }],
-          premium: [{ name: "그릴 23 & 바", desc: "보스턴 최고 등급 스테이크 ($110~$140)", dest: "Grill 23 & Bar Boston" }],
-          shopping: [{ name: "Quincy Market / Newbury St", desc: "보스턴 시내 중심가 스트릿 브랜드 구경", dest: "Quincy Market Boston" }]
+          budget: [
+            { name: "폴리스 (Pauli's North End)", desc: "넵튠 오이스터 웨이팅이 싫을 때 가는 로컬 1티어 가성비 폭탄 랍스터롤 & 클램차우더", cost: "식비 $28", duration: "노스엔드 도보 2분", dest: "Pauli's North End Boston", safetyLevel: "green", safetyNote: "넵튠 오이스터에서 도보 1분 거리!", needsRide: false },
+            { name: "퀸시 마켓 푸드홀 (Boston Chowda Co)", desc: "유서 깊은 마켓 건물 안에서 맛보는 뉴잉글랜드 클램차우더 브레드보울", cost: "식비 $14", duration: "도보 이동", dest: "Quincy Market Boston", safetyLevel: "green", safetyNote: "활기찬 실내 마켓", needsRide: false },
+            { name: "MIT 공대 캠퍼스 & 찰스강 뷰", desc: "독창적인 스태타 센터(Stata Center) 건축물과 보스턴 스카이라인 강변 산책", cost: "무료 ($0)", duration: "Red Line Kendall/MIT역", dest: "MIT Stata Center", safetyLevel: "green", safetyNote: "하버드에서 지하철 2정거장", needsRide: false },
+            { name: "씨포트 디스트릭트 (Seaport Harborwalk)", desc: "숙소 인근 현대적인 보스턴 해안가 산책로 및 무료 루프탑 전망대(Lookout)", cost: "무료 ($0)", duration: "숙소에서 도보 12분", dest: "Seaport District Boston", safetyLevel: "green", safetyNote: "숙소 근처 야경 산책 코스", needsRide: false }
+          ],
+          standard: [
+            { name: "샤브젠 (Shabu-Zen Chinatown)", desc: "보스턴 사우스역 근처! 신선한 소고기·해산물 훠궈/샤브샤브 맛집", cost: "식비 $30", duration: "사우스역 도보 5분", dest: "Shabu-Zen Chinatown Boston", safetyLevel: "green", safetyNote: "추운 겨울 날씨에 최고", needsRide: false },
+            { name: "루크스 랍스터 (Luke's Lobster Back Bay)", desc: "메인주 직송 랍스터 집게살이 꽉 찬 정통 콜드/웜 랍스터롤", cost: "식비 $26", duration: "도서관 도보 3분", dest: "Luke's Lobster Back Bay Boston", safetyLevel: "green", safetyNote: "웨이팅 없이 깔끔한 매장 식사", needsRide: false },
+            { name: "유니언 오이스터 하우스 (Union Oyster House)", desc: "1826년 오픈한 미국에서 가장 오래된 현역 레스토랑! 굴 & 해산물", cost: "식비 $38", duration: "퀸시마켓 도보 2분", dest: "Union Oyster House Boston", safetyLevel: "green", safetyNote: "케네디 대통령 단골석 보존", needsRide: false },
+            { name: "사무엘 아담스 브루어리 탭룸 (Faneuil Hall)", desc: "퀸시마켓 바로 앞! 보스턴 대표 라거 맥주 샘플러와 프레첼", cost: "맥주 $12", duration: "퀸시마켓 도보 1분", dest: "Samuel Adams Boston Taproom", safetyLevel: "green", safetyNote: "프리덤 트레일 코스 내 위치", needsRide: false }
+          ],
+          premium: [
+            { name: "그릴 23 & 바 (Grill 23 & Bar)", desc: "보스턴 부호들이 찾는 100일 숙성 프라임 스테이크하우스 원탑", cost: "식비 $115", duration: "도보/전철 10분", dest: "Grill 23 & Bar Boston", safetyLevel: "green", safetyNote: "백베이 중심가 위치", needsRide: false },
+            { name: "바킹 크랩 (The Barking Crab)", desc: "씨포트 해안가 천막에서 망치로 깨 먹는 통 랍스터 & 킹크랩 보일", cost: "식비 $65", duration: "숙소 도보 12분", dest: "The Barking Crab Boston", safetyLevel: "green", safetyNote: "항구 감성 100%", needsRide: false }
+          ],
+          shopping: [
+            { name: "Primark & TJ Maxx (Downtown Crossing)", desc: "보스턴 도심 한복판! 초저가 양말·기본티(Primark)와 폴로/CK 할인매장(TJ Maxx)", cost: "쇼핑", duration: "Red Line 2정거장", dest: "TJ Maxx Downtown Crossing Boston", safetyLevel: "green", safetyNote: "프리덤 트레일 걸으면서 자연스럽게 지나는 위치", needsRide: false },
+            { name: "Assembly Row (Polo Factory Store)", desc: "혹시 폴로 아울렛을 더 보고 싶다면 오렌지라인 지하철 15분 거리 아울렛", cost: "전철 $2.40", duration: "전철 15분", dest: "Polo Ralph Lauren Factory Store Assembly Row", safetyLevel: "green", safetyNote: "역 바로 앞 위치", needsRide: false }
+          ]
         }
       },
+
+      // -----------------------------------------------------------------------
+      // ROUTE 6: NEW YORK CITY (12/29 ~ 1/2) [★핵심 쇼핑 3: NJ 의류 Tax 0% & 새해]
+      // -----------------------------------------------------------------------
       {
         id: "route6",
         num: 6,
-        title: "뉴욕 (쇼핑3 - NJ 세금0%)",
+        title: "뉴욕",
+        badge: "★쇼핑3 (NJ 면세) & 새해",
         dateRange: "12/29 ~ 1/2",
-        hotel: "Romana Hotel NYC (Manhattan)",
-        safetyOverview: "타임스스퀘어/미드타운은 24시간 경찰 배치로 안전함. 캐릭터 탈 쓴 사람들의 강제 사진/돈 요구 및 소매치기 사기 주의.",
+        hotel: "Romana Hotel - NYC (Manhattan Lower East Side / 287 Division St)",
+        proBriefing: "뉴욕 4박 5일의 핵심은 (1) OMNY 주간 요금 상한제를 활용한 무제한 지하철 이동, (2) 포트 어소리티에서 버스로 35분 만에 가는 뉴저지 'The Mills at Jersey Gardens(의류·신발 세금 0% + 대형 폴로 팩토리 스토어)', 그리고 (3) 12/31 연말 타임스스퀘어 & 센트럴파크 새해 불꽃놀이입니다. 숙소(Romana Hotel)는 로어이스트사이드/차이나타운 인근이라 카츠 델리, 브루클린 브릿지, 소호까지 도보권입니다!",
+        safetyOverview: "🟢 맨해튼 미드타운·서밋·덤보·소호·센트럴파크 안전 | 🟡 타임스스퀘어 캐릭터 탈/CD 강매꾼 절대 무시, 심야 지하철 끝칸 탑승 피하기",
         transGuide: [
-          { title: "MTA OMNY (뉴욕 지하철)", desc: "애플페이/구글페이 신용카드 직태그! 1회 $2.90. 주 12회 이상 탑승 시 무제한 무료 전환.", cost: "$2.90" },
-          { title: "⭐ [쇼핑성지] The Mills at Jersey Gardens", desc: "뉴저지 의류 세금 0% (NO TAX)! Port Authority 버스터미널 111번 버스 35분 직행 ($14)." }
+          { title: "MTA OMNY (7일 $34 자동 무제한 캡)", desc: "별도 메트로카드 구매 불필요! 똑같은 카드(Apple Pay 또는 Google Pay)로 지하철/버스를 찍고 타면 1회 $2.90씩 결제되다가, 12번째 탑승($34)부터는 그 주 남은 기간 내내 $0(완전 무료 무제한)으로 자동 전환됩니다!", cost: "1회 $2.90 (최대 $34)", apple: "아이폰/워치 Apple Pay 익스프레스 교통카드로 개찰구 1초 태그", android: "안드로이드 Google Pay 컨택리스 카드로 개찰구 1초 태그" },
+          { title: "뉴저지 저지 가든스 아울렛 (111번 버스)", desc: "맨해튼 Port Authority Bus Terminal (Gate 222/223) ➔ NJ Transit 111번 버스 탑승 (35분 직행, 왕복 $14). 뉴저지주는 의류·신발 세금이 0%입니다!", cost: "왕복 $14.00" }
         ],
         schedules: [
           {
-            day: "12/29(화) 뉴욕 입성 & K-BBQ 뷔페",
-            summary: "13:47 펜역 도착 ➔ 호텔 ➔ 타임스 스퀘어 ➔ K-BBQ 뷔페",
+            day: "12/29(월) Day 13 오후 — 뉴욕 입성 & 타임스스퀘어 & 맨해튼 무제한 K-BBQ",
+            summary: "13:47 펜역 도착 ➔ 호텔 체크인 ➔ 록펠러 센터 & 5번가 ➔ 타임스스퀘어 야경 ➔ Let's Meat K-BBQ(AYCE)",
             items: [
-              { time: "13:47 - 14:30", title: "모이니핸 펜역 ➔ Romana Hotel 짐보관", origin: "Moynihan Train Hall at Penn Station", dest: "Romana Hotel NYC", cost: "$0", duration: "도보 8분", safetyLevel: "green", safetyNote: "신축 Moynihan Train Hall 및 미드타운 대로변 매우 안전", needsRide: false, done: false },
-              { time: "14:30 - 17:30", title: "타임스 스퀘어 & 록펠러 센터 야경 산책", origin: "Romana Hotel NYC", dest: "Times Square NYC", cost: "$0", duration: "산책 3시간", safetyLevel: "yellow", safetyNote: "캐릭터 탈 강매꾼 거절. 소지품 관리", needsRide: false, done: false },
-              { time: "17:30 - 19:30", title: "[저녁-뷔페] Picnic Garden / K-BBQ & 해산물 뷔페", origin: "Times Square NYC", dest: "Picnic Garden BBQ Buffet NYC", cost: "$40", duration: "식사 2시간", safetyLevel: "green", safetyNote: "식당 내부 안전", needsRide: false, done: false },
-              { time: "19:30 - 20:30", title: "호텔 체크인 및 휴식", origin: "Picnic Garden BBQ Buffet NYC", dest: "Romana Hotel NYC", cost: "$0", duration: "도보 10분", safetyLevel: "green", safetyNote: "대로변 안전", needsRide: false, done: false }
+              { time: "13:47 - 14:40", title: "뉴욕 모이니핸 펜역(NYP) 도착 ➔ 지하철(F선) 이동 ➔ Romana Hotel 체크인", origin: "Moynihan Train Hall at Penn Station", dest: "287 Division St New York", cost: "OMNY $2.90", duration: "전철 20분", safetyLevel: "green", safetyNote: "모이니핸 트레인홀은 새로 지어져 공항처럼 깨끗하고 안전함", needsRide: false, done: false },
+              { time: "15:00 - 17:30", title: "5번가(5th Ave) & 세인트 패트릭 대성당 & 록펠러 센터 대형 크리스마스트리 관람", origin: "287 Division St New York", dest: "Rockefeller Center Christmas Tree", cost: "OMNY $2.90", duration: "F선 전철 20분 + 도보", safetyLevel: "green", safetyNote: "연말 뉴욕 최고의 하이라이트인 록펠러 센터 거대 트리 직관!", needsRide: false, done: false },
+              { time: "17:30 - 19:30", title: "🥩 [저녁-AYCE] LET'S MEAT K-BBQ (맨해튼 한인타운 32번가 프리미엄 무제한 고기뷔페!)", origin: "Rockefeller Center", dest: "Let's Meat BBQ 307 5th Ave NYC", cost: "식비 $43", duration: "도보 12분 + 식사", safetyLevel: "green", safetyNote: "우삼겹·항정살·LA갈비·삼겹살·된장찌개까지 무제한! 남자 2인 만족도 200%", needsRide: false, done: false },
+              { time: "19:30 - 21:30", title: "타임스 스퀘어 (Times Square) 전광판 야경 & 브로드웨이 거리 산책 후 복귀", origin: "Let's Meat BBQ 307 5th Ave NYC", dest: "Times Square NYC", cost: "OMNY $2.90", duration: "도보 12분 + 관람", safetyLevel: "yellow", safetyNote: "스파이더맨/엘모 탈 쓴 사람들의 사진 촬영 유도 및 사인 CD 건네는 행위 절대 무시!", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/30(수) 뉴욕 핫플 (서밋 & 덤보)",
-            summary: "에싸 베이글 ➔ 서밋 ➔ 덤보 ➔ 카츠 델리",
+            day: "12/30(화) Day 14 — 뉴욕 베이글 & 서밋 원 밴더빌트 & 브루클린 덤보 & 카츠 델리",
+            summary: "리버티/에싸 베이글 ➔ 서밋 전망대 ➔ 브루클린 덤보 ➔ 브루클린 브릿지 횡단 ➔ 카츠 델리 파스트라미",
             items: [
-              { time: "09:00 - 10:30", title: "[아침-명물] 에싸 베이글 (Ess-a-Bagel)", origin: "Romana Hotel NYC", dest: "Ess-a-Bagel NYC", cost: "$15", duration: "도보 12분", safetyLevel: "green", safetyNote: "아침 출근길 안전", needsRide: false, done: false },
-              { time: "10:30 - 13:00", title: "서밋 원 밴더빌트 거울 전망대", origin: "Ess-a-Bagel NYC", dest: "Summit One Vanderbilt", cost: "$45", duration: "관람 2시간", safetyLevel: "green", safetyNote: "빌딩 내부 보안 철저", needsRide: false, done: false },
-              { time: "13:00 - 16:30", title: "MTA F선 ➔ 브루클린 덤보 (DUMBO) & 브릿지 도보", origin: "Summit One Vanderbilt", dest: "DUMBO Brooklyn", cost: "$2.90", duration: "전철 20분", safetyLevel: "green", safetyNote: "덤보 포토존 및 브루클린 브릿지 도보길 치안 우수", needsRide: false, done: false },
-              { time: "16:30 - 18:30", title: "[저녁-명물] 카츠 델리 (Katz's 파스트라미)", origin: "DUMBO Brooklyn", dest: "Katz's Delicatessen NYC", cost: "$30", duration: "전철 15분", safetyLevel: "green", safetyNote: "식당 인파 많아 안전", needsRide: false, done: false }
+              { time: "09:00 - 10:15", title: "🥯 [아침-명물] Ess-a-Bagel 또는 Liberty Bagels (훈제연어·스칼리온 크림치즈 베이글)", origin: "287 Division St New York", dest: "Ess-a-Bagel 32nd St NYC", cost: "식비 $15", duration: "전철 18분 + 식사", safetyLevel: "green", safetyNote: "베이글 하나만 먹어도 점심까지 든든한 크기", needsRide: false, done: false },
+              { time: "10:30 - 13:00", title: "🏙️ 서밋 원 밴더빌트 (SUMMIT One Vanderbilt) 그랜드센트럴 거울·유리 전망대", origin: "Ess-a-Bagel 32nd St NYC", dest: "SUMMIT One Vanderbilt", cost: "티켓 $44", duration: "도보 10분 + 관람 2시간", safetyLevel: "green", safetyNote: "바닥이 거울이고 햇빛이 강하므로 선글라스 지참 필수!", needsRide: false, done: false },
+              { time: "13:00 - 16:30", title: "브루클린 덤보 (DUMBO 맨해튼 브릿지 포토존) ➔ 브루클린 브릿지 도보 횡단", origin: "SUMMIT One Vanderbilt", dest: "DUMBO Manhattan Bridge View", cost: "OMNY $2.90", duration: "F선 York St역 하차 + 도보 횡단", safetyLevel: "green", safetyNote: "브루클린에서 맨해튼 방향으로 다리를 건너야 정면으로 마천루 스카이라인이 보입니다!", needsRide: false, done: false },
+              { time: "17:00 - 18:45", title: "🥪 [저녁-명물] 카츠 델리 (Katz's Delicatessen — 1888년 전통 육즙 폭탄 파스트라미 샌드위치)", origin: "Brooklyn Bridge Manhattan Side", dest: "Katz's Delicatessen NYC", cost: "식비 $30", duration: "도보/전철 12분 + 식사", safetyLevel: "green", safetyNote: "입장 시 받는 종이 티켓을 잃어버리면 벌금($50)이 있으니 퇴장 시까지 꼭 보관! 숙소에서 도보 10분 거리", needsRide: false, done: false }
             ]
           },
           {
-            day: "12/31(수) 뉴저지 세금 0% 폴로 팩토리 아울렛 쇼핑 & 연말 뉴욕",
-            summary: "Port Authority 111번 버스(35분) ➔ The Mills at Jersey Gardens (Polo Factory Store 세금0%) ➔ 센트럴파크 ➔ 할랄가이즈",
+            day: "12/31(수) Day 15 — 뉴저지 의류 세금 0% 폴로 아울렛 싹쓸이 & 뉴욕 새해 카운트다운",
+            summary: "111번 버스(35분) ➔ The Mills at Jersey Gardens (Polo Factory Store Tax 0%) ➔ 할랄가이즈 ➔ 연말 이브",
             items: [
-              { time: "10:00 - 14:30", title: "[쇼핑-핵심] The Mills at Jersey Gardens (뉴저지 의류 세금 0% 거대 Polo Factory Store!)", origin: "Port Authority Bus Terminal", dest: "The Mills at Jersey Gardens", cost: "왕복 버스 $14", duration: "NJ Transit 111번 버스 35분 (우버비 $80 폭탄 절약!)", safetyLevel: "green", safetyNote: "뉴저지주 세금 0%! 뉴욕주 세금(8.875%) 아끼는 최고 쇼핑성지. NJ Transit 앱/터미널 자판기 티켓 구매", needsRide: false, done: false },
-              { time: "15:30 - 18:00", title: "센트럴파크 겨울 산책 & 조스 피자 / 할랄가이즈", origin: "The Mills at Jersey Gardens", dest: "Central Park NYC", cost: "$12", duration: "산책 2.5시간", safetyLevel: "green", safetyNote: "공원 산책 치안 안심", needsRide: false, done: false }
+              { time: "09:30 - 10:15", title: "포트 어소리티 버스터미널(Gate 222) ➔ NJ Transit 111번 버스 탑승", origin: "Port Authority Bus Terminal NYC", dest: "The Mills at Jersey Gardens", cost: "왕복 $14", duration: "직행버스 35분", safetyLevel: "green", safetyNote: "NJ Transit 앱 또는 터미널 자판기에서 Zone 4 왕복(Round Trip) 티켓 구매", needsRide: false, done: false },
+              { time: "10:15 - 15:00", title: "🧥 [쇼핑-핵심3] The Mills at Jersey Gardens (뉴저지 의류·신발 세금 0% + 대형 Polo Factory Store!)", origin: "The Mills at Jersey Gardens", dest: "The Mills at Jersey Gardens", cost: "세금 0%", duration: "쇼핑 4.5시간", safetyLevel: "green", safetyNote: "뉴욕주 소비세(8.875%) 완전 면제! 대형 폴로 팩토리 스토어, 타미힐피거, 칼하트, 아베크롬비, 나이키, 노스페이스 실내에서 한 번에 해결", needsRide: false, done: false },
+              { time: "15:00 - 16:30", title: "111번 버스 맨해튼 복귀 ➔ 호텔에 쇼핑 짐 정리 및 휴식", origin: "The Mills at Jersey Gardens", dest: "287 Division St New York", cost: "왕복권 사용", duration: "버스 35분 + 전철", safetyLevel: "green", safetyNote: "무거운 쇼핑백 숙소에 안전하게 보관", needsRide: false, done: false },
+              { time: "17:30 - 19:00", title: "🍗 [저녁-명물] 더 할랄 가이즈 (53번가 본점 치킨&자이로 오버 라이스) + 조스 피자(Joe's Pizza)", origin: "287 Division St New York", dest: "The Halal Guys 53rd and 6th", cost: "식비 $17", duration: "전철 20분 + 식사", safetyLevel: "green", safetyNote: "화이트 소스는 듬뿍, 빨간 핫소스는 극강의 매운맛이니 딱 한 줄만 뿌릴 것!", needsRide: false, done: false },
+              { time: "19:30 - 24:00", title: "🎆 뉴욕 새해 이브 (센트럴파크 바우 브릿지 새해 불꽃놀이 또는 브루클린 브릿지 야경 카운트다운)", origin: "The Halal Guys 53rd and 6th", dest: "Bethesda Terrace Central Park", cost: "무료 ($0)", duration: "연말 축제 감상", safetyLevel: "yellow", safetyNote: "타임스스퀘어 펜스 안은 오전부터 12시간 화장실 없이 갇혀 있어야 하므로, 센트럴파크 자정 불꽃놀이나 미드타운 외곽 관람이 훨씬 쾌적함!", needsRide: false, done: false }
             ]
           },
           {
-            day: "1/2(금) 워싱턴 D.C. 이동",
-            summary: "10:00 마트 ➔ 11:05 기차 탑승",
+            day: "1/1(목) Day 16 — 새해 센트럴파크 & 첼시마켓 & 하이라인 & 신년 스테이크/뷔페",
+            summary: "센트럴파크 산책 ➔ 하이라인 파크 ➔ 첼시마켓 ➔ 월스트리트 황소상 ➔ 신년 고기 만찬",
             items: [
-              { time: "10:00 - 10:30", title: "[필수-마트] 기차 간식 구매 및 펜역 이동", origin: "Romana Hotel NYC", dest: "Moynihan Train Hall at Penn Station", cost: "$15", duration: "도보 8분", safetyLevel: "green", safetyNote: "펜역 모이니핸 홀 내부 안전", needsRide: false, done: false },
-              { time: "11:05 ~ 14:25", title: "Northeast Regional 탑승", origin: "Moynihan Train Hall at Penn Station", dest: "Washington Union Station", cost: "암트랙 탑승", duration: "열차 3.3시간", safetyLevel: "green", safetyNote: "열차 승무원 상주 안심", needsRide: false, done: false }
+              { time: "10:30 - 12:30", title: "센트럴 파크 (베데스다 분수, 보우 브릿지, 쉽 메도우) 상쾌한 새해 아침 산책", origin: "287 Division St New York", dest: "Central Park Mall NYC", cost: "OMNY", duration: "전철 20분 + 산책", safetyLevel: "green", safetyNote: "영화 '나홀로 집에 2' 촬영지 따라 걷기", needsRide: false, done: false },
+              { time: "12:30 - 14:30", title: "🌮 [점심-명물] 첼시 마켓 (Los Tacos No.1 인생 타코 & Lobster Place 클램차우더)", origin: "Central Park", dest: "Chelsea Market NYC", cost: "식비 $22", duration: "전철 15분 + 식사", safetyLevel: "green", safetyNote: "Los Tacos No.1의 아도바다(돼지고기) & 카르네 아사다(소고기) 타코는 뉴욕 필수 코스!", needsRide: false, done: false },
+              { time: "14:30 - 16:30", title: "하이라인 파크 (The High Line) 공중정원 산책 ➔ 허드슨 야드 베슬(Vessel)", origin: "Chelsea Market NYC", dest: "Vessel NYC", cost: "무료 ($0)", duration: "도보 산책 1.5시간", safetyLevel: "green", safetyNote: "폐철로를 개조한 맨해튼 서부 최고의 산책 코스", needsRide: false, done: false },
+              { time: "16:30 - 18:00", title: "원 월드 트레이드 센터 (9/11 메모리얼) & 월스트리트 돌진하는 황소상", origin: "Vessel NYC", dest: "Charging Bull Wall Street", cost: "무료 ($0)", duration: "전철 15분 + 관람", safetyLevel: "green", safetyNote: "근처 Century 21 아울렛 백화점도 함께 구경 가능", needsRide: false, done: false },
+              { time: "18:30 - 20:30", title: "🥩 [저녁-AYCE] Hometown Hotpot & BBQ (숙소 근처 무제한 훠궈+구이 동시 뷔페!)", origin: "Charging Bull Wall Street", dest: "Hometown Hotpot & BBQ Grand St NYC", cost: "식비 $38", duration: "도보/전철 10분 + 식사", safetyLevel: "green", safetyNote: "Romana Hotel에서 도보 7분 거리! 평점 4.7점의 무제한 고기구이+샤브샤브 맛집, 식사 후 바로 걸어서 숙소 복귀", needsRide: false, done: false }
+            ]
+          },
+          {
+            day: "1/2(금) Day 17 오전 — 뉴욕 출발 & 워싱턴 D.C. 이동",
+            summary: "호텔 체크아웃 ➔ 펜역 모이니핸 홀 간식 구매 ➔ 11:05 Northeast Regional 탑승",
+            items: [
+              { time: "09:30 - 10:30", title: "호텔 체크아웃 ➔ 모이니핸 펜역 이동 및 푸드홀 기차 간식 구매", origin: "287 Division St New York", dest: "Moynihan Train Hall at Penn Station", cost: "간식 $12", duration: "전철 20분", safetyLevel: "green", safetyNote: "모이니핸 푸드홀 내 매그놀리아 바나나푸딩 또는 베이글 픽업", needsRide: false, done: false },
+              { time: "11:05 - 14:25", title: "🚆 Northeast Regional 탑승 (뉴욕 펜역 ➔ 워싱턴 D.C. 유니언역)", origin: "Moynihan Train Hall at Penn Station", dest: "Washington Union Station", cost: "레일패스 포함", duration: "고속열차 3시간 20분", safetyLevel: "green", safetyNote: "마지막 도시 워싱턴 D.C.를 향해 쾌적하게 이동", needsRide: false, done: false }
             ]
           }
         ],
         tiers: {
-          budget: [{ name: "할랄 가이즈", desc: "스트리트 푸드 근본 치킨 오버 라이스 ($12)", dest: "The Halal Guys 53rd and 6th" }],
-          standard: [{ name: "카츠 델리", desc: "소고기 파스트라미 폭탄 샌드위치 ($30)", dest: "Katz's Delicatessen NYC" }],
-          premium: [{ name: "피터 루거 스테이크", desc: "130년 전통 브루클린 포터하우스 ($120+)", dest: "Peter Luger Steak House Brooklyn" }],
-          shopping: [{ name: "The Mills at Jersey Gardens (NJ)", desc: "뉴저지 의류 세금 0% (NO TAX)! 버스 35분! 거대 Polo Factory Store 입점!", dest: "The Mills at Jersey Gardens" }, { name: "Century 21 NYC (Cortlandt St)", desc: "WTC 앞 명품/폴로 할인가 백화점.", dest: "Century 21 NYC" }]
+          budget: [
+            { name: "스테이튼 아일랜드 무료 페리 (자유의 여신상)", desc: "24시간 무료로 운행하는 대형 주황색 페리를 타고 자유의 여신상과 로어맨해튼 뷰 감상!", cost: "무료 ($0)", duration: "왕복 50분", dest: "Whitehall Terminal Staten Island Ferry", safetyLevel: "green", safetyNote: "터미널 앞 유료 티켓 호객꾼 절대 무시! 공식 페리는 100% 무료입니다", needsRide: false },
+            { name: "조스 피자 (Joe's Pizza Broadway)", desc: "영화 '스파이더맨'에 나온 뉴욕 화덕 슬라이스 피자의 전설", cost: "식비 $5~$10", duration: "타임스스퀘어 도보 5분", dest: "Joe's Pizza 1435 Broadway NYC", safetyLevel: "green", safetyNote: "치즈 슬라이스 + 페퍼로니 슬라이스 조합", needsRide: false },
+            { name: "뉴욕 공립 도서관 & 브라이언트 파크", desc: "영화 '투모로우' 배경 도서관 무료 관람 및 브라이언트 파크 겨울 마켓 구경", cost: "무료 ($0)", duration: "미드타운 도보 5분", dest: "New York Public Library Stephen A. Schwarzman Building", safetyLevel: "green", safetyNote: "서밋 전망대 바로 옆 위치", needsRide: false },
+            { name: "그레이스 파파야 (Gray's Papaya)", desc: "뉴욕 서민들의 영혼의 간식! 구운 핫도그 2개 + 파파야 주스 리세션 스페셜", cost: "식비 $8", duration: "전철 15분", dest: "Gray's Papaya 72nd St NYC", safetyLevel: "green", safetyNote: "센트럴파크 서쪽 입구 인근", needsRide: false }
+          ],
+          standard: [
+            { name: "원더 피그 K-BBQ (Wonder Pig K-BBQ AYCE)", desc: "맨해튼 한인타운! 불판 위에서 구워주는 무제한 통삼겹·갈비·우삼겹 뷔페", cost: "식비 $42", duration: "전철 15분", dest: "Wonder Pig K-BBQ NYC", safetyLevel: "green", safetyNote: "Let's Meat와 함께 맨해튼 양대 가성비 무제한 고기집", needsRide: false },
+            { name: "갤러거 스테이크하우스 (런치 3코스 특선!)", desc: "타임스스퀘어 정통 드라이에이징 스테이크를 단 $34(런치 스페셜)에 먹는 미친 가성비!", cost: "런치 $34", duration: "타임스스퀘어 도보 5분", dest: "Gallaghers Steakhouse NYC", safetyLevel: "green", safetyNote: "11:45~16:00 런치 특선(전채+필레미뇽/서로인+디저트 $34) 강추!", needsRide: false },
+            { name: "아키노 무제한 스시 (Akino AYCE Sushi)", desc: "신선한 사시미, 스시 롤, 새우튀김, 데리야끼를 무제한으로 즐기는 일식 AYCE", cost: "식비 $36", duration: "전철 25분", dest: "Akino Elmhurst NYC", safetyLevel: "green", safetyNote: "가성비 일식 무제한 원탑", needsRide: false },
+            { name: "아이초 이자카야 & 야키니쿠 (Gyu-Kaku Midtown)", desc: "미드타운에서 즐기는 일본식 숯불 소고기 구이 런치/디너 세트", cost: "식비 $38", duration: "전철 15분", dest: "Gyu-Kaku Japanese BBQ Times Square", safetyLevel: "green", safetyNote: "타임스스퀘어 바로 옆", needsRide: false }
+          ],
+          premium: [
+            { name: "피터 루거 스테이크 하우스 (Peter Luger)", desc: "1887년 오픈, 미슐랭이 인정한 브루클린 최고의 드라이에이징 티본(포터하우스) 스테이크", cost: "식비 $115", duration: "전철 15분 (숙소에서 가까움!)", dest: "Peter Luger Steak House Brooklyn", safetyLevel: "green", safetyNote: "신용카드 불가(미국 데빗카드 또는 현금만 가능)! 윌리엄스버그 브릿지 건너면 바로 위치", needsRide: false },
+            { name: "킨스 스테이크하우스 (Keens Steakhouse)", desc: "천장에 수천 개의 파이프가 매달린 1885년 역사적 공간, 전설의 머튼찹 & 프라임 스테이크", cost: "식비 $110", duration: "펜역 도보 6분", dest: "Keens Steakhouse NYC", safetyLevel: "green", safetyNote: "한인타운/펜역 바로 옆", needsRide: false },
+            { name: "크랩 하우스 (Crab House NYC - 대게 무제한!)", desc: "스노우크랩(대게), 던지니스 크랩, 랍스터, 새우, 스테이크까지 전부 무제한(AYCE) 해산물 뷔페!", cost: "식비 $85", duration: "전철 20분", dest: "Crab House 135 E 55th St NYC", safetyLevel: "green", safetyNote: "해산물 매니아에게 천국 같은 무제한 레스토랑", needsRide: false }
+          ],
+          shopping: [
+            { name: "The Mills at Jersey Gardens (NJ 면세 아울렛)", desc: "★일정 반영됨: 의류·신발 세금 0%! 대형 Polo Ralph Lauren Factory Store 입점", cost: "왕복버스 $14", duration: "111번 버스 35분", dest: "The Mills at Jersey Gardens", safetyLevel: "green", safetyNote: "폴로 아우터·후드·셔츠 집중 구매", needsRide: false },
+            { name: "Century 21 NYC (원월드트레이드센터 앞)", desc: "맨해튼 도심 한복판! 톰브라운, 폴로, 캘빈클라인, 명품 선글라스 이월 폭탄 할인 백화점", cost: "쇼핑", duration: "전철 10분", dest: "Century 21 22 Cortlandt St NYC", safetyLevel: "green", safetyNote: "월스트리트 관람 시 세트로 방문", needsRide: false },
+            { name: "Nordstrom Rack & TJ Maxx (Union Square / 6th Ave)", desc: "맨해튼 14번가·18번가에 나란히 붙어 있는 폴로·타미·운동복 할인 성지", cost: "쇼핑", duration: "전철 10분", dest: "Nordstrom Rack Union Square NYC", safetyLevel: "green", safetyNote: "6번가 라인 따라 TJ Maxx, Marshalls, Burlington 연속 입점!", needsRide: false },
+            { name: "Polo Ralph Lauren SoHo / Madison Ave 플래그십", desc: "소호 거리 또는 어퍼이스트 대저택 컨셉의 랄프로렌 본가 매장 구경", cost: "구경", duration: "도보/전철 15분", dest: "Ralph Lauren Men's Flagship 867 Madison Ave", safetyLevel: "green", safetyNote: "미국 프레피룩의 정수", needsRide: false }
+          ]
         }
       },
+
+      // -----------------------------------------------------------------------
+      // ROUTE 7: WASHINGTON D.C. & RETURN (1/2 ~ 1/6)
+      // -----------------------------------------------------------------------
       {
         id: "route7",
         num: 7,
         title: "워싱턴 D.C. & 귀국",
+        badge: "박물관 무료 & 귀국",
         dateRange: "1/2 ~ 1/6",
-        hotel: "Kellogg Conference Hotel Capitol Hill",
-        safetyOverview: "국회의사당, 내셔널 몰, 박물관 구역은 미국 최고 치안 구역. 밤 9시 이후 유니언역 동쪽 골목 우버 이용.",
+        hotel: "Kellogg Conference Hotel Capitol Hill at Gallaudet University (800 Florida Ave NE)",
+        proBriefing: "워싱턴 D.C.의 모든 스미스소니언 국립 박물관과 미술관, 동물원은 입장료가 100% 무료($0)입니다! 숙소(Kellogg Conference Hotel)는 갤러뎃 대학교 캠퍼스 내에 있어 대학 경비대가 24시간 순찰하므로 매우 안전하며, 도보 5분 거리에 워싱턴에서 가장 힙한 푸드홀인 '유니언 마켓(Union Market)'과 'Trader Joe's'가 있습니다. 마지막 날(1/5) 밤기차로 숙박비를 아끼고 뉴어크(EWR) 공항으로 직결하는 완벽한 피날레입니다.",
+        safetyOverview: "🟢 백악관·내셔널 몰·박물관 지구·유니언 마켓·대학 캠퍼스 내 숙소 치안 최상 | 🟡 심야 유니언역 이동 시 우버($8) 이용",
         transGuide: [
-          { title: "WMATA 메트로", desc: "애플/안드로이드 스마트폰에 SmarTrip 카드 등록 가능. 거리별 $2.25 ~ $3.85." },
-          { title: "스미스소니언 박물관 전부 무료", desc: "입장료 $0!" }
+          { title: "WMATA 메트로 & 버스 (SmarTrip)", desc: "기본 요금 $2.25 ~ $2.50 (주말에는 전 구간 $2.50 단일 요금!). 숙소에서 NoMa-Gallaudet U역(Red Line)까지 도보 10분.", cost: "$2.25~$2.50", apple: "Apple 지갑 앱 ➔ '+' ➔ 교통카드 ➔ 'SmarTrip' 즉시 발급 및 충전 후 태그", android: "Google 지갑 앱 ➔ 교통카드 ➔ 'SmarTrip' 발급 후 NFC 태그" },
+          { title: "스미스소니언 무료 예약 팁", desc: "대부분 그냥 입장 가능하나, '국립항공우주박물관(Air and Space Museum)'만 공식 홈페이지에서 무료 시간대 입장권(Timed-Entry Pass, $0) 사전 예약을 권장합니다." }
         ],
         schedules: [
           {
-            day: "1/2(금) 스미스소니언 & AYCE 스시 뷔페",
-            summary: "14:25 D.C. 도착 ➔ 호텔 ➔ 항공우주 ➔ Hibachi 스시 뷔페",
+            day: "1/2(금) Day 17 오후 — 워싱턴 D.C. 도착 & 유니언 마켓 & 무제한 K-BBQ 만찬",
+            summary: "14:25 워싱턴 유니언역 도착 ➔ 호텔 체크인 ➔ 유니언 마켓 구경 ➔ Iron Age K-BBQ(AYCE)",
             items: [
-              { time: "14:25 - 15:30", title: "유니언역 도착 ➔ Kellogg Hotel 짐보관", origin: "Washington Union Station", dest: "Kellogg Conference Hotel Capitol Hill", cost: "우버 $8", duration: "차량 10분", safetyLevel: "green", safetyNote: "낮시간대 안전", needsRide: true, done: false },
-              { time: "16:00 - 18:00", title: "스미스소니언 국립 항공우주 박물관 관람", origin: "Kellogg Conference Hotel Capitol Hill", dest: "National Air and Space Museum", cost: "무료 ($0)", duration: "관람 2시간", safetyLevel: "green", safetyNote: "국립 박물관 내부 극도로 안전", needsRide: false, done: false },
-              { time: "18:00 - 19:30", title: "[저녁-뷔페] Hibachi / Todai DC AYCE 스시 뷔페", origin: "National Air and Space Museum", dest: "Hibachi Buffet Washington DC", cost: "$32", duration: "도보/버스 15분", safetyLevel: "green", safetyNote: "안전", needsRide: false, done: false }
+              { time: "14:25 - 15:10", title: "워싱턴 유니언역(WAS) 도착 ➔ Kellogg Conference Hotel 이동 및 체크인", origin: "Washington Union Station", dest: "Kellogg Conference Hotel Capitol Hill", cost: "우버 $9", duration: "차량 7분", safetyLevel: "green", safetyNote: "유니언역에서 호텔까지 차로 7분 거리! 짐 풀고 여유롭게 휴식", needsRide: true, done: false },
+              { time: "15:30 - 17:30", title: "유니언 마켓 (Union Market — 호텔 도보 5분 거리 대형 로컬 미식 마켓 탐방)", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Union Market Washington DC", cost: "간식 $8", duration: "도보 5분 + 구경", safetyLevel: "green", safetyNote: "워싱턴 젊은이들이 가장 많이 모이는 힙한 마켓 단지, 바로 옆에 Trader Joe's 위치", needsRide: false, done: false },
+              { time: "18:00 - 20:00", title: "🥩 [저녁-AYCE] Iron Age Korean Steak House (워싱턴 최고 인기 무제한 고기뷔페!)", origin: "Union Market Washington DC", dest: "Iron Age Korean Steak House Columbia Heights DC", cost: "식비 $33", duration: "차량/전철 15분 + 식사", safetyLevel: "green", safetyNote: "단돈 $30대에 우삼겹·갈비·삼겹살·스테이크·치킨을 무제한으로 굽는 가성비 끝판왕!", needsRide: true, done: false }
             ]
           },
           {
-            day: "1/3(토) D.C. 주요 랜드마크",
-            summary: "링컨 기념관 ➔ 벤스 칠리 보울 ➔ 백악관 ➔ 올드 에빗 그릴",
+            day: "1/3(토) Day 18 — 링컨 기념관 & 백악관 & 항공우주박물관 & 올드 에빗 그릴",
+            summary: "국회의사당 ➔ 항공우주박물관(무료) ➔ 벤스 칠리 보울 ➔ 백악관 & 링컨기념관 ➔ Old Ebbitt Grill",
             items: [
-              { time: "10:00 - 12:30", title: "링컨 기념관 & 워싱턴 기념탑 산책", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Lincoln Memorial", cost: "무료 ($0)", duration: "산책 2시간", safetyLevel: "green", safetyNote: "내셔널 몰 전체 치안 우수", needsRide: false, done: false },
-              { time: "12:30 - 14:00", title: "[점심-명물] 벤스 칠리 보울 (오바마 단골)", origin: "Lincoln Memorial", dest: "Ben's Chili Bowl DC", cost: "$14", duration: "전철 15분", safetyLevel: "green", safetyNote: "낮시간대 안전", needsRide: false, done: false },
-              { time: "14:00 - 17:00", title: "백악관 외부 관람 & 국회도서관 내부 투어", origin: "Ben's Chili Bowl DC", dest: "The White House", cost: "무료 ($0)", duration: "투어 2.5시간", safetyLevel: "green", safetyNote: "백악관 주변 비밀경호국 상주 치안 극상", needsRide: false, done: false },
-              { time: "17:00 - 19:00", title: "[저녁-명물] 올드 에빗 그릴 (Old Ebbitt Grill 굴 & 다이닝)", origin: "The White House", dest: "Old Ebbitt Grill Washington DC", cost: "$35", duration: "도보 5분", safetyLevel: "green", safetyNote: "정재계 인사 단골 완벽 안전", needsRide: false, done: false }
+              { time: "09:30 - 12:30", title: "🚀 스미스소니언 국립항공우주박물관 (라이트 형제 비행기, 아폴로 11호 달 착륙선 관람)", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Smithsonian National Air and Space Museum", cost: "무료 ($0)", duration: "전철/차량 15분 + 관람 2.5시간", safetyLevel: "green", safetyNote: "연방 보안요원 상주, 입장료 $0", needsRide: false, done: false },
+              { time: "12:30 - 14:00", title: "🌭 [점심-명물] 벤스 칠리 보울 (Ben's Chili Bowl — 오바마 대통령 단골 칠리 치즈 하프스모크)", origin: "National Air and Space Museum", dest: "Ben's Chili Bowl U St DC", cost: "식비 $16", duration: "전철 12분 + 식사", safetyLevel: "green", safetyNote: "워싱턴 소울푸드! 육즙 터지는 훈제 소시지(Half-Smoke)와 칠리 감자튀김", needsRide: false, done: false },
+              { time: "14:00 - 17:30", title: "백악관(The White House) ➔ 워싱턴 기념탑 ➔ 리플렉팅 풀 ➔ 링컨 기념관 일몰 산책", origin: "Ben's Chili Bowl U St DC", dest: "Lincoln Memorial", cost: "무료 ($0)", duration: "전철 10분 + 산책 3시간", safetyLevel: "green", safetyNote: "링컨 기념관 계단에서 워싱턴 기념탑을 바라보는 석양 뷰가 압권!", needsRide: false, done: false },
+              { time: "18:00 - 20:00", title: "🦪 [저녁-명물] 올드 에빗 그릴 (Old Ebbitt Grill — 1856년 오픈 백악관 바로 옆 워싱턴 최고 노포)", origin: "Lincoln Memorial", dest: "Old Ebbitt Grill Washington DC", cost: "식비 $38", duration: "도보/버스 12분 + 식사", safetyLevel: "green", safetyNote: "역대 미국 대통령들의 단골집! 크랩케이크, 스테이크, 오이스터 하프더즌 강추", needsRide: false, done: false }
             ]
           },
           {
-            day: "1/5(월) 밤 ~ 1/6(화) 심야 열차 & 인천 귀국",
-            summary: "22:00 D.C. 밤기차 ➔ 05:11 뉴욕 도착 ➔ EWR 이동 ➔ 귀국!",
+            day: "1/4(일) Day 19 — 자연사박물관 & 국립미술관 & 조지타운 & 스시/핫팟 AYCE",
+            summary: "국립자연사박물관(무료) ➔ 국립미술관(무료) ➔ 조지타운 & 컵케이크 ➔ Umi Japanese AYCE",
             items: [
-              { time: "21:00 - 22:00", title: "호텔 짐 픽업 ➔ 워싱턴 유니언역 이동", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Washington Union Station", cost: "우버 $8", duration: "차량 10분", safetyLevel: "yellow", safetyNote: "밤 9시 이후 우버 직행 강추. 역사 라운지 대기!", needsRide: true, done: false },
-              { time: "22:00 ~ 05:11", title: "Night Amtrak 탑승 (뉴욕 펜역 05:11 도착 / 숙박비 방어)", origin: "Washington Union Station", dest: "Moynihan Train Hall at Penn Station", cost: "암트랙 탑승", duration: "열차 7.2시간", safetyLevel: "green", safetyNote: "야간 열차 승무원 관리 안전", needsRide: false, done: false },
-              { time: "06:00 - 07:00", title: "뉴욕 펜역 ➔ NJ Transit 기차 ➔ 뉴어크(EWR) 공항 이동", origin: "Moynihan Train Hall at Penn Station", dest: "Newark Liberty International Airport", cost: "NJ Transit $15", duration: "열차 30분", safetyLevel: "green", safetyNote: "새벽 Moynihan Train Hall 및 NJ Transit 안전", needsRide: false, done: false },
-              { time: "10:30 ~ ", title: "뉴어크 EWR 출발 ➔ 인천(ICN) 귀국 비행기 탑승!", origin: "Newark Liberty International Airport", dest: "ICN Airport", cost: "귀국 완료", duration: "비행", safetyLevel: "green", safetyNote: "터미널 내부 극도로 안전", needsRide: false, done: false }
+              { time: "10:00 - 12:30", title: "🦕 스미스소니언 국립자연사박물관 (영화 '박물관이 살아있다' 배경, 호프 다이아몬드)", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Smithsonian National Museum of Natural History", cost: "무료 ($0)", duration: "전철 15분 + 관람", safetyLevel: "green", safetyNote: "거대 공룡 화석과 코끼리 홀 관람 (입장료 $0)", needsRide: false, done: false },
+              { time: "12:30 - 14:30", title: "국립미술관 (National Gallery of Art — 다빈치, 고흐, 모네 진품 무료 관람) & 가성비 런치", origin: "National Museum of Natural History", dest: "National Gallery of Art", cost: "무료 ($0)", duration: "도보 5분 + 관람", safetyLevel: "green", safetyNote: "미국 유일의 레오나르도 다빈치 유화 진품 소장", needsRide: false, done: false },
+              { time: "14:30 - 17:30", title: "조지타운 (Georgetown 유럽풍 부촌 거리 & 포토맥강 워터프론트) & Georgetown Cupcake", origin: "National Gallery of Art", dest: "Georgetown Cupcake DC", cost: "컵케이크 $5", duration: "버스 20분 + 산책", safetyLevel: "green", safetyNote: "워싱턴에서 가장 고풍스럽고 치안이 완벽한 동네", needsRide: false, done: false },
+              { time: "18:00 - 20:00", title: "🍣 [저녁-AYCE] Umi Japanese Cuisine 또는 Hot Pot City (무제한 스시·사시미·롤 뷔페)", origin: "Georgetown DC", dest: "Umi Japanese Cuisine 2625 Connecticut Ave NW", cost: "식비 $35", duration: "차량/버스 12분 + 식사", safetyLevel: "green", safetyNote: "신선한 회와 롤, 일식 요리를 무제한으로 즐기며 여행 마지막 밤 만찬!", needsRide: true, done: false }
+            ]
+          },
+          {
+            day: "1/5(월) ~ 1/6(화) Day 20~21 — 국회의사당 & 심야 암트랙 숙박비 방어 & 인천 귀국",
+            summary: "체크아웃(호텔 무료짐보관) ➔ 국회의사당 & 국회도서관 ➔ 쇼핑 마무리 ➔ 22:00 밤기차 ➔ EWR 공항 출국",
+            items: [
+              { time: "10:30 - 11:00", title: "호텔 체크아웃 & 프런트 무료 짐보관 ($0)", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Kellogg Conference Hotel Capitol Hill", cost: "보관 $0", duration: "30분", safetyLevel: "green", safetyNote: "밤 20:30까지 캐리어를 호텔에 맡겨두고 홀가분하게 마지막 날 관광", needsRide: false, done: false },
+              { time: "11:00 - 14:00", title: "🏛️ 미 국회의사당 (U.S. Capitol) & 세계 최대 미국 의회도서관 (Library of Congress) 관람", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Library of Congress", cost: "무료 ($0)", duration: "버스/차량 10분 + 관람", safetyLevel: "green", safetyNote: "의회도서관 내부 황금빛 돔 열람실은 감탄이 나오는 절경", needsRide: false, done: false },
+              { time: "14:00 - 17:30", title: "메트로 센터 (TJ Maxx / Macy's) 또는 펜타곤 시티 몰 선물·기념품 마지막 쇼핑", origin: "Library of Congress", dest: "TJ Maxx Metro Center DC", cost: "쇼핑", duration: "전철 10분 + 쇼핑", safetyLevel: "green", safetyNote: "남은 달러 소진 및 한국 가져갈 선물/간식(Trader Joe's) 구매", needsRide: false, done: false },
+              { time: "18:00 - 19:45", title: "🍔 [저녁-가성비] 유니언 마켓 (Union Market) 스테이크·바베큐·타코 만찬", origin: "TJ Maxx Metro Center DC", dest: "Union Market Washington DC", cost: "식비 $22", duration: "Red Line 전철 12분", safetyLevel: "green", safetyNote: "호텔 바로 앞 유니언 마켓에서 저녁 식사 후 도보 5분 이동해 호텔 짐 픽업!", needsRide: false, done: false },
+              { time: "20:15 - 20:45", title: "Kellogg 호텔에서 짐 픽업 ➔ 워싱턴 유니언역(WAS) 우버 이동", origin: "Kellogg Conference Hotel Capitol Hill", dest: "Washington Union Station", cost: "우버 $9", duration: "차량 7분", safetyLevel: "green", safetyNote: "유니언역 내부 암트랙 탑승객 라운지에서 대기", needsRide: true, done: false },
+              { time: "22:00 - 05:11", title: "🚆 Night Owl Amtrak 탑승 (워싱턴 D.C. ➔ 뉴욕 펜역 05:11 도착 / 숙박비 1박 방어!)", origin: "Washington Union Station", dest: "Moynihan Train Hall at Penn Station", cost: "레일패스 포함", duration: "심야열차", safetyLevel: "green", safetyNote: "뉴어크 공항역(EWR)에 바로 서는 열차인 경우 펜역까지 안 가고 EWR 암트랙역에서 바로 내리면 더 빠릅니다!", needsRide: false, done: false },
+              { time: "05:30 - 06:15", title: "뉴욕 펜역 ➔ NJ Transit 열차 ($15.25) ➔ 뉴어크 리버티 국제공항(EWR) 도착", origin: "Moynihan Train Hall at Penn Station", dest: "Newark Liberty International Airport", cost: "공항철도 $15.25", duration: "NJ Transit 30분", safetyLevel: "green", safetyNote: "AirTrain 연결 통로 따라 유나이티드 항공(United Airlines) 터미널 이동", needsRide: false, done: false },
+              { time: "10:30 ~ ", title: "✈️ 뉴어크(EWR) 출발 ➔ 인천(ICN) 직항 유나이티드 항공 탑승! (21일 대장정 완주)", origin: "Newark Liberty International Airport", dest: "Incheon International Airport", cost: "항공권 완납", duration: "직항 비행", safetyLevel: "green", safetyNote: "수하물 무게(23kg) 규정 확인 후 체크인, 무사 귀국!", needsRide: false, done: false }
             ]
           }
         ],
         tiers: {
-          budget: [{ name: "벤스 칠리 보울", desc: "오바마 대통령 단골 수제 소시지 ($12~$15)", dest: "Ben's Chili Bowl DC" }],
-          standard: [{ name: "올드 에빗 그릴", desc: "1856년 설립된 DC 최고의 굴 & 다이닝 ($35~$50)", dest: "Old Ebbitt Grill Washington DC" }],
-          premium: [{ name: "조스 시푸드", desc: "정재계 인사들의 프라임 스톤크랩 & 스테이크 ($110+)", dest: "Joe's Seafood Prime Steak Washington DC" }],
-          shopping: [{ name: "TJ Maxx Metro Center", desc: "백악관 근처 가성비 잡화 매장", dest: "TJ Maxx Metro Center DC" }]
+          budget: [
+            { name: "스미스소니언 국립동물원 (National Zoo)", desc: "자이언트 판다와 전 세계 희귀 동물을 무료로 볼 수 있는 워싱턴 국립동물원", cost: "무료 ($0)", duration: "Red Line Woodley Park역", dest: "Smithsonian National Zoological Park", safetyLevel: "green", safetyNote: "입장료 $0", needsRide: false },
+            { name: "유니언 마켓 (Union Market 푸드홀)", desc: "숙소에서 도보 5분! 스테이크, 아레파, 타코, 수제버거, 오이스터가 모인 트렌디 마켓", cost: "식비 $15~$20", duration: "숙소 도보 5분", dest: "Union Market Washington DC", safetyLevel: "green", safetyNote: "아침/점심/저녁 언제든 도보 방문 가능", needsRide: false },
+            { name: "토머스 제퍼슨 기념관 & 타이들 베이슨", desc: "호수 너머로 보이는 고대 로마 판테온 양식의 아름다운 대리석 기념관", cost: "무료 ($0)", duration: "도보 15분", dest: "Thomas Jefferson Memorial", safetyLevel: "green", safetyNote: "링컨 기념관에서 호수 따라 도보 연결", needsRide: false },
+            { name: "국립문서보관소 (National Archives)", desc: "미국의 실제 '독립선언서'와 '헌법' 원본 진품을 직접 눈으로 볼 수 있는 곳", cost: "무료 ($0)", duration: "자연사박물관 바로 뒤", dest: "National Archives Museum", safetyLevel: "green", safetyNote: "영화 '내셔널 트레져' 촬영지", needsRide: false }
+          ],
+          standard: [
+            { name: "파운딩 파머스 (Founding Farmers DC)", desc: "백악관 인근! 미국 농부 조합이 직영하는 프라이드 치킨 & 와플, 잠발라야, 스테이크 맛집", cost: "식비 $30", duration: "백악관 도보 7분", dest: "Founding Farmers DC", safetyLevel: "green", safetyNote: "워싱턴 예약률 1위 아메리칸 다이닝", needsRide: false },
+            { name: "핫팟 시티 (Hot Pot City / Happy Lamb)", desc: "소고기·양고기·해산물 무제한 훠궈 & 바베큐 올유캔잇(AYCE)", cost: "식비 $34", duration: "전철 15분", dest: "Happy Lamb Hot Pot Falls Church", safetyLevel: "green", safetyNote: "가성비 무제한 고기 보충", needsRide: true },
+            { name: "미디엄 레어 (Medium Rare — 스테이크 무한리필!)", desc: "단돈 $32에 쿨로트 스테이크(Culotte Steak)와 프렌치프라이를 2번(사실상 배터지게) 주는 가성비 스테이크집!", cost: "식비 $32", duration: "Red Line Cleveland Park역", dest: "Medium Rare Cleveland Park DC", safetyLevel: "green", safetyNote: "스테이크 리필 세컨드 서빙 기본 제공!", needsRide: false },
+            { name: "포고 데 차오 DC (Fogo de Chão Penn Quarter)", desc: "내셔널 몰 박물관 바로 위! 박물관 투어 후 먹는 브라질 슈하스코 무제한", cost: "식비 $45", duration: "자연사박물관 도보 6분", dest: "Fogo de Chao Washington DC", safetyLevel: "green", safetyNote: "점심 가우초 특선 가성비 최고", needsRide: false }
+          ],
+          premium: [
+            { name: "조스 씨푸드 프라임 스테이크 & 스톤크랩 (Joe's Seafood)", desc: "백악관 바로 옆! 워싱턴 정재계 거물들이 모이는 스톤크랩 집게발 & 본-인 스테이크", cost: "식비 $95", duration: "백악관 도보 3분", dest: "Joe's Seafood Prime Steak & Stone Crab DC", safetyLevel: "green", safetyNote: "서비스와 맛 워싱턴 최고 수준", needsRide: false },
+            { name: "더 캐피털 그릴 (The Capital Grille)", desc: "국회의사당과 백악관 사이 펜실베이니아 애비뉴에 위치한 정통 드라이에이징 스테이크하우스", cost: "식비 $100", duration: "박물관 도보 5분", dest: "The Capital Grille Washington DC", safetyLevel: "green", safetyNote: "내셔널 몰 바로 앞", needsRide: false }
+          ],
+          shopping: [
+            { name: "Tanger Outlets National Harbor (폴로 아울렛)", desc: "워싱턴 근교 포토맥강변 대형 아울렛! Polo Ralph Lauren Factory Store, 타미, 나이키 입점", cost: "우버 $18", duration: "차량 20분", dest: "Tanger Outlets National Harbor", safetyLevel: "green", safetyNote: "혹시 앞선 도시에서 못 산 폴로가 있다면 여기서 최종 졸업 가능!", needsRide: true },
+            { name: "Fashion Centre at Pentagon City (노드스트롬 랙)", desc: "옐로우/블루라인 Pentagon City역 지하 직결! Nordstrom Rack, Macy's, 애플스토어 입점 대형 몰", cost: "전철 $2.50", duration: "전철 18분", dest: "Fashion Centre at Pentagon City", safetyLevel: "green", safetyNote: "지하철역과 바로 연결되어 이동 매우 편리", needsRide: false },
+            { name: "TJ Maxx & Ross (Metro Center)", desc: "백악관 옆 메트로센터역 바로 위! 가성비 의류·캐리어(수하물 추가용)·선물 털기", cost: "쇼핑", duration: "전철 10분", dest: "TJ Maxx Metro Center DC", safetyLevel: "green", safetyNote: "옷을 많이 사서 추가 캐리어가 필요할 때 로스/TJ맥스에서 $50에 쌤소나이트 캐리어 득템 가능!", needsRide: false }
+          ]
         }
       }
     ];
 
     let routesData = [];
-    let currentRouteIndex = 0;
 
+    // =========================================================================
+    // STORAGE & INITIALIZATION
+    // =========================================================================
     function loadUserData() {
       try {
         if (window.location.hash && window.location.hash.startsWith('#data=')) {
           const encoded = window.location.hash.replace('#data=', '');
           const decoded = decodeURIComponent(escape(atob(encoded)));
-          routesData = JSON.parse(decoded);
-          if (Array.isArray(routesData) && routesData.length > 0) return;
+          const parsed = JSON.parse(decoded);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            routesData = parsed;
+            return;
+          }
         }
       } catch (e) {
         console.warn("Hash decode error:", e);
@@ -524,8 +803,11 @@
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
-          routesData = JSON.parse(saved);
-          if (Array.isArray(routesData) && routesData.length > 0) return;
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            routesData = parsed;
+            return;
+          }
         }
       } catch (e) {
         console.warn("LocalStorage error:", e);
@@ -538,7 +820,7 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(routesData));
       } catch (e) {
-        console.warn("Save local failed:", e);
+        console.warn("Save failed:", e);
       }
     }
 
@@ -551,12 +833,12 @@
         
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(shareUrl).then(() => {
-            alert('수정된 전체 일정이 담긴 [공유용 링크]가 클립보드에 복사되었습니다!\n\n동행인에게 이 링크를 보내면 누구나 똑같이 볼 수 있습니다.');
+            alert('✅ 수정된 일정이 담긴 [공유 링크]가 클립보드에 복사되었습니다!\n\n동행인(친구)에게 카톡으로 붙여넣어 보내면 내가 추가/교체한 일정 그대로 똑같이 열립니다.');
           }).catch(() => {
-            prompt('아래 공유 링크를 복사하여 전달하세요:', shareUrl);
+            prompt('아래 공유 링크를 복사하여 친구에게 전달하세요:', shareUrl);
           });
         } else {
-          prompt('아래 공유 링크를 복사하여 전달하세요:', shareUrl);
+          prompt('아래 공유 링크를 복사하여 친구에게 전달하세요:', shareUrl);
         }
       } catch (e) {
         alert('공유 링크 생성 중 오류가 발생했습니다.');
@@ -564,7 +846,7 @@
     }
 
     function resetToDefault() {
-      if (confirm('모든 수정 사항을 초기화하고 원본 일정으로 돌아가시겠습니까?')) {
+      if (confirm('내가 수정·추가한 내용을 모두 초기화하고 전문가 기본 일정으로 되돌리시겠습니까?')) {
         try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
         window.location.hash = '';
         routesData = JSON.parse(JSON.stringify(defaultRoutesData));
@@ -573,6 +855,20 @@
       }
     }
 
+    // Helper: Calculate daily estimated cost
+    function calcDayCost(items) {
+      let total = 0;
+      (items || []).forEach(it => {
+        if (it.done) return;
+        const match = (it.cost || '').match(/\$\s*(\d+(\.\d+)?)/);
+        if (match) total += parseFloat(match[1]);
+      });
+      return Math.round(total);
+    }
+
+    // =========================================================================
+    // RENDERING UI
+    // =========================================================================
     function renderTabs() {
       const container = document.getElementById('routeTabs');
       if (!container) return;
@@ -580,16 +876,19 @@
         const isActive = idx === currentRouteIndex;
         return `
           <button onclick="selectRoute(${idx})" 
-            class="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-left border shrink-0 transition-all ${
+            class="flex items-center gap-2 px-3.5 py-2 rounded-2xl text-left border shrink-0 transition-all ${
               isActive 
                 ? 'nav-tab-active bg-white border-indigo-600' 
-                : 'bg-slate-50 border-slate-200 text-slate-500'
+                : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'
             }">
             <div class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${
-              isActive ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-500'
+              isActive ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-600'
             }">${route.num}</div>
             <div>
-              <div class="text-[11px] font-extrabold leading-tight ${isActive ? 'text-indigo-900' : 'text-slate-700'}">${route.title}</div>
+              <div class="flex items-center gap-1">
+                <span class="text-xs font-extrabold leading-tight ${isActive ? 'text-indigo-950' : 'text-slate-700'}">${route.title}</span>
+                ${route.badge ? `<span class="text-[8px] font-black px-1.5 py-0.2 rounded ${isActive ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-600'}">${route.badge}</span>` : ''}
+              </div>
               <div class="text-[9px] ${isActive ? 'text-indigo-600 font-bold' : 'text-slate-400'}">${route.dateRange}</div>
             </div>
           </button>
@@ -602,269 +901,394 @@
       const container = document.getElementById('mainContent');
       if (!container || !r) return;
 
+      const tierConfig = [
+        { key: 'budget', label: '1. 가성비 & 무료 명소 (Budget)', badge: '가성비', border: 'border-emerald-200', bg: 'bg-emerald-50/50', pill: 'bg-emerald-600 text-white', btn: 'bg-emerald-600 hover:bg-emerald-700' },
+        { key: 'standard', label: '2. 필수 클래식 & AYCE 맛집 (Must-Go)', badge: '필수/뷔페', border: 'border-blue-200', bg: 'bg-blue-50/50', pill: 'bg-blue-600 text-white', btn: 'bg-blue-600 hover:bg-blue-700' },
+        { key: 'premium', label: '3. 돈 더 내도 꼭 가볼 곳 (Splurge)', badge: '프리미엄', border: 'border-purple-200', bg: 'bg-purple-50/50', pill: 'bg-purple-600 text-white', btn: 'bg-purple-600 hover:bg-purple-700' },
+        { key: 'shopping', label: '4. 폴로 & 브랜드 초특가 쇼핑 (Shopping)', badge: '특가쇼핑', border: 'border-amber-200', bg: 'bg-amber-50/50', pill: 'bg-amber-600 text-white', btn: 'bg-amber-600 hover:bg-amber-700' }
+      ];
+
       container.innerHTML = `
-        <!-- Hotel & Safety Overview Card -->
-        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2">
+        <!-- 1. Hotel & Expert Briefing Card -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2.5">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-extrabold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-lg border border-indigo-100">
-              <i class="fa-solid fa-hotel"></i> ${r.num}구간 확정 숙소
+            <span class="text-[10px] font-black px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-lg border border-indigo-100">
+              <i class="fa-solid fa-hotel mr-1"></i> ${r.num}구간 확정 숙소
             </span>
-            <span class="text-[10px] font-bold text-slate-400">${r.dateRange}</span>
+            <span class="text-[11px] font-extrabold text-slate-500">${r.dateRange}</span>
           </div>
-          <h2 class="text-base font-black text-slate-900 leading-snug">${r.hotel}</h2>
-          
-          ${r.safetyOverview ? `
-            <div class="bg-rose-50/80 border border-rose-100 p-2.5 rounded-2xl flex items-start gap-2 mt-1">
-              <i class="fa-solid fa-triangle-exclamation text-rose-500 text-xs mt-0.5 shrink-0"></i>
-              <div class="text-[10px] text-rose-900 leading-tight font-medium">
-                <strong>도시 핵심 치안:</strong> ${r.safetyOverview}
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="text-sm font-black text-slate-900 leading-snug">${r.hotel}</h2>
+            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.hotel)}" target="_blank" class="shrink-0 text-[10px] font-bold bg-slate-100 hover:bg-indigo-50 text-indigo-600 px-2.5 py-1.5 rounded-xl border border-slate-200">
+              <i class="fa-solid fa-location-dot"></i> 숙소지도
+            </a>
+          </div>
+
+          ${r.proBriefing ? `
+            <div class="bg-indigo-950 text-indigo-100 p-3 rounded-2xl space-y-1">
+              <div class="text-[10px] font-black text-amber-400 flex items-center gap-1">
+                <i class="fa-solid fa-compass"></i> 전문가 동선 설계 브리핑
               </div>
+              <p class="text-[10px] leading-relaxed text-indigo-100/90 font-medium">${r.proBriefing}</p>
+            </div>
+          ` : ''}
+
+          ${r.safetyOverview ? `
+            <div class="bg-rose-50 border border-rose-200 p-2.5 rounded-2xl flex items-start gap-2">
+              <i class="fa-solid fa-shield-halved text-rose-600 text-xs mt-0.5 shrink-0"></i>
+              <div class="text-[10px] text-rose-950 leading-tight font-semibold">${r.safetyOverview}</div>
             </div>
           ` : ''}
         </div>
 
-        <!-- Transit Guide Card -->
-        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">
-              <i class="fa-solid fa-bus"></i>
+        <!-- 2. Transit & Apple/Android Pass Guide -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <h3 class="text-xs font-black text-slate-900">대중교통 패스 & 기종별 결제법 (iOS / Android)</h3>
             </div>
-            <h3 class="text-xs font-black text-slate-900">교통 패스 & 대중교통 팁</h3>
           </div>
-          <div class="space-y-1.5">
+          <div class="space-y-2">
             ${(r.transGuide || []).map(t => `
-              <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-100 flex justify-between items-start">
-                <div class="pr-2">
-                  <div class="text-[11px] font-bold text-slate-800">${t.title}</div>
-                  <div class="text-[10px] text-slate-500 mt-0.5 leading-tight">${t.desc}</div>
+              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-1.5">
+                <div class="flex justify-between items-start gap-2">
+                  <div class="text-[11px] font-extrabold text-slate-900">${t.title}</div>
+                  ${t.cost ? `<span class="text-[9px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-md shrink-0">${t.cost}</span>` : ''}
                 </div>
-                ${t.cost ? `<span class="text-[9px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md shrink-0 whitespace-nowrap">${t.cost}</span>` : ''}
+                <div class="text-[10px] text-slate-600 leading-relaxed">${t.desc}</div>
+                ${(t.apple || t.android) ? `
+                  <div class="grid grid-cols-1 gap-1 pt-1 border-t border-slate-200/70 text-[9px]">
+                    ${t.apple ? `<div class="text-slate-700"><span class="font-black text-slate-900"><i class="fa-brands fa-apple mr-1"></i>애플(나):</span> ${t.apple}</div>` : ''}
+                    ${t.android ? `<div class="text-slate-700"><span class="font-black text-emerald-700"><i class="fa-brands fa-android mr-1"></i>안드로이드(친구):</span> ${t.android}</div>` : ''}
+                  </div>
+                ` : ''}
               </div>
             `).join('')}
           </div>
         </div>
 
-        <!-- Timed Itinerary Schedule Card -->
+        <!-- 3. Main Timed Itinerary Schedule -->
         <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
               <div class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
-                <i class="fa-regular fa-clock"></i>
+                <i class="fa-regular fa-calendar-check"></i>
               </div>
               <div>
-                <h3 class="text-xs font-black text-slate-900">일자별 디테일 일정표</h3>
-                <p class="text-[9px] text-slate-400 font-medium">이동시간·비용·우버연동 탑재</p>
+                <h3 class="text-xs font-black text-slate-900">일자별 타임라인 스케줄</h3>
+                <p class="text-[9px] text-slate-400 font-medium">▲▼ 순서변경 • ✏️ 세부수정 • 하단 대안 원클릭 삽입</p>
               </div>
             </div>
-            <button onclick="shareLink()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-xl shadow">
-              <i class="fa-solid fa-floppy-disk"></i> 공유 저장
-            </button>
           </div>
 
-          ${(r.schedules || []).map((sch, schIdx) => `
-            <div class="mb-5 border-b border-slate-100 pb-4 last:border-0 last:pb-0">
-              <div class="flex justify-between items-center bg-slate-900 text-white px-3 py-1.5 rounded-xl text-[11px] font-black mb-1">
-                <span>${sch.day}</span>
-                <button onclick="addItemPrompt(${schIdx})" class="text-[9px] bg-indigo-600 hover:bg-indigo-500 px-2 py-0.5 rounded-lg text-white font-bold">
-                  + 일정 추가
-                </button>
-              </div>
-              <p class="text-[10px] text-indigo-600 font-bold mb-3 px-1">💡 요약: ${sch.summary}</p>
-              
-              <div class="relative pl-3.5 border-l-2 border-indigo-200 space-y-3 ml-1">
-                ${(sch.items || []).map((item, itemIdx) => {
-                  const mapUrl = makeMapUrl(item.origin, item.dest);
-                  const uberUrl = makeUberUrl(item.dest || item.title);
-                  const lyftUrl = makeLyftUrl(item.dest || item.title);
+          ${(r.schedules || []).map((sch, schIdx) => {
+            const dayEstCost = calcDayCost(sch.items);
+            return `
+              <div class="mb-6 border-b border-slate-100 pb-5 last:border-0 last:pb-0 last:mb-0">
+                <div class="bg-slate-900 text-white p-3 rounded-2xl mb-2">
+                  <div class="flex justify-between items-center">
+                    <span class="text-xs font-black tracking-tight">${sch.day}</span>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-[9px] font-extrabold bg-slate-800 text-amber-300 px-2 py-0.5 rounded-lg border border-slate-700">예상 ~$${dayEstCost}</span>
+                      <button onclick="addItemPrompt(${schIdx})" class="text-[9px] bg-indigo-600 hover:bg-indigo-500 px-2 py-1 rounded-lg text-white font-black transition">
+                        + 직접추가
+                      </button>
+                    </div>
+                  </div>
+                  <p class="text-[10px] text-slate-300 font-medium mt-1 leading-snug">📌 ${sch.summary}</p>
+                </div>
+                
+                <div class="relative pl-3.5 border-l-2 border-indigo-200 space-y-3 ml-1.5 mt-3">
+                  ${(sch.items || []).map((item, itemIdx) => {
+                    const mapUrl = makeMapUrl(item.origin, item.dest);
+                    const uberUrl = makeUberUrl(item.dest || item.title);
+                    const lyftUrl = makeLyftUrl(item.dest || item.title);
+                    const isRoute = item.origin && item.origin.trim() !== '';
 
-                  return `
-                    <div class="relative ${item.done ? 'opacity-40 line-through' : ''}">
-                      <div class="absolute w-2.5 h-2.5 bg-indigo-600 rounded-full -left-[19px] top-1 border-2 border-white"></div>
-                      
-                      <div class="flex justify-between items-center mb-0.5">
-                        <div class="flex items-center gap-1.5">
-                          <span class="text-[10px] font-black text-indigo-600">${item.time}</span>
-                          ${getSafetyBadge(item.safetyLevel)}
-                        </div>
-                        <div class="flex items-center gap-1">
-                          <button onclick="toggleDone(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-emerald-600 px-1">
-                            <i class="fa-solid ${item.done ? 'fa-circle-check text-emerald-600' : 'fa-circle'}"></i>
-                          </button>
-                          <button onclick="openModal(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-indigo-600 px-1">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                          </button>
-                          <button onclick="deleteItem(${schIdx}, ${itemIdx})" class="text-[10px] text-slate-400 hover:text-rose-600 px-1">
-                            <i class="fa-solid fa-trash-can"></i>
-                          </button>
-                        </div>
-                      </div>
-
-                      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1.5">
-                        <div class="flex justify-between items-start">
-                          <h4 class="font-bold text-[11px] text-slate-900 leading-tight pr-2">${item.title}</h4>
-                        </div>
-
-                        <!-- Movement Duration & Cost Badges -->
-                        <div class="flex flex-wrap items-center gap-1.5 text-[9px]">
-                          <span class="bg-indigo-50 text-indigo-700 font-extrabold px-2 py-0.5 rounded-md border border-indigo-100">
-                            ⏱️ ${item.duration || '약 1시간'}
-                          </span>
-                          <span class="bg-emerald-50 text-emerald-800 font-extrabold px-2 py-0.5 rounded-md border border-emerald-100">
-                            💰 ${item.cost || '자유'}
-                          </span>
-                        </div>
-
-                        ${item.safetyNote ? `
-                          <div class="text-[9px] text-slate-600 bg-amber-50/70 border border-amber-100 p-1.5 rounded-xl leading-tight flex items-start gap-1">
-                            <i class="fa-solid fa-shield text-amber-500 text-[9px] mt-0.5"></i>
-                            <span><strong>치안 팁:</strong> ${item.safetyNote}</span>
+                    return `
+                      <div class="relative ${item.done ? 'opacity-45' : ''}">
+                        <div class="absolute w-3 h-3 ${item.done ? 'bg-emerald-500' : 'bg-indigo-600'} rounded-full -left-[20.5px] top-1.5 border-2 border-white shadow-sm"></div>
+                        
+                        <div class="flex justify-between items-center mb-1">
+                          <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[11px] font-black text-indigo-700">${item.time}</span>
+                            ${getSafetyBadge(item.safetyLevel)}
                           </div>
-                        ` : ''}
+                          <!-- Item Control Buttons -->
+                          <div class="flex items-center gap-0.5 bg-slate-100 rounded-lg px-1 py-0.5 border border-slate-200">
+                            <button onclick="moveItem(${schIdx}, ${itemIdx}, -1)" title="위로" class="text-[9px] text-slate-500 hover:text-indigo-600 px-1"><i class="fa-solid fa-chevron-up"></i></button>
+                            <button onclick="moveItem(${schIdx}, ${itemIdx}, 1)" title="아래로" class="text-[9px] text-slate-500 hover:text-indigo-600 px-1"><i class="fa-solid fa-chevron-down"></i></button>
+                            <button onclick="toggleDone(${schIdx}, ${itemIdx})" title="완료체크" class="text-[10px] text-slate-500 hover:text-emerald-600 px-1">
+                              <i class="fa-solid ${item.done ? 'fa-circle-check text-emerald-600' : 'fa-regular fa-circle'}"></i>
+                            </button>
+                            <button onclick="openEditModal(${schIdx}, ${itemIdx})" title="수정" class="text-[10px] text-slate-500 hover:text-indigo-600 px-1">
+                              <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="deleteItem(${schIdx}, ${itemIdx})" title="삭제" class="text-[10px] text-slate-500 hover:text-rose-600 px-1">
+                              <i class="fa-solid fa-trash"></i>
+                            </button>
+                          </div>
+                        </div>
 
-                        <!-- Action Buttons -->
-                        <div class="grid grid-cols border-t border-slate-200 pt-1.5 mt-1 gap-1">
-                          ${mapUrl ? `
-                            <a href="${mapUrl}" target="_blank" 
-                               class="bg-white hover:bg-indigo-50 text-indigo-600 text-[9px] font-bold py-1 px-2 rounded-lg border border-slate-200 flex items-center justify-center gap-1 transition">
-                               <i class="fa-solid fa-map-location-dot"></i> 구글 지도 보기
-                            </a>
-                          ` : ''}
+                        <div class="bg-slate-50/90 p-3 rounded-2xl border border-slate-200/90 space-y-2 hover:border-indigo-200 transition">
+                          <h4 class="font-extrabold text-xs text-slate-900 leading-snug ${item.done ? 'line-through' : ''}">${item.title}</h4>
 
-                          ${item.needsRide ? `
-                            <div class="grid grid-cols-2 gap-1 mt-0.5">
-                              <a href="${uberUrl}" target="_blank" 
-                                 class="bg-black hover:bg-slate-800 text-white text-[9px] font-black py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 transition shadow-sm">
-                                 <i class="fa-solid fa-car text-amber-400"></i> Uber 호출
-                              </a>
-                              <a href="${lyftUrl}" target="_blank" 
-                                 class="bg-pink-600 hover:bg-pink-700 text-white text-[9px] font-black py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 transition shadow-sm">
-                                 <i class="fa-solid fa-taxi"></i> Lyft 호출
-                              </a>
+                          <!-- Duration & Cost Pills -->
+                          <div class="flex flex-wrap items-center gap-1.5 text-[10px]">
+                            <span class="bg-white text-indigo-800 font-bold px-2 py-0.5 rounded-lg border border-indigo-100 shadow-2xs">
+                              ⏱️ ${item.duration || '이동'}
+                            </span>
+                            <span class="bg-emerald-50 text-emerald-800 font-extrabold px-2 py-0.5 rounded-lg border border-emerald-200/60">
+                              💰 ${item.cost || '$0'}
+                            </span>
+                          </div>
+
+                          ${item.safetyNote ? `
+                            <div class="text-[10px] text-slate-700 bg-amber-50/80 border border-amber-200/70 p-2 rounded-xl leading-relaxed flex items-start gap-1.5">
+                              <i class="fa-solid fa-lightbulb text-amber-500 text-[10px] mt-0.5 shrink-0"></i>
+                              <span>${item.safetyNote}</span>
                             </div>
                           ` : ''}
+
+                          <!-- Map & Ride Action Bar -->
+                          <div class="pt-1 flex flex-col gap-1.5">
+                            ${mapUrl ? `
+                              <a href="${mapUrl}" target="_blank" 
+                                 class="w-full bg-white hover:bg-indigo-50 text-indigo-600 text-[10px] font-extrabold py-1.5 px-3 rounded-xl border border-slate-200 flex items-center justify-center gap-1.5 transition shadow-2xs">
+                                 <i class="fa-solid ${isRoute ? 'fa-route' : 'fa-map-location-dot'}"></i> 
+                                 ${isRoute ? '구글 지도 길찾기 (경로 보기)' : '구글 지도에서 위치 보기'}
+                              </a>
+                            ` : ''}
+
+                            ${item.needsRide ? `
+                              <div class="grid grid-cols-2 gap-1.5">
+                                <a href="${uberUrl}" target="_blank" 
+                                   class="bg-slate-900 hover:bg-black text-white text-[10px] font-black py-1.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition shadow-xs">
+                                   <i class="fa-solid fa-car text-amber-400"></i> Uber 목적지 호출
+                                </a>
+                                <a href="${lyftUrl}" target="_blank" 
+                                   class="bg-pink-600 hover:bg-pink-700 text-white text-[10px] font-black py-1.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition shadow-xs">
+                                   <i class="fa-solid fa-taxi"></i> Lyft 목적지 호출
+                                </a>
+                              </div>
+                            ` : ''}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  `;
-                }).join('')}
+                    `;
+                  }).join('')}
+                </div>
               </div>
-            </div>
-          `).join('')}
-
-          <button onclick="shareLink()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-2xl text-xs shadow-md mt-2 flex items-center justify-center gap-1.5">
-            <i class="fa-solid fa-share-nodes"></i> 수정 사항 반영 & 공유 링크 복사
-          </button>
+            `;
+          }).join('')}
         </div>
 
-        <!-- 4-Tier Option Categories -->
-        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-3">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold">
-              <i class="fa-solid fa-layer-group"></i>
-            </div>
-            <div>
-              <h3 class="text-xs font-black text-slate-900">4단계 추천 선택 라인업</h3>
-              <p class="text-[9px] text-slate-400 font-medium">가성비 / 클래식 / 프리미엄 / 초특가 쇼핑</p>
+        <!-- 4. Interactive Alternative Catalog (Click-to-Insert) -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-3.5" id="altCatalogSection">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-black">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <div>
+                <h3 class="text-xs font-black text-slate-900">${r.title} 전문가 엄선 대안 카탈로그</h3>
+                <p class="text-[10px] text-indigo-600 font-bold">[+ 일정에 넣기]를 누르면 원하는 날짜에 추가/교체됩니다!</p>
+              </div>
             </div>
           </div>
 
-          <!-- Tier 1: Budget -->
-          <div class="border border-emerald-200 bg-emerald-50/40 rounded-2xl p-3">
-            <div class="flex items-center gap-1.5 mb-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <h4 class="text-[11px] font-black text-emerald-900">1. 가성비 & 무료 라인업 (Budget / Free)</h4>
-            </div>
-            <div class="space-y-1.5">
-              ${(r.tiers.budget || []).map(item => `
-                <div class="bg-white p-2 rounded-xl border border-emerald-100 flex justify-between items-center">
-                  <div class="pr-2">
-                    <div class="text-[10px] font-bold text-slate-800">${item.name}</div>
-                    <div class="text-[9px] text-slate-500">${item.desc}</div>
+          <!-- Category Filter Pills -->
+          <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
+            <button onclick="setTierFilter('all')" class="text-[10px] font-extrabold px-3 py-1.5 rounded-xl border shrink-0 transition ${currentTierTab === 'all' ? 'tier-tab-active border-slate-900' : 'bg-slate-100 text-slate-600 border-slate-200'}">전체보기</button>
+            <button onclick="setTierFilter('budget')" class="text-[10px] font-extrabold px-3 py-1.5 rounded-xl border shrink-0 transition ${currentTierTab === 'budget' ? 'tier-tab-active border-slate-900' : 'bg-emerald-50 text-emerald-800 border-emerald-200'}">🟢 가성비/무료</button>
+            <button onclick="setTierFilter('standard')" class="text-[10px] font-extrabold px-3 py-1.5 rounded-xl border shrink-0 transition ${currentTierTab === 'standard' ? 'tier-tab-active border-slate-900' : 'bg-blue-50 text-blue-800 border-blue-200'}">🔵 클래식/뷔페</button>
+            <button onclick="setTierFilter('premium')" class="text-[10px] font-extrabold px-3 py-1.5 rounded-xl border shrink-0 transition ${currentTierTab === 'premium' ? 'tier-tab-active border-slate-900' : 'bg-purple-50 text-purple-800 border-purple-200'}">🟣 프리미엄</button>
+            <button onclick="setTierFilter('shopping')" class="text-[10px] font-extrabold px-3 py-1.5 rounded-xl border shrink-0 transition ${currentTierTab === 'shopping' ? 'tier-tab-active border-slate-900' : 'bg-amber-50 text-amber-800 border-amber-200'}">🛍️ 특가쇼핑</button>
+          </div>
+
+          <!-- Tier Lists -->
+          <div class="space-y-3">
+            ${tierConfig.filter(tc => currentTierTab === 'all' || currentTierTab === tc.key).map(tc => {
+              const list = (r.tiers && r.tiers[tc.key]) ? r.tiers[tc.key] : [];
+              return `
+                <div class="border ${tc.border} ${tc.bg} rounded-2xl p-3 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-black text-slate-900">${tc.label}</span>
+                    <span class="text-[9px] font-bold text-slate-500">${list.length}개 추천</span>
                   </div>
-                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.dest)}" target="_blank" 
-                     class="w-6 h-6 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 text-[10px]">
-                    <i class="fa-solid fa-map-pin"></i>
-                  </a>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-          <!-- Tier 2: Standard -->
-          <div class="border border-blue-200 bg-blue-50/40 rounded-2xl p-3">
-            <div class="flex items-center gap-1.5 mb-2">
-              <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-              <h4 class="text-[11px] font-black text-blue-900">2. 필수 & 클래식 라인업 (Standard / Must)</h4>
-            </div>
-            <div class="space-y-1.5">
-              ${(r.tiers.standard || []).map(item => `
-                <div class="bg-white p-2 rounded-xl border border-blue-100 flex justify-between items-center">
-                  <div class="pr-2">
-                    <div class="text-[10px] font-bold text-slate-800">${item.name}</div>
-                    <div class="text-[9px] text-slate-500">${item.desc}</div>
+                  <div class="space-y-2">
+                    ${list.map((alt, altIdx) => `
+                      <div class="bg-white p-3 rounded-xl border border-slate-200/80 shadow-2xs space-y-2">
+                        <div class="flex justify-between items-start gap-2">
+                          <div>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                              <span class="text-[11px] font-black text-slate-900">${alt.name}</span>
+                              ${alt.cost ? `<span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200">${alt.cost}</span>` : ''}
+                              ${alt.duration ? `<span class="text-[9px] font-semibold text-indigo-600">⏱️ ${alt.duration}</span>` : ''}
+                            </div>
+                            <p class="text-[10px] text-slate-600 mt-1 leading-snug">${alt.desc}</p>
+                            ${alt.safetyNote ? `<p class="text-[9px] text-amber-700 font-medium mt-1">💡 ${alt.safetyNote}</p>` : ''}
+                          </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 pt-1 border-t border-slate-100">
+                          <button onclick="openInsertModal('${tc.key}', ${altIdx})" 
+                            class="flex-1 ${tc.btn} text-white text-[10px] font-black py-1.5 px-3 rounded-lg transition flex items-center justify-center gap-1 shadow-2xs">
+                            <i class="fa-solid fa-plus"></i> 내 일정에 넣기 / 교체
+                          </button>
+                          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(alt.dest || alt.name)}" target="_blank" 
+                             class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold py-1.5 px-2.5 rounded-lg transition flex items-center gap-1">
+                            <i class="fa-solid fa-map-pin text-indigo-600"></i> 지도
+                          </a>
+                        </div>
+                      </div>
+                    `).join('')}
                   </div>
-                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.dest)}" target="_blank" 
-                     class="w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 text-[10px]">
-                    <i class="fa-solid fa-map-pin"></i>
-                  </a>
                 </div>
-              `).join('')}
-            </div>
+              `;
+            }).join('')}
           </div>
-
-          <!-- Tier 3: Premium -->
-          <div class="border border-purple-200 bg-purple-50/40 rounded-2xl p-3">
-            <div class="flex items-center gap-1.5 mb-2">
-              <span class="w-2 h-2 rounded-full bg-purple-500"></span>
-              <h4 class="text-[11px] font-black text-purple-900">3. 돈 더 내도 꼭 가볼 라인업 (Premium Splurge)</h4>
-            </div>
-            <div class="space-y-1.5">
-              ${(r.tiers.premium || []).map(item => `
-                <div class="bg-white p-2 rounded-xl border border-purple-100 flex justify-between items-center">
-                  <div class="pr-2">
-                    <div class="text-[10px] font-bold text-slate-800">${item.name}</div>
-                    <div class="text-[9px] text-slate-500">${item.desc}</div>
-                  </div>
-                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.dest)}" target="_blank" 
-                     class="w-6 h-6 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 text-[10px]">
-                    <i class="fa-solid fa-map-pin"></i>
-                  </a>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-          <!-- Tier 4: Shopping -->
-          <div class="border border-amber-200 bg-amber-50/40 rounded-2xl p-3">
-            <div class="flex items-center gap-1.5 mb-2">
-              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-              <h4 class="text-[11px] font-black text-amber-900">4. 핵심 폴로/브랜드 초특가 아울렛 (Shopping)</h4>
-            </div>
-            <div class="space-y-1.5">
-              ${(r.tiers.shopping || []).map(item => `
-                <div class="bg-white p-2 rounded-xl border border-amber-100 flex justify-between items-center">
-                  <div class="pr-2">
-                    <div class="text-[10px] font-bold text-slate-800">${item.name}</div>
-                    <div class="text-[9px] text-slate-500">${item.desc}</div>
-                  </div>
-                  <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.dest)}" target="_blank" 
-                     class="w-6 h-6 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 text-[10px]">
-                    <i class="fa-solid fa-map-pin"></i>
-                  </a>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
         </div>
       `;
     }
 
-    function openModal(schIdx, itemIdx) {
+    // =========================================================================
+    // INTERACTIVE HANDLERS (Insert / Swap / Move / Edit)
+    // =========================================================================
+    function setTierFilter(tab) {
+      currentTierTab = tab;
+      renderContent();
+    }
+
+    function selectRoute(index) {
+      currentRouteIndex = index;
+      currentTierTab = 'all';
+      renderTabs();
+      renderContent();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function moveItem(schIdx, itemIdx, dir) {
+      const items = routesData[currentRouteIndex].schedules[schIdx].items;
+      const targetIdx = itemIdx + dir;
+      if (targetIdx < 0 || targetIdx >= items.length) return;
+      const temp = items[itemIdx];
+      items[itemIdx] = items[targetIdx];
+      items[targetIdx] = temp;
+      saveUserDataLocally();
+      renderContent();
+    }
+
+    // --- Quick Insert / Replace Modal Logic ---
+    function openInsertModal(tierKey, altIdx) {
+      const r = routesData[currentRouteIndex];
+      const alt = r.tiers[tierKey][altIdx];
+      if (!alt) return;
+
+      document.getElementById('insTierKey').value = tierKey;
+      document.getElementById('insAltIdx').value = altIdx;
+      document.getElementById('insPreviewName').textContent = alt.name;
+      document.getElementById('insPreviewCost').textContent = alt.cost || '자유';
+      document.getElementById('insPreviewDesc').textContent = alt.desc || '';
+
+      // Populate Day Select
+      const daySelect = document.getElementById('insDaySelect');
+      daySelect.innerHTML = r.schedules.map((sch, idx) => `<option value="${idx}">${sch.day}</option>`).join('');
+
+      setInsertMode('add');
+      updateReplaceDropdown();
+      document.getElementById('insertModal').classList.remove('hidden');
+    }
+
+    function closeInsertModal() {
+      document.getElementById('insertModal').classList.add('hidden');
+    }
+
+    function setInsertMode(mode) {
+      currentInsertMode = mode;
+      const addBtn = document.getElementById('modeAddBtn');
+      const repBtn = document.getElementById('modeReplaceBtn');
+      const addBox = document.getElementById('insAddBox');
+      const repBox = document.getElementById('insReplaceBox');
+
+      if (mode === 'add') {
+        addBtn.className = 'py-2 px-3 rounded-xl text-xs font-black border-2 border-indigo-600 bg-indigo-50 text-indigo-700';
+        repBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold border border-slate-200 bg-white text-slate-600';
+        addBox.classList.remove('hidden');
+        repBox.classList.add('hidden');
+      } else {
+        repBtn.className = 'py-2 px-3 rounded-xl text-xs font-black border-2 border-indigo-600 bg-indigo-50 text-indigo-700';
+        addBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold border border-slate-200 bg-white text-slate-600';
+        addBox.classList.add('hidden');
+        repBox.classList.remove('hidden');
+      }
+    }
+
+    function updateReplaceDropdown() {
+      const r = routesData[currentRouteIndex];
+      const dayIdx = parseInt(document.getElementById('insDaySelect').value) || 0;
+      const items = (r.schedules[dayIdx] && r.schedules[dayIdx].items) ? r.schedules[dayIdx].items : [];
+      const repSelect = document.getElementById('insReplaceTarget');
+      repSelect.innerHTML = items.map((it, idx) => `<option value="${idx}">[${it.time}] ${it.title}</option>`).join('');
+    }
+
+    function confirmInsertAlternative() {
+      const r = routesData[currentRouteIndex];
+      const tierKey = document.getElementById('insTierKey').value;
+      const altIdx = parseInt(document.getElementById('insAltIdx').value);
+      const dayIdx = parseInt(document.getElementById('insDaySelect').value) || 0;
+      const alt = r.tiers[tierKey][altIdx];
+      if (!alt) return;
+
+      const badgeLabel = tierKey === 'shopping' ? '[쇼핑-대안]' : tierKey === 'premium' ? '[프리미엄]' : '[추천-대안]';
+
+      if (currentInsertMode === 'add') {
+        const timeStr = document.getElementById('insNewTime').value || '자유시간';
+        r.schedules[dayIdx].items.push({
+          time: timeStr,
+          title: `${badgeLabel} ${alt.name}`,
+          origin: '',
+          dest: alt.dest || alt.name,
+          cost: alt.cost || '자유',
+          duration: alt.duration || '약 1시간',
+          safetyLevel: alt.safetyLevel || 'green',
+          safetyNote: alt.safetyNote || alt.desc || '',
+          needsRide: !!alt.needsRide,
+          done: false
+        });
+      } else {
+        const targetItemIdx = parseInt(document.getElementById('insReplaceTarget').value);
+        if (!isNaN(targetItemIdx) && r.schedules[dayIdx].items[targetItemIdx]) {
+          const prev = r.schedules[dayIdx].items[targetItemIdx];
+          r.schedules[dayIdx].items[targetItemIdx] = {
+            time: prev.time, // Keep existing time slot
+            title: `${badgeLabel} ${alt.name}`,
+            origin: prev.origin || '',
+            dest: alt.dest || alt.name,
+            cost: alt.cost || prev.cost,
+            duration: alt.duration || prev.duration,
+            safetyLevel: alt.safetyLevel || 'green',
+            safetyNote: alt.safetyNote || alt.desc || '',
+            needsRide: !!alt.needsRide,
+            done: false
+          };
+        }
+      }
+
+      saveUserDataLocally();
+      closeInsertModal();
+      renderContent();
+    }
+
+    // --- Edit Existing Item Modal Logic ---
+    function openEditModal(schIdx, itemIdx) {
       const item = routesData[currentRouteIndex].schedules[schIdx].items[itemIdx];
       document.getElementById('editSchIdx').value = schIdx;
       document.getElementById('editItemIdx').value = itemIdx;
       document.getElementById('editTime').value = item.time || '';
+      document.getElementById('editSafetyLevel').value = item.safetyLevel || 'green';
       document.getElementById('editItemTitle').value = item.title || '';
       document.getElementById('editCost').value = item.cost || '';
       document.getElementById('editDuration').value = item.duration || '';
@@ -875,16 +1299,17 @@
       document.getElementById('editModal').classList.remove('hidden');
     }
 
-    function closeModal() {
+    function closeEditModal() {
       document.getElementById('editModal').classList.add('hidden');
     }
 
     function saveModalChanges() {
       const schIdx = parseInt(document.getElementById('editSchIdx').value);
       const itemIdx = parseInt(document.getElementById('editItemIdx').value);
-      
       const targetItem = routesData[currentRouteIndex].schedules[schIdx].items[itemIdx];
+      
       targetItem.time = document.getElementById('editTime').value;
+      targetItem.safetyLevel = document.getElementById('editSafetyLevel').value;
       targetItem.title = document.getElementById('editItemTitle').value;
       targetItem.cost = document.getElementById('editCost').value;
       targetItem.duration = document.getElementById('editDuration').value;
@@ -894,12 +1319,12 @@
       targetItem.dest = document.getElementById('editDest').value;
 
       saveUserDataLocally();
-      closeModal();
+      closeEditModal();
       renderContent();
     }
 
     function deleteItem(schIdx, itemIdx) {
-      if (confirm('이 항목을 삭제하시겠습니까?')) {
+      if (confirm('이 일정을 삭제하시겠습니까?')) {
         routesData[currentRouteIndex].schedules[schIdx].items.splice(itemIdx, 1);
         saveUserDataLocally();
         renderContent();
@@ -914,19 +1339,18 @@
     }
 
     function addItemPrompt(schIdx) {
-      const title = prompt('추가할 일정/장소명을 입력하세요:');
+      const title = prompt('추가할 일정 제목 또는 장소명을 입력하세요:');
       if (!title) return;
-      const time = prompt('시간대를 입력하세요 (예: 18:00 - 19:30):', '18:00 - 19:00');
-      const cost = prompt('비용을 입력하세요 (예: 식비 $20):', '$20');
-      const duration = prompt('이동/소요 시간을 입력하세요 (예: 도보 10분 / 우버 15분):', '약 1시간');
+      const time = prompt('시간대를 입력하세요 (예: 18:00 - 19:30):', '18:00 - 19:30');
+      const cost = prompt('예상 비용을 입력하세요 (예: 식비 $25):', '$20');
 
       routesData[currentRouteIndex].schedules[schIdx].items.push({
         time: time || '자유시간',
         title: title,
-        cost: cost || '자유',
-        duration: duration || '약 1시간',
+        cost: cost || '$0',
+        duration: '약 1시간',
         safetyLevel: 'green',
-        safetyNote: '소지품 유의',
+        safetyNote: '구글 지도 위치 자동 연동됨',
         needsRide: false,
         origin: '',
         dest: title,
@@ -937,21 +1361,10 @@
       renderContent();
     }
 
-    function selectRoute(index) {
-      currentRouteIndex = index;
+    window.onload = function() {
+      loadUserData();
       renderTabs();
       renderContent();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    window.onload = function() {
-      try {
-        loadUserData();
-        renderTabs();
-        renderContent();
-      } catch (err) {
-        console.error("Init Error:", err);
-      }
     };
   </script>
 </body>
