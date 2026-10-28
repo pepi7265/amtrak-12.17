@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>미국 대횡단 트래블 플래너 V14</title>
+  <title>미국 대횡단 트래블 플래너 V15 (Key-Free 지도 완전판)</title>
+  <meta name="referrer" content="no-referrer-when-downgrade">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -21,7 +22,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Clean Bright UI States */
     .city-tab-active {
       background-color: #2563eb !important;
       color: #ffffff !important;
@@ -48,7 +48,7 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
 
-    /* Map Pin Styling */
+    /* Numbered Map Pin */
     .route-pin {
       background: #2563eb;
       color: #ffffff;
@@ -78,9 +78,9 @@
           <div>
             <div class="flex items-center gap-2">
               <h1 class="text-lg font-black text-slate-900 tracking-tight">미국 암트랙 대횡단 플래너</h1>
-              <span class="text-xs font-extrabold bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md border border-blue-200">21일 풀코스</span>
+              <span class="text-xs font-extrabold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md border border-emerald-200">V15 지도패치</span>
             </div>
-            <p class="text-xs text-slate-500 font-medium">2026.12.17 ~ 2027.01.06 • 샌프란시스코 ➔ 뉴욕 ➔ 워싱턴 D.C.</p>
+            <p class="text-xs text-slate-500 font-medium">2026.12.17 ~ 2027.01.06 • API 키 불필요 실시간 동선 지도</p>
           </div>
         </div>
 
@@ -98,7 +98,7 @@
       <div id="routeTabs" class="flex gap-2 overflow-x-auto no-scrollbar pb-2"></div>
     </div>
 
-    <!-- 5 Separated View Tabs (Clean Underline Style) -->
+    <!-- 5 Separated View Tabs -->
     <div class="bg-white border-t border-slate-100 px-4">
       <div class="max-w-3xl mx-auto flex overflow-x-auto no-scrollbar gap-5 text-sm">
         <button onclick="setMainView('schedule')" id="vTab-schedule" class="py-2.5 shrink-0 text-slate-500 hover:text-slate-900 transition sub-tab-active">
@@ -123,13 +123,13 @@
   <!-- ================= MAIN CONTENT ================= -->
   <main class="max-w-3xl mx-auto px-4 mt-4 space-y-4" id="mainContent"></main>
 
-  <!-- ================= MODAL 1: EDIT / ADD WITH LIVE MAP SEARCH ================= -->
+  <!-- ================= MODAL 1: EDIT / ADD WITH KEY-FREE INTERACTIVE MINI MAP ================= -->
   <div id="editModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-lg p-5 sm:p-6 space-y-4 shadow-2xl max-h-[92vh] overflow-y-auto border border-slate-200">
+    <div class="bg-white rounded-3xl w-full max-w-lg p-5 sm:p-6 space-y-3.5 shadow-2xl max-h-[92vh] overflow-y-auto border border-slate-200">
       <div class="flex justify-between items-center border-b border-slate-100 pb-3">
         <div>
           <h3 class="text-base sm:text-lg font-black text-slate-900" id="editModalHeader">일정 수정 및 장소 검색</h3>
-          <p class="text-xs text-slate-500 font-medium">장소를 검색해 선택하면 이름·주소·동선 좌표가 자동 입력됩니다.</p>
+          <p class="text-xs text-slate-500 font-medium">장소를 검색해 선택하거나 아래 미니 지도를 클릭하면 위치가 자동 입력됩니다.</p>
         </div>
         <button onclick="closeEditModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
@@ -139,10 +139,10 @@
       <input type="hidden" id="editLat">
       <input type="hidden" id="editLng">
 
-      <!-- LIVE PLACE SEARCH BOX (Auto-fill) -->
-      <div class="bg-blue-50/70 border border-blue-200 p-3.5 rounded-2xl space-y-2.5">
+      <!-- LIVE PLACE SEARCH BOX -->
+      <div class="bg-blue-50/70 border border-blue-200 p-3.5 rounded-2xl space-y-2">
         <label class="text-xs font-extrabold text-blue-900 flex items-center gap-1.5">
-          <i class="fa-solid fa-magnifying-glass-location text-blue-600"></i> 구글/지도 장소 검색 (선택 시 자동 입력)
+          <i class="fa-solid fa-magnifying-glass-location text-blue-600"></i> 장소 검색 (선택 시 이름·주소·좌표 자동 입력)
         </label>
         <div class="flex gap-2">
           <input type="text" id="placeSearchInput" onkeydown="if(event.key==='Enter'){event.preventDefault(); searchPlacesLive();}" placeholder="장소명 입력 (예: Shake Shack, Polo, Target...)" class="flex-1 text-sm p-2.5 border border-blue-200 rounded-xl bg-white outline-none focus:border-blue-600">
@@ -150,7 +150,7 @@
             검색
           </button>
         </div>
-        <div id="placeSearchResults" class="hidden max-h-44 overflow-y-auto bg-white rounded-xl border border-slate-200 divide-y divide-slate-100 shadow-sm"></div>
+        <div id="placeSearchResults" class="hidden max-h-40 overflow-y-auto bg-white rounded-xl border border-slate-200 divide-y divide-slate-100 shadow-sm"></div>
       </div>
 
       <!-- Schedule Fields -->
@@ -194,22 +194,19 @@
         <textarea id="editSafety" rows="2" class="w-full text-sm p-2.5 border border-slate-200 rounded-xl mt-1 outline-none"></textarea>
       </div>
 
-      <!-- Map Address & Live Google Map Embed Preview -->
-      <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2.5">
+      <!-- Interactive Key-Free Mini Map Preview -->
+      <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-slate-700"><i class="fa-solid fa-location-dot text-blue-600 mr-1"></i>지도 연동 주소</span>
+          <span class="text-xs font-extrabold text-slate-700"><i class="fa-solid fa-location-dot text-blue-600 mr-1"></i>위치 확인 (지도 클릭 시 핀 위치 이동 가능)</span>
           <label class="text-xs font-bold text-slate-600 flex items-center gap-1.5 cursor-pointer">
             <input type="checkbox" id="editNeedsRide" class="w-4 h-4 accent-blue-600 rounded"> 우버/리프트 버튼 표시
           </label>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <input type="text" id="editOrigin" placeholder="출발지 (선택)" class="text-xs p-2 border border-slate-200 rounded-lg bg-white outline-none">
-          <input type="text" id="editDest" onchange="updateModalMapPreview()" placeholder="도착지 장소명 (필수)" class="text-xs p-2 border border-slate-200 rounded-lg bg-white outline-none">
+          <input type="text" id="editDest" placeholder="도착지 장소명 (필수)" class="text-xs p-2 border border-slate-200 rounded-lg bg-white outline-none">
         </div>
-        <!-- Embedded Google Map Preview -->
-        <div id="modalMapPreviewBox" class="rounded-xl overflow-hidden border border-slate-200 h-36 bg-slate-100">
-          <iframe id="modalMapIframe" class="w-full h-full border-0" loading="lazy"></iframe>
-        </div>
+        <div id="modalMiniMap" class="rounded-xl overflow-hidden border border-slate-200 h-40 bg-slate-100 z-10"></div>
       </div>
 
       <button onclick="saveModalChanges()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-3.5 rounded-2xl text-sm shadow-sm transition">
@@ -249,14 +246,36 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'amtrak_v14_light_master';
+    const STORAGE_KEY = 'amtrak_v15_keyfree_master';
     let currentRouteIndex = 0;
-    let currentMainView = 'schedule'; // 'schedule' | 'alternatives' | 'shopping' | 'transit' | 'safety'
-    let currentDayIndex = 0; // Active day index within the selected city
+    let currentMainView = 'schedule';
+    let currentDayIndex = 0;
+    let currentTileSkin = 'google'; // 'google' | 'esri' | 'osm'
     let leafletMap = null;
+    let currentTileLayer = null;
+    let modalMiniMap = null;
+    let modalMiniMarker = null;
     let isAddingNewItem = false;
 
-    // Builder functions with explicit Move Time, Stay Time, and Coordinates [lat, lng]
+    // 100% Key-Free Tile Providers (No CARTO watermark!)
+    const TILE_PROVIDERS = {
+      google: {
+        name: '구글 지도 (한글)',
+        url: 'https://mt1.google.com/vt/lyrs=m&hl=ko&x={x}&y={y}&z={z}',
+        options: { maxZoom: 20, attribution: '&copy; Google Maps' }
+      },
+      esri: {
+        name: 'Esri 스트리트 맵',
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+        options: { maxZoom: 19, attribution: 'Tiles &copy; Esri' }
+      },
+      osm: {
+        name: '오픈스트리트맵',
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        options: { maxZoom: 19, referrerPolicy: 'no-referrer-when-downgrade', attribution: '&copy; OpenStreetMap' }
+      }
+    };
+
     const I = (time, title, origin, dest, cost, moveTime, stayTime, safetyLevel, safetyNote, lat, lng, needsRide=false) => ({
       time, title, origin, dest, cost, moveTime, stayTime, safetyLevel, safetyNote, lat, lng, needsRide, done: false
     });
@@ -281,7 +300,6 @@
       return '';
     };
 
-    // Outdoor & Classic Menswear Shopping Data
     const shoppingBibleData = [
       { brand: "Polo Ralph Lauren (폴로 랄프로렌)", krPrice: "아우터 45~70만원", usPrice: "아우터 $80~$140 / 니트 $39~$55", target: "패딩 재킷, 코듀로이/해링턴 재킷, 하프집업, 케이블 니트, 볼캡", bestSpots: "① 시카고 Fashion Outlets (물량 최다) ② 뉴저지 Jersey Gardens (세금 0%) ③ 포틀랜드 Ross/Rack (세금 0%)" },
       { brand: "Levi's (리바이스)", krPrice: "청바지 15만원 / 트러커 20만원", usPrice: "청바지 $29~$45 / 양털 트러커 $49~$65", target: "501/505 오리지널 데님, 셰르파(양털 안감) 트러커 재킷", bestSpots: "① 시카고 Fashion Outlets ② 뉴저지 Jersey Gardens (세금 0%) ③ 샌프란시스코 본사 매장" },
@@ -293,7 +311,7 @@
     ];
 
     // =========================================================================
-    // 7 CITIES MASTER DATA (With Accurate Coordinates & Split Move/Stay Times)
+    // 7 CITIES MASTER DATA
     // =========================================================================
     const defaultRoutesData = [
       // 1. SAN FRANCISCO
@@ -867,6 +885,23 @@
       renderContent();
     }
 
+    function switchMapSkin(skinKey) {
+      currentTileSkin = skinKey;
+      if (leafletMap && currentTileLayer) {
+        leafletMap.removeLayer(currentTileLayer);
+        const p = TILE_PROVIDERS[skinKey] || TILE_PROVIDERS.google;
+        currentTileLayer = L.tileLayer(p.url, p.options).addTo(leafletMap);
+      }
+      ['google', 'esri', 'osm'].forEach(k => {
+        const el = document.getElementById(`skinBtn-${k}`);
+        if (el) {
+          el.className = k === skinKey
+            ? 'px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-blue-600 text-white'
+            : 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-600 hover:bg-slate-200';
+        }
+      });
+    }
+
     function renderTabs() {
       const container = document.getElementById('routeTabs');
       if (!container) return;
@@ -894,7 +929,7 @@
     }
 
     // =========================================================================
-    // INTERACTIVE ROUTE MAP (LEAFLET + CARTO VOYAGER LIGHT TILES)
+    // INTERACTIVE ROUTE MAP (KEY-FREE GOOGLE / ESRI / OSM TILES)
     // =========================================================================
     function initDayRouteMap() {
       const mapEl = document.getElementById('dayRouteMap');
@@ -912,10 +947,8 @@
       const defaultCenter = r.hotelCoords || [39.8283, -98.5795];
       leafletMap = L.map('dayRouteMap', { scrollWheelZoom: false }).setView(defaultCenter, 13);
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-        maxZoom: 19
-      }).addTo(leafletMap);
+      const provider = TILE_PROVIDERS[currentTileSkin] || TILE_PROVIDERS.google;
+      currentTileLayer = L.tileLayer(provider.url, provider.options).addTo(leafletMap);
 
       const latLngs = [];
 
@@ -946,7 +979,7 @@
         L.polyline(latLngs, {
           color: '#2563eb',
           weight: 4,
-          opacity: 0.75,
+          opacity: 0.8,
           dashArray: '8, 8'
         }).addTo(leafletMap);
         leafletMap.fitBounds(latLngs, { padding: [35, 35], maxZoom: 15 });
@@ -964,14 +997,13 @@
     }
 
     // =========================================================================
-    // MAIN CONTENT RENDERER (BRIGHT & SEPARATED)
+    // MAIN CONTENT RENDERER
     // =========================================================================
     function renderContent() {
       const r = routesData[currentRouteIndex];
       const container = document.getElementById('mainContent');
       if (!container || !r) return;
 
-      // 1. SCHEDULE & ROUTE MAP VIEW
       if (currentMainView === 'schedule') {
         if (currentDayIndex >= r.schedules.length) currentDayIndex = 0;
         const sch = r.schedules[currentDayIndex];
@@ -1011,26 +1043,28 @@
             </button>
           </div>
 
-          <!-- Interactive Visual Route Map Card -->
+          <!-- Interactive Visual Route Map Card (With Key-Free Skin Switcher) -->
           <div class="clean-card overflow-hidden">
             <div class="px-4 py-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-white">
               <div>
                 <h3 class="text-sm sm:text-base font-extrabold text-slate-900">${sch.day}</h3>
                 <p class="text-xs text-slate-500 font-medium mt-0.5">동선 요약: ${sch.summary}</p>
               </div>
-              <span class="text-xs font-extrabold bg-blue-50 text-blue-700 px-3 py-1 rounded-lg border border-blue-100">
-                일일 예상 경비 ~$${estCost}
-              </span>
+              <div class="flex items-center gap-1.5">
+                <button id="skinBtn-google" onclick="switchMapSkin('google')" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold ${currentTileSkin==='google' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">구글지도</button>
+                <button id="skinBtn-esri" onclick="switchMapSkin('esri')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold ${currentTileSkin==='esri' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">Esri지도</button>
+                <button id="skinBtn-osm" onclick="switchMapSkin('osm')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold ${currentTileSkin==='osm' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">OSM지도</button>
+              </div>
             </div>
             <!-- Leaflet Map Container -->
-            <div id="dayRouteMap" class="w-full h-60 sm:h-72 bg-slate-100 z-10"></div>
+            <div id="dayRouteMap" class="w-full h-64 sm:h-76 bg-slate-100 z-10"></div>
             <div class="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
               <span><i class="fa-solid fa-route text-blue-600 mr-1"></i> 번호 순서대로 오늘 이동 동선이 연결됩니다.</span>
-              <span>핀 클릭 시 상세 시간 표시</span>
+              <span class="font-extrabold text-blue-700">일일 예상 ~$${estCost}</span>
             </div>
           </div>
 
-          <!-- Step-by-Step Timeline Cards with Transit Connectors -->
+          <!-- Step-by-Step Timeline Cards -->
           <div class="space-y-0">
             ${(sch.items || []).map((item, itemIdx) => {
               const mapUrl = makeMapUrl(item.origin, item.dest);
@@ -1061,7 +1095,6 @@
                       ${getSafetyBadge(item.safetyLevel)}
                     </div>
 
-                    <!-- Card Edit/Move Controls -->
                     <div class="flex items-center gap-1 bg-slate-50 px-1.5 py-1 rounded-xl border border-slate-200/80">
                       <button onclick="moveItem(${currentDayIndex}, ${itemIdx}, -1)" title="위로" class="w-6 h-6 rounded hover:bg-white text-slate-500 text-xs"><i class="fa-solid fa-chevron-up"></i></button>
                       <button onclick="moveItem(${currentDayIndex}, ${itemIdx}, 1)" title="아래로" class="w-6 h-6 rounded hover:bg-white text-slate-500 text-xs"><i class="fa-solid fa-chevron-down"></i></button>
@@ -1077,12 +1110,10 @@
                     </div>
                   </div>
 
-                  <!-- Title -->
                   <h4 class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug mb-3 ${item.done ? 'line-through' : ''}">
                     ${item.title}
                   </h4>
 
-                  <!-- Clear Info Pills (Move Time, Stay Time, Cost) -->
                   <div class="flex flex-wrap gap-2 mb-3 text-xs font-bold">
                     <span class="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl">
                       🚍 이동시간: <strong class="text-slate-900">${item.moveTime || '-'}</strong>
@@ -1095,14 +1126,12 @@
                     </span>
                   </div>
 
-                  <!-- Tip Note -->
                   ${item.safetyNote ? `
                     <div class="bg-slate-50 border border-slate-200/80 p-3 rounded-xl text-xs sm:text-sm text-slate-700 leading-relaxed mb-3.5">
                       💡 ${item.safetyNote}
                     </div>
                   ` : ''}
 
-                  <!-- Bottom Action Bar -->
                   <div class="flex flex-wrap items-center gap-2 pt-2.5 border-t border-slate-100">
                     ${item.lat && item.lng ? `
                       <button onclick="focusPinOnMap(${item.lat}, ${item.lng}, ${itemIdx})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 px-3 rounded-xl transition flex items-center gap-1.5">
@@ -1305,8 +1334,37 @@
     }
 
     // =========================================================================
-    // LIVE PLACE SEARCH & AUTO-FILL IN MODAL (OpenStreetMap Nominatim + Presets)
+    // LIVE PLACE SEARCH & KEY-FREE INTERACTIVE MINI MAP IN MODAL
     // =========================================================================
+    function initModalMiniMap(lat, lng) {
+      const container = document.getElementById('modalMiniMap');
+      if (!container) return;
+
+      if (modalMiniMap) {
+        modalMiniMap.remove();
+        modalMiniMap = null;
+      }
+
+      const r = routesData[currentRouteIndex];
+      const startLat = parseFloat(lat) || r.hotelCoords[0];
+      const startLng = parseFloat(lng) || r.hotelCoords[1];
+
+      modalMiniMap = L.map('modalMiniMap').setView([startLat, startLng], 15);
+      const p = TILE_PROVIDERS[currentTileSkin] || TILE_PROVIDERS.google;
+      L.tileLayer(p.url, p.options).addTo(modalMiniMap);
+
+      modalMiniMarker = L.marker([startLat, startLng]).addTo(modalMiniMap);
+
+      // Click on mini-map to fine-tune pin coordinates
+      modalMiniMap.on('click', function(e) {
+        const cLat = e.latlng.lat.toFixed(5);
+        const cLng = e.latlng.lng.toFixed(5);
+        document.getElementById('editLat').value = cLat;
+        document.getElementById('editLng').value = cLng;
+        if (modalMiniMarker) modalMiniMarker.setLatLng(e.latlng);
+      });
+    }
+
     async function searchPlacesLive() {
       const q = document.getElementById('placeSearchInput').value.trim();
       const resBox = document.getElementById('placeSearchResults');
@@ -1316,9 +1374,7 @@
       resBox.innerHTML = `<div class="p-3 text-xs text-slate-500">🔍 '${q}' 위치를 검색 중입니다...</div>`;
 
       const r = routesData[currentRouteIndex];
-      const cityKeyword = r.title.split('(')[0].trim();
 
-      // 1. Search built-in curated database first
       const localMatches = [];
       Object.values(r.tiers || {}).flat().forEach(alt => {
         if (alt.name.toLowerCase().includes(q.toLowerCase()) || alt.dest.toLowerCase().includes(q.toLowerCase())) {
@@ -1326,13 +1382,11 @@
             title: alt.name,
             address: alt.dest,
             lat: alt.lat,
-            lng: alt.lng,
-            badge: '추천장소'
+            lng: alt.lng
           });
         }
       });
 
-      // 2. Query OpenStreetMap Nominatim API for any place in the US
       let apiMatches = [];
       try {
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q + ' ' + r.hotel.split('(')[0])}&countrycodes=us&limit=6`;
@@ -1347,8 +1401,7 @@
           title: d.display_name.split(',')[0],
           address: d.display_name.split(',').slice(0, 3).join(','),
           lat: parseFloat(d.lat),
-          lng: parseFloat(d.lon),
-          badge: '지도검색'
+          lng: parseFloat(d.lon)
         }));
       } catch (e) {}
 
@@ -1356,21 +1409,21 @@
       if (combined.length === 0) {
         resBox.innerHTML = `
           <div class="p-3 text-xs text-slate-600 flex items-center justify-between">
-            <span>검색 결과 직접 적용: <strong>${q}</strong></span>
-            <button type="button" onclick="selectSearchedPlace('${q.replace(/'/g, "")}', '${q.replace(/'/g, "")}', ${r.hotelCoords[0]}, ${r.hotelCoords[1]})" class="bg-blue-600 text-white px-2.5 py-1 rounded-lg font-bold">바로 입력</button>
+            <span>직접 입력 적용: <strong>${q}</strong></span>
+            <button type="button" onclick="selectSearchedPlace('${q.replace(/'/g, "")}', '${q.replace(/'/g, "")}', ${r.hotelCoords[0]}, ${r.hotelCoords[1]})" class="bg-blue-600 text-white px-2.5 py-1 rounded-lg font-bold">적용</button>
           </div>
         `;
         return;
       }
 
-      resBox.innerHTML = combined.map((m, i) => `
+      resBox.innerHTML = combined.map(m => `
         <button type="button" onclick="selectSearchedPlace('${m.title.replace(/'/g, "")}', '${m.address.replace(/'/g, "")}', ${m.lat}, ${m.lng})" 
           class="w-full text-left p-2.5 hover:bg-blue-50 transition flex items-center justify-between gap-2">
           <div>
             <div class="text-xs font-extrabold text-slate-900">${m.title}</div>
             <div class="text-[11px] text-slate-500 truncate max-w-xs">${m.address}</div>
           </div>
-          <span class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-200 shrink-0">자동입력</span>
+          <span class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-200 shrink-0">선택</span>
         </button>
       `).join('');
     }
@@ -1381,17 +1434,12 @@
       if (lat && lng) {
         document.getElementById('editLat').value = lat;
         document.getElementById('editLng').value = lng;
+        if (modalMiniMap && modalMiniMarker) {
+          modalMiniMap.setView([lat, lng], 16);
+          modalMiniMarker.setLatLng([lat, lng]);
+        }
       }
       document.getElementById('placeSearchResults').classList.add('hidden');
-      updateModalMapPreview();
-    }
-
-    function updateModalMapPreview() {
-      const dest = document.getElementById('editDest').value || document.getElementById('editItemTitle').value;
-      const iframe = document.getElementById('modalMapIframe');
-      if (dest && iframe) {
-        iframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(dest)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
-      }
     }
 
     // =========================================================================
@@ -1419,8 +1467,8 @@
       document.getElementById('editLat').value = item.lat || '';
       document.getElementById('editLng').value = item.lng || '';
 
-      updateModalMapPreview();
       document.getElementById('editModal').classList.remove('hidden');
+      setTimeout(() => initModalMiniMap(item.lat, item.lng), 80);
     }
 
     function openAddModal(schIdx) {
@@ -1448,8 +1496,8 @@
       document.getElementById('editLat').value = r.hotelCoords[0];
       document.getElementById('editLng').value = r.hotelCoords[1];
 
-      document.getElementById('modalMapIframe').src = `https://maps.google.com/maps?q=${encodeURIComponent(r.hotel)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
       document.getElementById('editModal').classList.remove('hidden');
+      setTimeout(() => initModalMiniMap(r.hotelCoords[0], r.hotelCoords[1]), 80);
     }
 
     function closeEditModal() {
@@ -1513,7 +1561,6 @@
       renderContent();
     }
 
-    // --- Swap Modal Handlers ---
     function openSwapModalForSlot(schIdx, itemIdx) {
       const r = routesData[currentRouteIndex];
       const target = r.schedules[schIdx].items[itemIdx];
